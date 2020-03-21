@@ -7,19 +7,36 @@
 //
 
 import UIKit
+import Combine
 
 class ComposerViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
     weak var textListViewController: TextListViewController?
+    var subscriptions = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        textView.delegate = self
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillShowNotification)
+            .map(\.userInfo)
+            .compactMap { $0?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
+            .sink { [weak self] keyboardFrame in
+                self?.textView.contentInset.bottom = keyboardFrame.height }
+            .store(in: &subscriptions)
+        
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillHideNotification)
+            .sink { [weak self] _ in
+                self?.textView.contentInset.bottom = 0 }
+            .store(in: &subscriptions)
     }
     
-    @IBAction func save(_ sender: Any) {
+    func saveText() {
         textListViewController?.addText(textView.text)
+        textView.text.removeAll()
         presentingViewController?.dismiss(animated: true)
     }
     
@@ -38,5 +55,17 @@ class ComposerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         textView.becomeFirstResponder()
+    }
+}
+
+extension ComposerViewController: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            saveText()
+            return false
+        } else {
+            return true
+        }
     }
 }

@@ -21,7 +21,7 @@ class TextListViewController: UITableViewController {
     func addText(_ text: String) {
         texts.append(text)
         let indexPath = IndexPath(row: texts.count-1, section: 0)
-        tableView.insertRows(at: [indexPath], with: .right)
+        tableView.insertRows(at: [indexPath], with: .fade)
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
     
