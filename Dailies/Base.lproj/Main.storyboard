@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16095" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16084.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +10,61 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="geX-uB-mu4">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Igf-DG-oiS"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="i2w-Dh-Txj"/>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z83-V6-9Qe">
+                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8h1-ob-gdL">
+                                        <rect key="frame" x="8" y="8" width="398" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailingMargin" secondItem="8h1-ob-gdL" secondAttribute="trailing" id="K7T-Sc-ibP"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="8h1-ob-gdL" secondAttribute="bottom" id="k62-WS-W2S"/>
+                                    <constraint firstItem="8h1-ob-gdL" firstAttribute="top" secondItem="z83-V6-9Qe" secondAttribute="topMargin" id="niA-le-rrh"/>
+                                    <constraint firstItem="8h1-ob-gdL" firstAttribute="leading" secondItem="z83-V6-9Qe" secondAttribute="leadingMargin" id="sKE-CL-yhL"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="z83-V6-9Qe" secondAttribute="trailing" id="5Ud-cd-9MM"/>
+                            <constraint firstItem="geX-uB-mu4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="5g0-1Z-M2N"/>
+                            <constraint firstItem="z83-V6-9Qe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="DdJ-8b-jcY"/>
+                            <constraint firstItem="geX-uB-mu4" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="O3l-oL-kOv"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="z83-V6-9Qe" secondAttribute="bottom" id="TPB-iJ-zUA"/>
+                            <constraint firstItem="geX-uB-mu4" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="TPR-IF-d9o"/>
+                            <constraint firstAttribute="bottom" secondItem="geX-uB-mu4" secondAttribute="bottom" id="rtP-aT-E8q"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="textField" destination="8h1-ob-gdL" id="KHn-3Z-bbE"/>
+                        <outlet property="textFieldContainer" destination="z83-V6-9Qe" id="xh7-zv-UYR"/>
+                        <outletCollection property="textFieldConstraints" destination="K7T-Sc-ibP" collectionClass="NSMutableArray" id="7BC-7J-Ckw"/>
+                        <outletCollection property="textFieldConstraints" destination="k62-WS-W2S" collectionClass="NSMutableArray" id="NCv-1K-rdE"/>
+                        <outletCollection property="textFieldConstraints" destination="niA-le-rrh" collectionClass="NSMutableArray" id="vc4-rg-Erw"/>
+                        <outletCollection property="textFieldConstraints" destination="sKE-CL-yhL" collectionClass="NSMutableArray" id="Wer-mQ-5ef"/>
+                        <outletCollection property="textFieldConstraints" destination="5Ud-cd-9MM" collectionClass="NSMutableArray" id="XDA-9i-2SH"/>
+                        <outletCollection property="textFieldConstraints" destination="DdJ-8b-jcY" collectionClass="NSMutableArray" id="xBS-Pn-XCH"/>
+                        <outletCollection property="textFieldConstraints" destination="TPB-iJ-zUA" collectionClass="NSMutableArray" id="CwG-GX-ebA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="126.5625"/>
         </scene>
     </scenes>
 </document>
