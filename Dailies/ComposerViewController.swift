@@ -11,26 +11,32 @@ import UIKit
 class ComposerViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
-    var saveText: ((String) -> Void)?
+    weak var textListViewController: TextListViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func save(_ sender: Any) {
-        saveText?(textView.text)
+        textListViewController?.addText(textView.text)
         presentingViewController?.dismiss(animated: true)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        textListViewController?.saveDraft(textView.text)
     }
-    */
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        textListViewController?.draft.map { self.textView.text = $0 }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        textView.becomeFirstResponder()
+    }
 }
