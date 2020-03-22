@@ -14,7 +14,8 @@ enum Diff {
 }
 
 class Document: UIDocument {
-private(set) var draft: String?
+    static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
+    private(set) var draft: String?
     
     func saveDraft(_ draft: String) {
         self.draft = draft
@@ -30,6 +31,16 @@ private(set) var draft: String?
     
     override func contents(forType typeName: String) throws -> Any {
         return try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
+    }
+    
+    func load() {
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            open()
+        } else {
+            save(to: fileURL, for: .forCreating) { _ in
+                self.open()
+            }
+        }
     }
     
     func addThought(_ thought: Thought) {

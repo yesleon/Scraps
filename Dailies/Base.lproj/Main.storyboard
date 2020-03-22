@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--草稿-->
+        <!--Draft-->
         <scene sceneID="r19-rZ-MY4">
             <objects>
                 <viewController id="8rr-SM-NiG" customClass="ComposerViewController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
@@ -32,20 +32,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nqS-JH-wcy"/>
                     </view>
-                    <navigationItem key="navigationItem" title="草稿" id="ueq-sf-8FG"/>
+                    <navigationItem key="navigationItem" title="Draft" id="ueq-sf-8FG"/>
                     <connections>
                         <outlet property="textView" destination="q5K-Dc-f5S" id="YrS-JE-7dq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32e-Xh-SdS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1698.5507246376812" y="-670.3125"/>
+            <point key="canvasLocation" x="1688" y="-670"/>
         </scene>
-        <!--思緒-->
+        <!--Thoughts-->
         <scene sceneID="dLr-46-qTM">
             <objects>
-                <tableViewController id="1fT-Lp-UQ9" customClass="ThoughtListViewController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN">
+                <tableViewController id="1fT-Lp-UQ9" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN" customClass="ThoughtListView" customModule="Dailies" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -87,7 +87,7 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gdb-AV-2TB"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="思緒" id="EFZ-Oz-kza"/>
+                    <navigationItem key="navigationItem" title="Thoughts" id="EFZ-Oz-kza"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
