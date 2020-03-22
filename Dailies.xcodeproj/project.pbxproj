@@ -10,6 +10,7 @@
 		7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D74F2426A07A00F8021C /* ComposerViewController.swift */; };
 		7161D7522426A13700F8021C /* ThoughtListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7512426A13700F8021C /* ThoughtListViewController.swift */; };
 		7161D7542427122000F8021C /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7532427122000F8021C /* Thought.swift */; };
+		7161D75624271EC800F8021C /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75524271EC800F8021C /* Document.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 		7161D74F2426A07A00F8021C /* ComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		7161D7512426A13700F8021C /* ThoughtListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListViewController.swift; sourceTree = "<group>"; };
 		7161D7532427122000F8021C /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
+		7161D75524271EC800F8021C /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 				7161D7512426A13700F8021C /* ThoughtListViewController.swift */,
+				7161D75524271EC800F8021C /* Document.swift */,
 				7161D7532427122000F8021C /* Thought.swift */,
 				71D9D97524261FB60062505B /* Main.storyboard */,
 				71D9D97824261FB90062505B /* Assets.xcassets */,
@@ -146,6 +149,7 @@
 			files = (
 				7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */,
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
+				7161D75624271EC800F8021C /* Document.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
 				7161D7522426A13700F8021C /* ThoughtListViewController.swift in Sources */,

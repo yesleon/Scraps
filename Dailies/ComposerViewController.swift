@@ -12,7 +12,7 @@ import Combine
 class ComposerViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
-    weak var thoughtListViewController: ThoughtListViewController?
+    weak var document: Document?
     var subscriptions = Set<AnyCancellable>()
     
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ class ComposerViewController: UIViewController {
     }
     
     func saveThought() {
-        thoughtListViewController?.addThought(textView.text)
+        document?.addThought(textView.text)
         textView.text.removeAll()
         presentingViewController?.dismiss(animated: true)
     }
@@ -43,13 +43,13 @@ class ComposerViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        thoughtListViewController?.saveDraft(textView.text)
+        document?.saveDraft(textView.text)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        thoughtListViewController?.draft.map { self.textView.text = $0 }
+        document?.draft.map { self.textView.text = $0 }
     }
     
     override func viewDidAppear(_ animated: Bool) {
