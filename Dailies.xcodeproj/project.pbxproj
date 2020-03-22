@@ -66,14 +66,14 @@
 		71D9D96E24261FB60062505B /* Dailies */ = {
 			isa = PBXGroup;
 			children = (
+				7161D7532427122000F8021C /* Thought.swift */,
+				7161D75524271EC800F8021C /* Document.swift */,
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				7161D75724273DBC00F8021C /* ThoughtListView.swift */,
 				71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */,
-				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 				7161D75B242748A400F8021C /* ComposerView.swift */,
-				7161D75524271EC800F8021C /* Document.swift */,
-				7161D7532427122000F8021C /* Thought.swift */,
+				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 				71D9D97524261FB60062505B /* Main.storyboard */,
 				71D9D97824261FB90062505B /* Assets.xcassets */,
 				71D9D97A24261FB90062505B /* LaunchScreen.storyboard */,

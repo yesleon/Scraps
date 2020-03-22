@@ -19,6 +19,18 @@ class ComposerViewController: UIViewController {
         textView.delegate = self
     }
     
+    override func viewLayoutMarginsDidChange() {
+        super.viewLayoutMarginsDidChange()
+        
+        
+        textView.textContainerInset = .init(
+            top: 8,
+            left: view.layoutMargins.left,
+            bottom: 8,
+            right: view.layoutMargins.right
+        )
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
