@@ -1,5 +1,5 @@
 //
-//  TextListViewController.swift
+//  ThoughtListViewController.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/22.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TextListViewController: UITableViewController {
+class ThoughtListViewController: UITableViewController {
     
     private var texts = [String]()
     private(set) var draft: String?
