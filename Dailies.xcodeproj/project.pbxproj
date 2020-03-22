@@ -17,6 +17,7 @@
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
 		71D9D97924261FB90062505B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97824261FB90062505B /* Assets.xcassets */; };
 		71D9D97C24261FB90062505B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97A24261FB90062505B /* LaunchScreen.storyboard */; };
+		71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		71D9D97824261FB90062505B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71D9D97B24261FB90062505B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71D9D97D24261FB90062505B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				7161D75724273DBC00F8021C /* ThoughtListView.swift */,
+				71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */,
 				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 				7161D75B242748A400F8021C /* ComposerView.swift */,
 				7161D75524271EC800F8021C /* Document.swift */,
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */,
 				7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */,
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
 				7161D75624271EC800F8021C /* Document.swift in Sources */,

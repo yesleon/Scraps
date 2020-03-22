@@ -22,6 +22,10 @@ class ThoughtListView: UITableView {
                 self?.insertRows(at: [indexPath], with: .fade)
             case .newSection(let section):
                 self?.insertSections([section], with: .fade)
+            case .removeIndexPath(let indexPath):
+                self?.deleteRows(at: [indexPath], with: .fade)
+            case .removeSection(let section):
+                self?.deleteSections([section], with: .fade)
             } }
             .store(in: &subscriptions)
     }

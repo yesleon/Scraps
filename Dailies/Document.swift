@@ -10,23 +10,25 @@ import UIKit
 import Combine
 
 enum Diff {
-    case newIndexPath(IndexPath), newSection(Int)
+    case newIndexPath(IndexPath), newSection(Int), removeIndexPath(IndexPath), removeSection(Int)
 }
 
 class Document: UIDocument {
-    static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
-    private(set) var draft: String?
     
-    func saveDraft(_ draft: String) {
-        self.draft = draft
-    }
+    static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
+    
+    var draft: String?
+    
     private var thoughtDayLists = [(date: Date, thoughts: [Thought])]()
+    
     var publisher = PassthroughSubject<Diff, Never>()
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
         let thoughts = try JSONDecoder().decode([Thought].self, from: data)
+        undoManager.disableUndoRegistration()
         thoughts.forEach(addThought)
+        undoManager.enableUndoRegistration()
     }
     
     override func contents(forType typeName: String) throws -> Any {
@@ -53,19 +55,46 @@ class Document: UIDocument {
             let indexPath = IndexPath(row: thoughtDayLists[lastIndex].thoughts.count-1, section: lastIndex)
             
             publisher.send(.newIndexPath(indexPath))
+            undoManager.registerUndo(withTarget: self) {
+                $0.removeThought(at: indexPath)
+            }
             
         } else {
             thoughtDayLists.append((date: thought.date, thoughts: [thought]))
             let newSection = thoughtDayLists.count - 1
             
             publisher.send(.newSection(newSection))
+            undoManager.registerUndo(withTarget: self) {
+                $0.removeThought(at: IndexPath(row: 0, section: newSection))
+            }
         }
         
-        self.updateChangeCount(.done)
+        
     }
+    
+    func removeThought(at indexPath: IndexPath) {
+        let thought = thoughtDayLists[indexPath.section].thoughts.remove(at: indexPath.row)
+
+        publisher.send(.removeIndexPath(indexPath))
+        undoManager.registerUndo(withTarget: self) {
+            $0.thoughtDayLists[indexPath.section].thoughts.insert(thought, at: indexPath.row)
+            $0.undoManager.registerUndo(withTarget: $0) {
+                $0.removeThought(at: indexPath)
+            }
+        }
+        if thoughtDayLists[indexPath.section].thoughts.isEmpty {
+            let section = thoughtDayLists.remove(at: indexPath.section)
+            publisher.send(.removeSection(indexPath.section))
+            undoManager.registerUndo(withTarget: self) {
+                $0.thoughtDayLists.insert(section, at: indexPath.section)
+            }
+        }
+    }
+    
 }
 
 extension Document: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         thoughtDayLists.count
     }
@@ -85,4 +114,5 @@ extension Document: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return DateFormatter.localizedString(from: thoughtDayLists[section].date, dateStyle: .short, timeStyle: .none)
     }
+    
 }

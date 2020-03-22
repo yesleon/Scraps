@@ -10,7 +10,9 @@ import UIKit
 import Combine
 
 class ComposerView: UITextView {
+    
     var subscriptions = Set<AnyCancellable>()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

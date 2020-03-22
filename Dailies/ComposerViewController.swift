@@ -19,21 +19,16 @@ class ComposerViewController: UIViewController {
         textView.delegate = self
     }
     
-    func saveThought() {
-        Document.shared.addThought(.init(content: textView.text, date: Date()))
-        textView.text.removeAll()
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        Document.shared.saveDraft(textView.text)
+        Document.shared.draft = textView.text
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Document.shared.draft.map { self.textView.text = $0 }
+        textView.text = Document.shared.draft ?? ""
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -46,7 +41,8 @@ extension ComposerViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            saveThought()
+            Document.shared.addThought(.init(content: textView.text, date: Date()))
+            textView.text.removeAll()
             presentingViewController?.dismiss(animated: true)
             return false
         } else {
