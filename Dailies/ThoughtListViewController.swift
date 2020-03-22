@@ -18,18 +18,34 @@ class ThoughtListViewController: UITableViewController {
         super.viewDidAppear(animated)
         becomeFirstResponder()
     }
-
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return UISwipeActionsConfiguration(actions: [
-            UIContextualAction(style: .destructive, title: "Delete", handler: { action, sourceView, completion in
-                Document.shared.removeThought(at: indexPath)
-                completion(true)
-            }),
-            UIContextualAction(style: .normal, title: "Copy", handler: { action, sourceView, completion in
-                UIPasteboard.general.string = Document.shared.thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
-                completion(true)
-            }),
-        ])
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        if let indexPaths = tableView.indexPathsForSelectedRows, indexPaths.count > 1, indexPaths.contains(indexPath) {
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(title: "Multiple selection", children: [
+                    UIAction(title: "Copy", handler: { action in
+                        UIPasteboard.general.string = indexPaths
+                            .map { Document.shared.thoughtDayLists[$0.section].thoughts[$0.row] }
+                            .map { $0.content }
+                            .reduce("") { $0 + $1 + "\n\n" }
+                    }),
+                    UIAction(title: "Delete", handler: { action in
+                        indexPaths.reversed().forEach(Document.shared.removeThought(at:))
+                    })
+                ])
+            }
+        } else {
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(title: "", children: [
+                    UIAction(title: "Copy", handler: { action in
+                        UIPasteboard.general.string = Document.shared.thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
+                    }),
+                    UIAction(title: "Delete", handler: { action in
+                        Document.shared.removeThought(at: indexPath)
+                    })
+                ])
+            }
+        }
     }
 
 }
