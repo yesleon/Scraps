@@ -24,7 +24,11 @@ class ThoughtListViewController: UITableViewController {
             UIContextualAction(style: .destructive, title: "Delete", handler: { action, sourceView, completion in
                 Document.shared.removeThought(at: indexPath)
                 completion(true)
-            })
+            }),
+            UIContextualAction(style: .normal, title: "Copy", handler: { action, sourceView, completion in
+                UIPasteboard.general.string = Document.shared.thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
+                completion(true)
+            }),
         ])
     }
 

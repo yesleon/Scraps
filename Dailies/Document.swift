@@ -19,7 +19,7 @@ class Document: UIDocument {
     
     var draft: String?
     
-    private var thoughtDayLists = [(date: Date, thoughts: [Thought])]()
+    private(set) var thoughtDayLists = [(date: Date, thoughts: [Thought])]()
     
     var publisher = PassthroughSubject<Diff, Never>()
     
