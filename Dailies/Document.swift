@@ -22,8 +22,17 @@ private(set) var draft: String?
     private var thoughtDayLists = [(date: Date, thoughts: [Thought])]()
     var publisher = PassthroughSubject<Diff, Never>()
     
-    func addThought(_ content: String) {
-        let thought = Thought(content: content, date: Date())
+    override func load(fromContents contents: Any, ofType typeName: String?) throws {
+        guard let data = contents as? Data else { fatalError() }
+        let thoughts = try JSONDecoder().decode([Thought].self, from: data)
+        thoughts.forEach(addThought)
+    }
+    
+    override func contents(forType typeName: String) throws -> Any {
+        return try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
+    }
+    
+    func addThought(_ thought: Thought) {
         
         let lastIndex = thoughtDayLists.count - 1
         if !thoughtDayLists.isEmpty,
@@ -40,6 +49,8 @@ private(set) var draft: String?
             
             publisher.send(.newSection(newSection))
         }
+        
+        self.updateChangeCount(.done)
     }
 }
 

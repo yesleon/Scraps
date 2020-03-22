@@ -19,17 +19,26 @@ class ThoughtListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.dataSource = document
+        
         document.publisher.sink { [weak tableView] in
             switch $0 {
             case .newIndexPath(let indexPath):
                 tableView?.insertRows(at: [indexPath], with: .fade)
             case .newSection(let section):
                 tableView?.insertSections([section], with: .fade)
-            }
-        }.store(in: &subscriptions)
+            } }
+            .store(in: &subscriptions)
         
-        document.open { _ in
-            self.tableView.reloadData()
+        if FileManager.default.fileExists(atPath: document.fileURL.path) {
+        
+            document.open { _ in
+                self.tableView.reloadData()
+            }
+        } else {
+            document.save(to: document.fileURL, for: .forCreating) { _ in
+                self.document.open()
+            }
         }
     }
     

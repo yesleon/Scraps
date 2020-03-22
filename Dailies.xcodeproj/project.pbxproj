@@ -64,8 +64,8 @@
 			children = (
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
-				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 				7161D7512426A13700F8021C /* ThoughtListViewController.swift */,
+				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 				7161D75524271EC800F8021C /* Document.swift */,
 				7161D7532427122000F8021C /* Thought.swift */,
 				71D9D97524261FB60062505B /* Main.storyboard */,

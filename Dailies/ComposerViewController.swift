@@ -35,7 +35,7 @@ class ComposerViewController: UIViewController {
     }
     
     func saveThought() {
-        document?.addThought(textView.text)
+        document?.addThought(.init(content: textView.text, date: Date()))
         textView.text.removeAll()
         presentingViewController?.dismiss(animated: true)
     }
