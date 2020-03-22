@@ -78,6 +78,7 @@ class Document: UIDocument {
         publisher.send(.removeIndexPath(indexPath))
         undoManager.registerUndo(withTarget: self) {
             $0.thoughtDayLists[indexPath.section].thoughts.insert(thought, at: indexPath.row)
+            $0.publisher.send(.newIndexPath(indexPath))
             $0.undoManager.registerUndo(withTarget: $0) {
                 $0.removeThought(at: indexPath)
             }
@@ -87,6 +88,7 @@ class Document: UIDocument {
             publisher.send(.removeSection(indexPath.section))
             undoManager.registerUndo(withTarget: self) {
                 $0.thoughtDayLists.insert(section, at: indexPath.section)
+                $0.publisher.send(.newSection(indexPath.section))
             }
         }
     }
