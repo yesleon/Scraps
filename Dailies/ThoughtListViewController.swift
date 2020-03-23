@@ -24,7 +24,8 @@ class ThoughtListViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         becomeFirstResponder()
-        DropboxProxy.startAuthorizationFlow()
+        
+//        OAuthServerProxy.dropbox.authorize(withClientID: "pjwsk8p4dk374mp", redirectURI: "https://www.narrativesaw.com/auth")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

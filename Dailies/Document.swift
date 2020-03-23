@@ -23,20 +23,23 @@ class Document: UIDocument {
     
     var publisher = PassthroughSubject<Diff, Never>()
     
-    private var dropboxProxy: DropboxProxy?
+    var dropboxProxy: DropboxProxy? {
+        didSet {
+            if self.documentState == .normal {
+                subscribeToDropbox()
+            }
+        }
+    }
     
     var subscriptions = Set<AnyCancellable>()
     
-    func connectToDropbox(token: String) {
-        let proxy = DropboxProxy(token: token)
-        self.dropboxProxy = proxy
-        
-        proxy.getMetadata(of: "/data")
+    func subscribeToDropbox() {
+        dropboxProxy?.getMetadata(of: "/data")
             .sink(receiveCompletion: { completion in
                 print(completion)
                 switch completion {
                 case .failure(_):
-                    proxy.upload(try! JSONEncoder().encode(self.thoughtDayLists.flatMap { $0.thoughts }), to: "/data").sink(receiveCompletion: { completion in
+                    self.dropboxProxy?.upload(try! JSONEncoder().encode(self.thoughtDayLists.flatMap { $0.thoughts }), to: "/data").sink(receiveCompletion: { completion in
                         print(completion)
                     }) { data in
                         
@@ -59,13 +62,18 @@ class Document: UIDocument {
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        let data = try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
-        dropboxProxy?.upload(data, to: "/data").sink(receiveCompletion: { completion in
-            print(completion)
-        }, receiveValue: { data in
-            print(data)
-        }).store(in: &subscriptions)
-        return data
+        return try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
+    }
+    
+    override func writeContents(_ contents: Any, to url: URL, for saveOperation: UIDocument.SaveOperation, originalContentsURL: URL?) throws {
+        try super.writeContents(contents, to: url, for: saveOperation, originalContentsURL: originalContentsURL)
+        if let data = contents as? Data, let dropboxProxy = dropboxProxy {
+            dropboxProxy.upload(data, to: "/data").sink(receiveCompletion: { completion in
+                print(completion)
+            }, receiveValue: { data in
+                print(data)
+            }).store(in: &subscriptions)
+        }
     }
     
     func load() {
