@@ -21,7 +21,9 @@ class ComposerView: UITextView {
             .map(\.userInfo)
             .compactMap { $0?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
             .sink { [weak self] keyboardFrame in
-                self?.contentInset.bottom = keyboardFrame.height }
+                guard let self = self, let window = self.window else { return }
+                let delta = window.bounds.maxY - self.convert(self.bounds, to: window).maxY
+                self.contentInset.bottom = keyboardFrame.height - delta }
             .store(in: &subscriptions)
         
         NotificationCenter.default

@@ -18,6 +18,7 @@
 		71D9D97924261FB90062505B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97824261FB90062505B /* Assets.xcassets */; };
 		71D9D97C24261FB90062505B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97A24261FB90062505B /* LaunchScreen.storyboard */; };
 		71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */; };
+		71F623B32428BCCE00A46048 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71F623B12428BCCE00A46048 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,9 @@
 		71D9D97B24261FB90062505B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71D9D97D24261FB90062505B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListViewController.swift; sourceTree = "<group>"; };
+		71F623AF2428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		71F623B02428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		71F623B22428BCCE00A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 				71D9D97824261FB90062505B /* Assets.xcassets */,
 				71D9D97A24261FB90062505B /* LaunchScreen.storyboard */,
 				71D9D97D24261FB90062505B /* Info.plist */,
+				71F623B12428BCCE00A46048 /* Localizable.strings */,
 			);
 			path = Dailies;
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 71D9D96324261FB60062505B;
 			productRefGroup = 71D9D96D24261FB60062505B /* Products */;
@@ -141,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71D9D97C24261FB90062505B /* LaunchScreen.storyboard in Resources */,
+				71F623B32428BCCE00A46048 /* Localizable.strings in Resources */,
 				71D9D97924261FB90062505B /* Assets.xcassets in Resources */,
 				71D9D97724261FB60062505B /* Main.storyboard in Resources */,
 			);
@@ -171,6 +178,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				71D9D97624261FB60062505B /* Base */,
+				71F623AF2428BBE800A46048 /* zh-Hant */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -179,8 +187,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				71D9D97B24261FB90062505B /* Base */,
+				71F623B02428BBE800A46048 /* zh-Hant */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		71F623B12428BCCE00A46048 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				71F623B22428BCCE00A46048 /* zh-Hant */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -190,6 +207,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -250,6 +268,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
