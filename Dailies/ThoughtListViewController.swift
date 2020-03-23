@@ -24,6 +24,7 @@ class ThoughtListViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         becomeFirstResponder()
+        OAuth2Manager.shared.startAuthorizationFlow()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
