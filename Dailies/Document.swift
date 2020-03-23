@@ -23,6 +23,33 @@ class Document: UIDocument {
     
     var publisher = PassthroughSubject<Diff, Never>()
     
+    private var dropboxProxy: DropboxProxy?
+    
+    var subscriptions = Set<AnyCancellable>()
+    
+    func connectToDropbox(token: String) {
+        let proxy = DropboxProxy(token: token)
+        self.dropboxProxy = proxy
+        
+        proxy.getMetadata(of: "/data")
+            .sink(receiveCompletion: { completion in
+                print(completion)
+                switch completion {
+                case .failure(_):
+                    proxy.upload(try! JSONEncoder().encode(self.thoughtDayLists.flatMap { $0.thoughts }), to: "/data").sink(receiveCompletion: { completion in
+                        print(completion)
+                    }) { data in
+                        
+                        print(data)
+                    }.store(in: &self.subscriptions)
+                case .finished:
+                    break
+                }
+            }) { response in
+                print(response.server_modified) }
+            .store(in: &subscriptions)
+    }
+    
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
         let thoughts = try JSONDecoder().decode([Thought].self, from: data)
@@ -32,7 +59,13 @@ class Document: UIDocument {
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        return try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
+        let data = try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
+        dropboxProxy?.upload(data, to: "/data").sink(receiveCompletion: { completion in
+            print(completion)
+        }, receiveValue: { data in
+            print(data)
+        }).store(in: &subscriptions)
+        return data
     }
     
     func load() {

@@ -34,8 +34,8 @@ enum OAuth2 {
     static func retrieveToken(host: String, path: String, clientID: String, clientSecret: String, redirectURI: String, authorizationCode: String, handler: @escaping (String) -> Void) {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = "api.dropbox.com"
-        components.path = "/oauth2/token"
+        components.host = host
+        components.path = path
         var subscription: AnyCancellable?
         subscription = components.url
             .map { url -> URLRequest in
@@ -46,9 +46,9 @@ enum OAuth2 {
                 components.queryItems = [
                     .init(name: "code", value: authorizationCode),
                     .init(name: "grant_type", value: "authorization_code"),
-                    .init(name: "client_id", value: "pjwsk8p4dk374mp"),
-                    .init(name: "client_secret", value: "mh92gshwdn9p6z7"),
-                    .init(name: "redirect_uri", value: "https://www.narrativesaw.com/auth")
+                    .init(name: "client_id", value: clientID),
+                    .init(name: "client_secret", value: clientSecret),
+                    .init(name: "redirect_uri", value: redirectURI)
                 ]
                 request.httpBody = components.percentEncodedQuery
                     .flatMap { $0.data(using: .utf8) }

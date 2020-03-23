@@ -26,19 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.map { $0.url }
-            .forEach(handleURL(_:))
-    }
-    
-    func handleURL(_ url: URL) {
-        URLComponents(url: url, resolvingAgainstBaseURL: true)
-            .filter { $0.host == "receiveAuthorizationCode" }
-            .flatMap { $0.queryItems }?
-            .compactMap { $0 }
-            .filter { $0.name == "code" }
-            .compactMap { $0.value }
-            .forEach { OAuth2.retrieveToken(host: "api.dropbox.com", path: "/oauth2/token", clientID: "pjwsk8p4dk374mp", clientSecret: "mh92gshwdn9p6z7", redirectURI: "https://www.narrativesaw.com/auth", authorizationCode: $0) { token in
-                
-                }}
+            .forEach(DropboxProxy.handleURL(_:))
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
