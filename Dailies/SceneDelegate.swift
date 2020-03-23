@@ -8,15 +8,38 @@
 
 import UIKit
 
+
+
+extension Optional {
+    func filter(_ isIncluded: (Wrapped) throws -> Bool) rethrows -> Wrapped? {
+        if let self = self, try isIncluded(self) {
+            return self
+        } else {
+            return nil
+        }
+    }
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.map { $0.url }
-            .forEach(OAuth2Manager.shared.handleURL(_:))
+            .forEach(handleURL(_:))
     }
-
+    
+    func handleURL(_ url: URL) {
+        URLComponents(url: url, resolvingAgainstBaseURL: true)
+            .filter { $0.host == "receiveAuthorizationCode" }
+            .flatMap { $0.queryItems }?
+            .compactMap { $0 }
+            .filter { $0.name == "code" }
+            .compactMap { $0.value }
+            .forEach { OAuth2.retrieveToken(host: "api.dropbox.com", path: "/oauth2/token", clientID: "pjwsk8p4dk374mp", clientSecret: "mh92gshwdn9p6z7", redirectURI: "https://www.narrativesaw.com/auth", authorizationCode: $0) { token in
+                
+                }}
+    }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.

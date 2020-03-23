@@ -1,5 +1,5 @@
 //
-//  OAuth2Manager.swift
+//  OAuth2.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/23.
@@ -16,48 +16,28 @@ struct TokenResponse: Codable {
     var uid: String
 }
 
-extension Optional {
-    func filter(_ isIncluded: (Wrapped) throws -> Bool) rethrows -> Wrapped? {
-        if let self = self, try isIncluded(self) {
-            return self
-        } else {
-            return nil
-        }
-    }
-}
-
-class OAuth2Manager: NSObject {
-    static let shared = OAuth2Manager()
-    var accessToken: String?
-    var subscriptions = Set<AnyCancellable>()
-    func startAuthorizationFlow() {
+enum OAuth2 {
+    
+    static func openAuthorizationPage(host: String, path: String, clientID: String, redirectURI: String) {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = "www.dropbox.com"
-        components.path = "/oauth2/authorize"
+        components.host = host
+        components.path = path
         components.queryItems = [
-            .init(name: "client_id", value: "pjwsk8p4dk374mp"),
+            .init(name: "client_id", value: clientID),
             .init(name: "response_type", value: "code"),
-            .init(name: "redirect_uri", value: "https://www.narrativesaw.com/auth")
+            .init(name: "redirect_uri", value: redirectURI)
         ]
         components.url.map { UIApplication.shared.open($0, options: [:], completionHandler: nil) }
-        
     }
-    func handleURL(_ url: URL) {
-        URLComponents(url: url, resolvingAgainstBaseURL: true)
-            .filter { $0.host == "receiveAuthorizationCode" }
-            .flatMap { $0.queryItems }?
-            .compactMap { $0 }
-            .filter { $0.name == "code" }
-            .compactMap { $0.value }
-            .forEach { OAuth2Manager.shared.askForToken(authorizationCode: $0) }
-    }
-    func askForToken(authorizationCode: String) {
+    
+    static func retrieveToken(host: String, path: String, clientID: String, clientSecret: String, redirectURI: String, authorizationCode: String, handler: @escaping (String) -> Void) {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.dropbox.com"
         components.path = "/oauth2/token"
-        components.url
+        var subscription: AnyCancellable?
+        subscription = components.url
             .map { url -> URLRequest in
                 var request = URLRequest(url: url)
                 request.httpMethod = "POST"
@@ -79,7 +59,12 @@ class OAuth2Manager: NSObject {
             .map(\.access_token)
             .map(Optional.init)
             .catch { error -> Just<String?> in print(error); return Just(nil) }
-            .assign(to: \.accessToken, on: self)
-            .store(in: &subscriptions)
+            .compactMap { $0 }
+            .sink { code in
+                handler(code)
+                subscription?.cancel()
+        }
+        
     }
+    
 }

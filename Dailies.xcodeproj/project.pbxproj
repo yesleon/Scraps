@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7154FB8C2428D79F002C0100 /* OAuth2Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7154FB8B2428D79F002C0100 /* OAuth2Manager.swift */; };
+		7154FB8C2428D79F002C0100 /* OAuth2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7154FB8B2428D79F002C0100 /* OAuth2.swift */; };
 		7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D74F2426A07A00F8021C /* ComposerViewController.swift */; };
 		7161D7542427122000F8021C /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7532427122000F8021C /* Thought.swift */; };
 		7161D75624271EC800F8021C /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75524271EC800F8021C /* Document.swift */; };
@@ -23,7 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7154FB8B2428D79F002C0100 /* OAuth2Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Manager.swift; sourceTree = "<group>"; };
+		7154FB8B2428D79F002C0100 /* OAuth2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2.swift; sourceTree = "<group>"; };
 		7161D74F2426A07A00F8021C /* ComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		7161D7532427122000F8021C /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		7161D75524271EC800F8021C /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 			children = (
 				7161D7532427122000F8021C /* Thought.swift */,
 				7161D75524271EC800F8021C /* Document.swift */,
-				7154FB8B2428D79F002C0100 /* OAuth2Manager.swift */,
+				7154FB8B2428D79F002C0100 /* OAuth2.swift */,
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				7161D75724273DBC00F8021C /* ThoughtListView.swift */,
@@ -164,7 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */,
-				7154FB8C2428D79F002C0100 /* OAuth2Manager.swift in Sources */,
+				7154FB8C2428D79F002C0100 /* OAuth2.swift in Sources */,
 				7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */,
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
 				7161D75624271EC800F8021C /* Document.swift in Sources */,
