@@ -27,16 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts
             .map { $0.url }
-            .compactMap { URLComponents(url: $0, resolvingAgainstBaseURL: true) }
-            .filter { $0.host == "auth" }
-            .compactMap { $0.fragment }
-            .flatMap { fragment -> [URLQueryItem] in
-                var components = URLComponents()
-                components.query = fragment
-                return components.queryItems ?? [] }
-            .filter { $0.name == "access_token" }
-            .compactMap { $0.value }
-            .forEach { Document.shared.dropboxProxy = DropboxProxy(accessToken: $0) }
+            .forEach { DropboxLoginProcess.current?.handleURL($0) }
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

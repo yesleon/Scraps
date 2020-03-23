@@ -21,11 +21,15 @@ class ThoughtListViewController: UITableViewController {
         navigationController?.navigationBar.layoutMargins = view.layoutMargins
     }
     
+    @IBAction func login(_ sender: UIBarButtonItem) {
+        Document.shared.loginToDropbox {
+            sender.isEnabled = false
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         becomeFirstResponder()
-        
-//        OAuthServerProxy.dropbox.authorize(withClientID: "pjwsk8p4dk374mp", redirectURI: "https://www.narrativesaw.com/auth")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

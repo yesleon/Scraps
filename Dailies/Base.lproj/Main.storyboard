@@ -92,6 +92,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="River" id="EFZ-Oz-kza">
+                        <barButtonItem key="leftBarButtonItem" title="Login" id="QsQ-Mq-xbY">
+                            <connections>
+                                <action selector="login:" destination="1fT-Lp-UQ9" id="PMB-7l-bD5"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="3Pe-zY-JwH">
                             <connections>
                                 <segue destination="eje-5e-k4h" kind="presentation" id="qOc-1I-8CX"/>

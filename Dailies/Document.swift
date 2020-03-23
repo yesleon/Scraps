@@ -23,34 +23,15 @@ class Document: UIDocument {
     
     var publisher = PassthroughSubject<Diff, Never>()
     
-    var dropboxProxy: DropboxProxy? {
-        didSet {
-            if self.documentState == .normal {
-                subscribeToDropbox()
-            }
-        }
-    }
+    var dropboxProxy: DropboxProxy?
     
     var subscriptions = Set<AnyCancellable>()
     
-    func subscribeToDropbox() {
-        dropboxProxy?.getMetadata(of: "/data")
-            .sink(receiveCompletion: { completion in
-                print(completion)
-                switch completion {
-                case .failure(_):
-                    self.dropboxProxy?.upload(try! JSONEncoder().encode(self.thoughtDayLists.flatMap { $0.thoughts }), to: "/data").sink(receiveCompletion: { completion in
-                        print(completion)
-                    }) { data in
-                        
-                        print(data)
-                    }.store(in: &self.subscriptions)
-                case .finished:
-                    break
-                }
-            }) { response in
-                print(response.server_modified) }
-            .store(in: &subscriptions)
+    func loginToDropbox(completion: (() -> Void)? = nil) {
+        DropboxLoginProcess.initiate { [weak self] in
+            self?.dropboxProxy = $0
+            completion?()
+        }
     }
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
