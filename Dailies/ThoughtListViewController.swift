@@ -14,6 +14,8 @@ class ThoughtListViewController: UITableViewController {
     
     override var undoManager: UndoManager? { Document.shared.undoManager }
     
+    @IBAction func dismiss(segue: UIStoryboardSegue) { }
+    
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
         navigationController?.navigationBar.layoutMargins = view.layoutMargins

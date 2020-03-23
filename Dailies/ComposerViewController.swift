@@ -13,12 +13,6 @@ class ComposerViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        textView.delegate = self
-    }
-    
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
         
@@ -29,6 +23,11 @@ class ComposerViewController: UIViewController {
             bottom: 8,
             right: view.layoutMargins.right
         )
+    }
+    @IBAction func save(_ sender: Any) {
+        Document.shared.addThought(.init(content: textView.text, date: Date()))
+        textView.text.removeAll()
+        presentingViewController?.dismiss(animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -46,19 +45,5 @@ class ComposerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         textView.becomeFirstResponder()
-    }
-}
-
-extension ComposerViewController: UITextViewDelegate {
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            Document.shared.addThought(.init(content: textView.text, date: Date()))
-            textView.text.removeAll()
-            presentingViewController?.dismiss(animated: true)
-            return false
-        } else {
-            return true
-        }
     }
 }
