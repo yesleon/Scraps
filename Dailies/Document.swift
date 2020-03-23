@@ -23,14 +23,23 @@ class Document: UIDocument {
     
     var publisher = PassthroughSubject<Diff, Never>()
     
-    var dropboxProxy: DropboxProxy?
+    var dropboxAccessToken: String?
     
     var subscriptions = Set<AnyCancellable>()
     
     func loginToDropbox(completion: (() -> Void)? = nil) {
         DropboxLoginProcess.initiate { [weak self] in
-            self?.dropboxProxy = $0
+            guard let self = self else { return }
+            self.dropboxAccessToken = $0
             completion?()
+            DropboxProxy.download("/data", accessToken: $0)
+                .sink(receiveCompletion: { completion in
+                    print(completion)
+                }) { data in
+                    DispatchQueue.main.async {
+                        try? self.load(fromContents: data, ofType: nil)
+                    } }
+                .store(in: &self.subscriptions)
         }
     }
     
@@ -48,12 +57,14 @@ class Document: UIDocument {
     
     override func writeContents(_ contents: Any, to url: URL, for saveOperation: UIDocument.SaveOperation, originalContentsURL: URL?) throws {
         try super.writeContents(contents, to: url, for: saveOperation, originalContentsURL: originalContentsURL)
-        if let data = contents as? Data, let dropboxProxy = dropboxProxy {
-            dropboxProxy.upload(data, to: "/data").sink(receiveCompletion: { completion in
-                print(completion)
-            }, receiveValue: { data in
-                print(data)
-            }).store(in: &subscriptions)
+        if let data = contents as? Data, let accessToken = dropboxAccessToken {
+            DropboxProxy.upload(data, to: "/data", accessToken: accessToken)
+                .sink(receiveCompletion: { completion in
+                    print(completion)
+                }, receiveValue: { data in
+                    print(data)
+                })
+                .store(in: &subscriptions)
         }
     }
     
@@ -68,7 +79,7 @@ class Document: UIDocument {
     }
     
     func addThought(_ thought: Thought) {
-        
+        guard !thoughtDayLists.flatMap({ $0.thoughts }).contains(thought) else { return }
         let lastIndex = thoughtDayLists.count - 1
         if !thoughtDayLists.isEmpty,
             Calendar.current.isDate(thought.date, inSameDayAs: thoughtDayLists[lastIndex].date) {

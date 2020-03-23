@@ -10,12 +10,12 @@ import UIKit
 
 class DropboxLoginProcess: NSObject {
     private(set) static var current: DropboxLoginProcess?
-    private let completion: (DropboxProxy) -> Void
-    private init(completion: @escaping (DropboxProxy) -> Void) {
+    private let completion: (String) -> Void
+    private init(completion: @escaping (String) -> Void) {
         self.completion = completion
     }
     
-    static func initiate(completion: @escaping (DropboxProxy) -> Void) {
+    static func initiate(completion: @escaping (String) -> Void) {
         current = .init(completion: completion)
         OAuthServerProxy.dropbox.authorize(withClientID: "pjwsk8p4dk374mp", redirectURI: "https://www.narrativesaw.com/auth")
     }
@@ -31,6 +31,6 @@ class DropboxLoginProcess: NSObject {
             .filter { $0.name == "access_token" }
             .compactMap { $0.value }
             .forEach {
-                completion(DropboxProxy(accessToken: $0))
+                completion($0)
                 DropboxLoginProcess.current = nil } }
 }

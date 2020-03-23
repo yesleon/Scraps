@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Thought: Codable {
+struct Thought: Codable, Equatable {
     var content: String
     var date: Date
 }

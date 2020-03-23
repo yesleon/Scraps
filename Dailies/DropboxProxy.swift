@@ -13,13 +13,7 @@ import Combine
 
 class DropboxProxy: NSObject {
     
-    init(accessToken: String) {
-        self.accessToken = accessToken
-    }
-    
-    let accessToken: String
-    
-    func download(_ path: String) -> AnyPublisher<Data, URLError> {
+    static func download(_ path: String, accessToken: String) -> AnyPublisher<Data, URLError> {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "content.dropboxapi.com"
@@ -34,7 +28,7 @@ class DropboxProxy: NSObject {
             .eraseToAnyPublisher()
     }
     
-    func upload(_ data: Data, to path: String) -> AnyPublisher<Data, URLError> {
+    static func upload(_ data: Data, to path: String, accessToken: String) -> AnyPublisher<Data, URLError> {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "content.dropboxapi.com"
@@ -52,7 +46,7 @@ class DropboxProxy: NSObject {
             .eraseToAnyPublisher()
     }
     
-    func getMetadata(of path: String) -> AnyPublisher<GetMetadataResponse, Error> {
+    static func getMetadata(of path: String, accessToken: String) -> AnyPublisher<GetMetadataResponse, Error> {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.dropboxapi.com"
