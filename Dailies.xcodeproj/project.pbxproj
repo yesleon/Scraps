@@ -7,14 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7135000E242926D6009E445D /* OAuthServerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7135000D242926D6009E445D /* OAuthServerProxy.swift */; };
-		7135001224293E51009E445D /* DropboxLoginProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7135001124293E51009E445D /* DropboxLoginProcess.swift */; };
+		7135000E242926D6009E445D /* OAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7135000D242926D6009E445D /* OAuthClient.swift */; };
 		7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D74F2426A07A00F8021C /* ComposerViewController.swift */; };
 		7161D7542427122000F8021C /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7532427122000F8021C /* Thought.swift */; };
 		7161D75624271EC800F8021C /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75524271EC800F8021C /* Document.swift */; };
 		7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75724273DBC00F8021C /* ThoughtListView.swift */; };
 		7161D75C242748A400F8021C /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75B242748A400F8021C /* ComposerView.swift */; };
-		7182FF6A2428EFB900525F46 /* DropboxProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182FF692428EFB900525F46 /* DropboxProxy.swift */; };
+		7182FF6A2428EFB900525F46 /* DropboxClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182FF692428EFB900525F46 /* DropboxClient.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -25,14 +24,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7135000D242926D6009E445D /* OAuthServerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthServerProxy.swift; sourceTree = "<group>"; };
-		7135001124293E51009E445D /* DropboxLoginProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxLoginProcess.swift; sourceTree = "<group>"; };
+		7135000D242926D6009E445D /* OAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthClient.swift; sourceTree = "<group>"; };
 		7161D74F2426A07A00F8021C /* ComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		7161D7532427122000F8021C /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		7161D75524271EC800F8021C /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		7161D75724273DBC00F8021C /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
 		7161D75B242748A400F8021C /* ComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
-		7182FF692428EFB900525F46 /* DropboxProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxProxy.swift; sourceTree = "<group>"; };
+		7182FF692428EFB900525F46 /* DropboxClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxClient.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,9 +75,8 @@
 			isa = PBXGroup;
 			children = (
 				7161D7532427122000F8021C /* Thought.swift */,
-				7135001124293E51009E445D /* DropboxLoginProcess.swift */,
-				7135000D242926D6009E445D /* OAuthServerProxy.swift */,
-				7182FF692428EFB900525F46 /* DropboxProxy.swift */,
+				7135000D242926D6009E445D /* OAuthClient.swift */,
+				7182FF692428EFB900525F46 /* DropboxClient.swift */,
 				7161D75524271EC800F8021C /* Document.swift */,
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
@@ -170,14 +167,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */,
-				7135001224293E51009E445D /* DropboxLoginProcess.swift in Sources */,
 				7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */,
-				7182FF6A2428EFB900525F46 /* DropboxProxy.swift in Sources */,
+				7182FF6A2428EFB900525F46 /* DropboxClient.swift in Sources */,
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
 				7161D75624271EC800F8021C /* Document.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
-				7135000E242926D6009E445D /* OAuthServerProxy.swift in Sources */,
+				7135000E242926D6009E445D /* OAuthClient.swift in Sources */,
 				7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */,
 				7161D75C242748A400F8021C /* ComposerView.swift in Sources */,
 			);

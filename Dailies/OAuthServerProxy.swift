@@ -1,5 +1,5 @@
 //
-//  OAuthServerProxy.swift
+//  OAuthClient.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/24.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class OAuthServerProxy: NSObject {
+class OAuthClient: NSObject {
     
-    static let dropbox = OAuthServerProxy(
+    static let dropbox = OAuthClient(
         authorizeURL: URL(string: "https://www.dropbox.com/oauth2/authorize")!
     )
     
@@ -20,7 +20,7 @@ class OAuthServerProxy: NSObject {
     
     let authorizeURL: URL
     
-    func authorize(withClientID clientID: String, redirectURI: String) {
+    func retrieveAccessToken(withClientID clientID: String, redirectURI: String, completion: @escaping (String) -> Void) {
         guard var components = URLComponents(url: authorizeURL, resolvingAgainstBaseURL: true) else { return }
         components.queryItems = [
             .init(name: "client_id", value: clientID),

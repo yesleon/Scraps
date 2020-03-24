@@ -1,5 +1,5 @@
 //
-//  DropboxProxy.swift
+//  DropboxClient.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/23.
@@ -11,7 +11,7 @@ import Combine
 
 
 
-class DropboxProxy: NSObject {
+class DropboxClient: NSObject {
     
     static func download(_ path: String, accessToken: String) -> AnyPublisher<Data, URLError> {
         var components = URLComponents()

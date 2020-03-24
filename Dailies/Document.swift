@@ -28,19 +28,21 @@ class Document: UIDocument {
     var subscriptions = Set<AnyCancellable>()
     
     func loginToDropbox(completion: (() -> Void)? = nil) {
-        DropboxLoginProcess.initiate { [weak self] in
-            guard let self = self else { return }
-            self.dropboxAccessToken = $0
-            completion?()
-            DropboxProxy.download("/data", accessToken: $0)
-                .sink(receiveCompletion: { completion in
-                    print(completion)
-                }) { data in
-                    DispatchQueue.main.async {
-                        try? self.load(fromContents: data, ofType: nil)
-                    } }
-                .store(in: &self.subscriptions)
-        }
+        
+        OAuthClient.dropbox.retrieveAccessToken(withClientID: "pjwsk8p4dk374mp", redirectURI: "https://www.narrativesaw.com/auth")
+            .sink { [weak self] in
+                guard let self = self else { return }
+                self.dropboxAccessToken = $0
+                completion?()
+                DropboxClient.download("/data", accessToken: $0)
+                    .sink(receiveCompletion: { completion in
+                        print(completion)
+                    }) { data in
+                        DispatchQueue.main.async {
+                            try? self.load(fromContents: data, ofType: nil)
+                        } }
+                    .store(in: &self.subscriptions) }
+            .store(in: &self.subscriptions)
     }
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
@@ -58,7 +60,7 @@ class Document: UIDocument {
     override func writeContents(_ contents: Any, to url: URL, for saveOperation: UIDocument.SaveOperation, originalContentsURL: URL?) throws {
         try super.writeContents(contents, to: url, for: saveOperation, originalContentsURL: originalContentsURL)
         if let data = contents as? Data, let accessToken = dropboxAccessToken {
-            DropboxProxy.upload(data, to: "/data", accessToken: accessToken)
+            DropboxClient.upload(data, to: "/data", accessToken: accessToken)
                 .sink(receiveCompletion: { completion in
                     print(completion)
                 }, receiveValue: { data in

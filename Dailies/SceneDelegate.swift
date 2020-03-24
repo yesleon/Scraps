@@ -27,7 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts
             .map { $0.url }
-            .forEach { DropboxLoginProcess.current?.handleURL($0) }
+            .filter(OAuthClient.dropbox.canHandleURL(_:))
+            .forEach(OAuthClient.dropbox.handleURL(_:))
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
