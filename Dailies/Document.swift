@@ -31,8 +31,12 @@ class Document: UIDocument {
     
     func loginToDropbox(completion: (() -> Void)? = nil) {
         
-        OAuthClient.dropbox.retrieveAccessToken()
-            .sink { [weak self] accessToken in
+        OAuthClient.dropbox.retrieveAccessToken(withBrowser: { UIApplication.shared.open($0) })
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    print(error)
+                }
+            }, receiveValue: { [weak self] accessToken in
                 guard let self = self else { return }
                 self.dropboxClient = .init(accessToken: accessToken)
                 completion?()
@@ -43,7 +47,8 @@ class Document: UIDocument {
                         DispatchQueue.main.async {
                             try? self.load(fromContents: data, ofType: nil)
                         } }
-                    .store(in: &self.subscriptions) }
+                    .store(in: &self.subscriptions)
+            })
             .store(in: &self.subscriptions)
     }
     
@@ -162,5 +167,5 @@ extension OAuthClient {
         authorizeURL: URL(string: "https://www.dropbox.com/oauth2/authorize")!,
         clientID: "pjwsk8p4dk374mp",
         redirectURI: "https://www.narrativesaw.com/auth"
-    )
+    )!
 }
