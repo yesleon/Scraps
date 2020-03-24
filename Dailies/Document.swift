@@ -8,6 +8,8 @@
 
 import UIKit
 import Combine
+import OAuthClient
+import DropboxClient
 
 enum Diff {
     case newIndexPath(IndexPath), newSection(Int), removeIndexPath(IndexPath), removeSection(Int)
@@ -23,18 +25,18 @@ class Document: UIDocument {
     
     var publisher = PassthroughSubject<Diff, Never>()
     
-    var dropboxAccessToken: String?
+    var dropboxClient: DropboxClient?
     
     var subscriptions = Set<AnyCancellable>()
     
     func loginToDropbox(completion: (() -> Void)? = nil) {
         
-        OAuthClient.dropbox.retrieveAccessToken(withClientID: "pjwsk8p4dk374mp", redirectURI: "https://www.narrativesaw.com/auth")
-            .sink { [weak self] in
+        OAuthClient.dropbox.retrieveAccessToken()
+            .sink { [weak self] accessToken in
                 guard let self = self else { return }
-                self.dropboxAccessToken = $0
+                self.dropboxClient = .init(accessToken: accessToken)
                 completion?()
-                DropboxClient.download("/data", accessToken: $0)
+                self.dropboxClient?.download("/data")
                     .sink(receiveCompletion: { completion in
                         print(completion)
                     }) { data in
@@ -59,8 +61,8 @@ class Document: UIDocument {
     
     override func writeContents(_ contents: Any, to url: URL, for saveOperation: UIDocument.SaveOperation, originalContentsURL: URL?) throws {
         try super.writeContents(contents, to: url, for: saveOperation, originalContentsURL: originalContentsURL)
-        if let data = contents as? Data, let accessToken = dropboxAccessToken {
-            DropboxClient.upload(data, to: "/data", accessToken: accessToken)
+        if let data = contents as? Data {
+            dropboxClient?.upload(data, to: "/data")
                 .sink(receiveCompletion: { completion in
                     print(completion)
                 }, receiveValue: { data in
@@ -152,4 +154,13 @@ extension Document: UITableViewDataSource {
         return DateFormatter.localizedString(from: thoughtDayLists[section].date, dateStyle: .full, timeStyle: .none)
     }
     
+}
+
+extension OAuthClient {
+    
+    static let dropbox = OAuthClient(
+        authorizeURL: URL(string: "https://www.dropbox.com/oauth2/authorize")!,
+        clientID: "pjwsk8p4dk374mp",
+        redirectURI: "https://www.narrativesaw.com/auth"
+    )
 }
