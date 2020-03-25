@@ -26,18 +26,14 @@ class ThoughtListViewController: UITableViewController {
         becomeFirstResponder()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        tableView.selectRow(at: nil, animated: true, scrollPosition: .none)
-    }
-    
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
+        UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
             UIMenu(title: "", children: [
                 UIAction(title: NSLocalizedString("Copy", comment: "")) { _ in
-                    UIPasteboard.general.string = Document.shared.thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
+//                    UIPasteboard.general.string = ThoughtListViewDataSource.shared.thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
                 },
                 UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-                    Document.shared.removeThought(at: indexPath)
+//                    Document.shared.removeThought(at: indexPath)
                 },
             ])
         }

@@ -9,112 +9,37 @@
 import UIKit
 import Combine
 
-enum Diff {
-    case newIndexPath(IndexPath), newSection(Int), removeIndexPath(IndexPath), removeSection(Int)
-}
+//enum Diff {
+//    case newIndexPath(IndexPath), newSection(Int), removeIndexPath(IndexPath), removeSection(Int)
+//}
 
 class Document: UIDocument {
     
+    enum Error: Swift.Error {
+        case contentsNotData(Any)
+    }
+    
     static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
     
-    var draft: String?
+    @Published var draft: String?
     
-    private(set) var thoughtDayLists = [(date: Date, thoughts: [Thought])]()
-    
-    var publisher = PassthroughSubject<Diff, Never>()
-    
-    var subscriptions = Set<AnyCancellable>()
+    @Published var thoughts = Set<Thought>()
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
-        guard let data = contents as? Data else { fatalError() }
-        let thoughts = try JSONDecoder().decode([Thought].self, from: data)
-        undoManager.disableUndoRegistration()
-        thoughts.forEach(addThought)
-        undoManager.enableUndoRegistration()
+        guard let data = contents as? Data else { throw Error.contentsNotData(contents) }
+        thoughts = try JSONDecoder().decode(Set<Thought>.self, from: data)
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
+        try JSONEncoder().encode(thoughts)
     }
     
-    func load() {
+    override func open(completionHandler: ((Bool) -> Void)? = nil) {
         if FileManager.default.fileExists(atPath: fileURL.path) {
-            open()
+            super.open(completionHandler: completionHandler)
         } else {
-            save(to: fileURL, for: .forCreating)
+            save(to: fileURL, for: .forCreating, completionHandler: completionHandler)
         }
-    }
-    
-    func addThought(_ thought: Thought) {
-        guard !thoughtDayLists.flatMap({ $0.thoughts }).contains(thought) else { return }
-        let lastIndex = thoughtDayLists.count - 1
-        if !thoughtDayLists.isEmpty,
-            Calendar.current.isDate(thought.date, inSameDayAs: thoughtDayLists[lastIndex].date) {
-            
-            thoughtDayLists[lastIndex].thoughts.append(thought)
-            let indexPath = IndexPath(row: thoughtDayLists[lastIndex].thoughts.count-1, section: lastIndex)
-            
-            publisher.send(.newIndexPath(indexPath))
-            undoManager.registerUndo(withTarget: self) {
-                $0.removeThought(at: indexPath)
-            }
-            
-        } else {
-            thoughtDayLists.append((date: thought.date, thoughts: [thought]))
-            let newSection = thoughtDayLists.count - 1
-            
-            publisher.send(.newSection(newSection))
-            undoManager.registerUndo(withTarget: self) {
-                $0.removeThought(at: IndexPath(row: 0, section: newSection))
-            }
-        }
-        
-        
-    }
-    
-    func removeThought(at indexPath: IndexPath) {
-        let thought = thoughtDayLists[indexPath.section].thoughts.remove(at: indexPath.row)
-
-        publisher.send(.removeIndexPath(indexPath))
-        undoManager.registerUndo(withTarget: self) {
-            $0.thoughtDayLists[indexPath.section].thoughts.insert(thought, at: indexPath.row)
-            $0.publisher.send(.newIndexPath(indexPath))
-            $0.undoManager.registerUndo(withTarget: $0) {
-                $0.removeThought(at: indexPath)
-            }
-        }
-        if thoughtDayLists[indexPath.section].thoughts.isEmpty {
-            let section = thoughtDayLists.remove(at: indexPath.section)
-            publisher.send(.removeSection(indexPath.section))
-            undoManager.registerUndo(withTarget: self) {
-                $0.thoughtDayLists.insert(section, at: indexPath.section)
-                $0.publisher.send(.newSection(indexPath.section))
-            }
-        }
-    }
-    
-}
-
-extension Document: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        thoughtDayLists.count
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return thoughtDayLists[section].thoughts.count
-    }
-
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        cell.textLabel?.text = thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return DateFormatter.localizedString(from: thoughtDayLists[section].date, dateStyle: .full, timeStyle: .none)
     }
     
 }
