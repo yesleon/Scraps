@@ -29,17 +29,12 @@ class Document: UIDocument {
     
     var subscriptions = Set<AnyCancellable>()
     
-    func loginToDropbox(completion: (() -> Void)? = nil) {
+    func loginToDropbox(completion: @escaping (Subscribers.Completion<OAuthClient.Error>) -> Void) {
         
         OAuthClient.dropbox.retrieveAccessToken(withBrowser: { UIApplication.shared.open($0) })
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error) = completion {
-                    print(error)
-                }
-            }, receiveValue: { [weak self] accessToken in
+            .sink(receiveCompletion: completion, receiveValue: { [weak self] accessToken in
                 guard let self = self else { return }
                 self.dropboxClient = .init(accessToken: accessToken)
-                completion?()
                 self.dropboxClient?.download("/data")
                     .sink(receiveCompletion: { completion in
                         print(completion)
