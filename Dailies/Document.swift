@@ -8,8 +8,6 @@
 
 import UIKit
 import Combine
-import OAuthClient
-import DropboxClient
 
 enum Diff {
     case newIndexPath(IndexPath), newSection(Int), removeIndexPath(IndexPath), removeSection(Int)
@@ -25,27 +23,7 @@ class Document: UIDocument {
     
     var publisher = PassthroughSubject<Diff, Never>()
     
-    var dropboxClient: DropboxClient?
-    
     var subscriptions = Set<AnyCancellable>()
-    
-    func loginToDropbox(completion: @escaping (Subscribers.Completion<OAuthClient.Error>) -> Void) {
-        
-        OAuthClient.dropbox.retrieveAccessToken(withBrowser: { UIApplication.shared.open($0) })
-            .sink(receiveCompletion: completion, receiveValue: { [weak self] accessToken in
-                guard let self = self else { return }
-                self.dropboxClient = .init(accessToken: accessToken)
-                self.dropboxClient?.download("/data")
-                    .sink(receiveCompletion: { completion in
-                        print(completion)
-                    }) { data in
-                        DispatchQueue.main.async {
-                            try? self.load(fromContents: data, ofType: nil)
-                        } }
-                    .store(in: &self.subscriptions)
-            })
-            .store(in: &self.subscriptions)
-    }
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
@@ -56,29 +34,14 @@ class Document: UIDocument {
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        return try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
-    }
-    
-    override func writeContents(_ contents: Any, to url: URL, for saveOperation: UIDocument.SaveOperation, originalContentsURL: URL?) throws {
-        try super.writeContents(contents, to: url, for: saveOperation, originalContentsURL: originalContentsURL)
-        if let data = contents as? Data {
-            dropboxClient?.upload(data, to: "/data")
-                .sink(receiveCompletion: { completion in
-                    print(completion)
-                }, receiveValue: { data in
-                    print(data)
-                })
-                .store(in: &subscriptions)
-        }
+        try JSONEncoder().encode(thoughtDayLists.flatMap { $0.thoughts })
     }
     
     func load() {
         if FileManager.default.fileExists(atPath: fileURL.path) {
             open()
         } else {
-            save(to: fileURL, for: .forCreating) { _ in
-                self.open()
-            }
+            save(to: fileURL, for: .forCreating)
         }
     }
     
@@ -154,13 +117,4 @@ extension Document: UITableViewDataSource {
         return DateFormatter.localizedString(from: thoughtDayLists[section].date, dateStyle: .full, timeStyle: .none)
     }
     
-}
-
-extension OAuthClient {
-    
-    static let dropbox = OAuthClient(
-        authorizeURL: URL(string: "https://www.dropbox.com/oauth2/authorize")!,
-        clientID: "pjwsk8p4dk374mp",
-        redirectURI: "https://www.narrativesaw.com/auth"
-    )!
 }

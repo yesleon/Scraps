@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,8 +12,6 @@
 		7161D75624271EC800F8021C /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75524271EC800F8021C /* Document.swift */; };
 		7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75724273DBC00F8021C /* ThoughtListView.swift */; };
 		7161D75C242748A400F8021C /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75B242748A400F8021C /* ComposerView.swift */; };
-		71C30DC22429F0B400C9F12E /* OAuthClient in Frameworks */ = {isa = PBXBuildFile; productRef = 71C30DC12429F0B400C9F12E /* OAuthClient */; };
-		71C30DC52429F1F100C9F12E /* DropboxClient in Frameworks */ = {isa = PBXBuildFile; productRef = 71C30DC42429F1F100C9F12E /* DropboxClient */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -29,8 +27,6 @@
 		7161D75524271EC800F8021C /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		7161D75724273DBC00F8021C /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
 		7161D75B242748A400F8021C /* ComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
-		71C30DBF2429F04300C9F12E /* OAuthClient */ = {isa = PBXFileReference; lastKnownFileType = folder; name = OAuthClient; path = ../../OAuthClient; sourceTree = "<group>"; };
-		71C30DC32429F1CF00C9F12E /* DropboxClient */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DropboxClient; path = ../../DropboxClient; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,8 +45,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71C30DC52429F1F100C9F12E /* DropboxClient in Frameworks */,
-				71C30DC22429F0B400C9F12E /* OAuthClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,8 +78,6 @@
 		71D9D96E24261FB60062505B /* Dailies */ = {
 			isa = PBXGroup;
 			children = (
-				71C30DBF2429F04300C9F12E /* OAuthClient */,
-				71C30DC32429F1CF00C9F12E /* DropboxClient */,
 				7161D7532427122000F8021C /* Thought.swift */,
 				7161D75524271EC800F8021C /* Document.swift */,
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
@@ -120,8 +112,6 @@
 			);
 			name = Dailies;
 			packageProductDependencies = (
-				71C30DC12429F0B400C9F12E /* OAuthClient */,
-				71C30DC42429F1F100C9F12E /* DropboxClient */,
 			);
 			productName = Dailies;
 			productReference = 71D9D96C24261FB60062505B /* Dailies.app */;
@@ -399,17 +389,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		71C30DC12429F0B400C9F12E /* OAuthClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OAuthClient;
-		};
-		71C30DC42429F1F100C9F12E /* DropboxClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DropboxClient;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 71D9D96424261FB60062505B /* Project object */;
 }

@@ -7,18 +7,10 @@
 //
 
 import UIKit
-import OAuthClient
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        URLContexts
-            .map { $0.url }
-            .filter(OAuthClient.dropbox.canHandleURL(_:))
-            .forEach(OAuthClient.dropbox.handleURL(_:))
-    }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.

@@ -21,26 +21,6 @@ class ThoughtListViewController: UITableViewController {
         navigationController?.navigationBar.layoutMargins = view.layoutMargins
     }
     
-    @IBAction func login(_ sender: UIBarButtonItem) {
-        Document.shared.loginToDropbox { completion in
-            switch completion {
-            case .finished:
-                sender.isEnabled = false
-            case .failure(let error):
-                let message: String
-                switch error {
-                case let .fragmentParsingError(url), let .noAccessToken(url), let .noState(url):
-                    message = "URL: " + url.absoluteString
-                case let .stateMismatch(local, incoming: incoming):
-                    message = "Wrong state. Local: " + local + "; Remote: " + incoming
-                }
-                let alertVC = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-                alertVC.addAction(.init(title: "Done", style: .cancel))
-                self.present(alertVC, animated: true)
-            }
-        }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         becomeFirstResponder()
