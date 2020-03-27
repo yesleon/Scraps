@@ -12,7 +12,17 @@ import Combine
 class ComposerViewController: UIViewController {
 
     @IBAction func save(_ sender: Any) {
-//        Document.shared.publishDraft()
+        if let draft = Document.shared.draft {
+            Document.shared.thoughtsAsSet.insert(.init(content: draft, date: .init()))
+            Document.shared.draft = nil
+        }
         presentingViewController?.dismiss(animated: true)
+    }
+}
+
+extension ComposerViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        Document.shared.draft = textView.text
     }
 }

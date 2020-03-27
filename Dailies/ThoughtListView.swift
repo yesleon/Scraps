@@ -26,7 +26,8 @@ class ThoughtListView: UITableView {
                 thoughts.forEach {
                     snapshot.appendSections([$0.dateComponents])
                     snapshot.appendItems($0.thoughts, toSection: $0.dateComponents)
-                } }
+                }
+                self.diffableDataSource.apply(snapshot) }
             .store(in: &subscriptions)
     }
     

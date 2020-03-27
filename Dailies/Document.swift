@@ -11,26 +11,34 @@ import Combine
 
 
 class Document: UIDocument {
-    
+
     static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
     
-    @Published var thoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
-    
-    private var _thoughts = Set<Thought>() {
-        didSet {
-            thoughts = sortThoughts(_thoughts)
+    var thoughtsAsSet: Set<Thought> {
+        get {
+            Set(thoughts.flatMap { $0.thoughts })
+        }
+        set {
+            let oldValue = thoughtsAsSet
+            thoughts = sortThoughts(newValue)
+            undoManager.registerUndo(withTarget: self) { $0.thoughtsAsSet = oldValue }
         }
     }
+
+    @Published private(set) var thoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
     
+    @Published var draft: String?
+
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
-        _thoughts = try JSONDecoder().decode(Set<Thought>.self, from: data)
+        thoughtsAsSet = try JSONDecoder().decode(Set<Thought>.self, from: data)
+        undoManager.removeAllActions()
     }
-    
+
     override func contents(forType typeName: String) throws -> Any {
-        try JSONEncoder().encode(_thoughts)
+        try JSONEncoder().encode(thoughtsAsSet)
     }
-    
+
     override func open(completionHandler: ((Bool) -> Void)? = nil) {
         if FileManager.default.fileExists(atPath: fileURL.path) {
             super.open(completionHandler: completionHandler)
@@ -38,10 +46,9 @@ class Document: UIDocument {
             save(to: fileURL, for: .forCreating, completionHandler: completionHandler)
         }
     }
-    
 }
 
-func sortThoughts(_ thoughts: Set<Thought>) -> [(dateComponents: DateComponents, thoughts: [Thought])] {
+private func sortThoughts(_ thoughts: Set<Thought>) -> [(dateComponents: DateComponents, thoughts: [Thought])] {
     thoughts
         .sorted(by: { $0.date < $1.date })
         .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
@@ -53,5 +60,6 @@ func sortThoughts(_ thoughts: Set<Thought>) -> [(dateComponents: DateComponents,
             } else {
                 list.append((dateComponents: dateComponents, thoughts: [thought]))
             }
+            return list
     }
 }

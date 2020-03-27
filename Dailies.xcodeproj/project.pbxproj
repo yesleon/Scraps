@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D74F2426A07A00F8021C /* ComposerViewController.swift */; };
 		7161D7542427122000F8021C /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7532427122000F8021C /* Thought.swift */; };
-		7161D75624271EC800F8021C /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75524271EC800F8021C /* Document.swift */; };
 		7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75724273DBC00F8021C /* ThoughtListView.swift */; };
 		7161D75C242748A400F8021C /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75B242748A400F8021C /* TextView.swift */; };
 		7182ED37242DFA21005DD45D /* ThoughtListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */; };
@@ -20,12 +19,12 @@
 		71D9D97C24261FB90062505B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97A24261FB90062505B /* LaunchScreen.storyboard */; };
 		71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */; };
 		71F623B32428BCCE00A46048 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71F623B12428BCCE00A46048 /* Localizable.strings */; };
+		71FC15B9242DFDFD0092DD24 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FC15B8242DFDFD0092DD24 /* Document.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7161D74F2426A07A00F8021C /* ComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		7161D7532427122000F8021C /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
-		7161D75524271EC800F8021C /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		7161D75724273DBC00F8021C /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
 		7161D75B242748A400F8021C /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListViewDataSource.swift; sourceTree = "<group>"; };
@@ -40,6 +39,7 @@
 		71F623AF2428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		71F623B02428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		71F623B22428BCCE00A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		71FC15B8242DFDFD0092DD24 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				7161D7532427122000F8021C /* Thought.swift */,
-				7161D75524271EC800F8021C /* Document.swift */,
+				71FC15B8242DFDFD0092DD24 /* Document.swift */,
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				7161D75724273DBC00F8021C /* ThoughtListView.swift */,
@@ -177,8 +177,8 @@
 				7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */,
 				7182ED37242DFA21005DD45D /* ThoughtListViewDataSource.swift in Sources */,
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
-				7161D75624271EC800F8021C /* Document.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
+				71FC15B9242DFDFD0092DD24 /* Document.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
 				7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */,
 				7161D75C242748A400F8021C /* TextView.swift in Sources */,

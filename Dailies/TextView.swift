@@ -13,8 +13,8 @@ class TextView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillShowNotification)
@@ -32,12 +32,15 @@ class TextView: UITextView {
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)
         
-    }
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
+        Document.shared.$draft.assign(to: \.text, on: self).store(in: &subscriptions)
         
         becomeFirstResponder()
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        
+        subscriptions.removeAll()
     }
     
     override func layoutMarginsDidChange() {

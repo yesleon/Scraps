@@ -30,10 +30,11 @@ class ThoughtListViewController: UITableViewController {
         UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
             UIMenu(title: "", children: [
                 UIAction(title: NSLocalizedString("Copy", comment: "")) { _ in
-//                    UIPasteboard.general.string = ThoughtListViewDataSource.shared.thoughtDayLists[indexPath.section].thoughts[indexPath.row].content
+                    UIPasteboard.general.string = Document.shared.thoughts[indexPath.section].thoughts[indexPath.row].content
                 },
                 UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-//                    Document.shared.removeThought(at: indexPath)
+                    let thought = Document.shared.thoughts[indexPath.section].thoughts[indexPath.row]
+                    Document.shared.thoughtsAsSet.remove(thought)
                 },
             ])
         }
