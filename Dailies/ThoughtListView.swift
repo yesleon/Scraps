@@ -18,7 +18,7 @@ class ThoughtListView: UITableView {
         super.didMoveToSuperview()
         
         dataSource = diffableDataSource
-        Document.shared.$thoughts
+        Document.shared.$sortedThoughts
             .sink { [weak self] thoughts in
                 guard let self = self else { return }
                 var snapshot = self.diffableDataSource.snapshot()

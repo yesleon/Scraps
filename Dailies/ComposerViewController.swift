@@ -10,10 +10,23 @@ import UIKit
 import Combine
 
 class ComposerViewController: UIViewController {
+    
+    var subscriptions = Set<AnyCancellable>()
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        Document.shared.$draft
+            .map { $0 ?? "" }
+            .map { !$0.isEmpty }
+            .assign(to: \.isEnabled, on: saveButton)
+            .store(in: &subscriptions)
+    }
 
     @IBAction func save(_ sender: Any) {
         if let draft = Document.shared.draft {
-            Document.shared.thoughtsAsSet.insert(.init(content: draft, date: .init()))
+            Document.shared.thoughts.insert(.init(content: draft, date: .init()))
             Document.shared.draft = nil
         }
         presentingViewController?.dismiss(animated: true)

@@ -14,29 +14,32 @@ class Document: UIDocument {
 
     static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
     
-    var thoughtsAsSet: Set<Thought> {
+    var thoughts: Set<Thought> {
         get {
-            Set(thoughts.flatMap { $0.thoughts })
+            _thoughts
         }
         set {
-            let oldValue = thoughtsAsSet
-            thoughts = sortThoughts(newValue)
-            undoManager.registerUndo(withTarget: self) { $0.thoughtsAsSet = oldValue }
+            let oldValue = _thoughts
+            _thoughts = newValue
+            sortedThoughts = sortThoughts(newValue)
+            undoManager.registerUndo(withTarget: self) { $0.thoughts = oldValue }
         }
     }
+    
+    private var _thoughts = Set<Thought>()
 
-    @Published private(set) var thoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
+    @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
     
     @Published var draft: String?
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
-        thoughtsAsSet = try JSONDecoder().decode(Set<Thought>.self, from: data)
+        thoughts = try JSONDecoder().decode(Set<Thought>.self, from: data)
         undoManager.removeAllActions()
     }
 
     override func contents(forType typeName: String) throws -> Any {
-        try JSONEncoder().encode(thoughtsAsSet)
+        try JSONEncoder().encode(thoughts)
     }
 
     override func open(completionHandler: ((Bool) -> Void)? = nil) {
