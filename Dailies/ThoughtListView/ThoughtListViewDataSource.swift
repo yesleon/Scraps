@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, Thought> {
 
     init(tableView: UITableView) {

@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+/// Handles user input in `ThoughtListView`.
 class ThoughtListViewController: UITableViewController {
     
     override var canBecomeFirstResponder: Bool { true }
@@ -16,25 +18,22 @@ class ThoughtListViewController: UITableViewController {
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
-    override func viewLayoutMarginsDidChange() {
-        super.viewLayoutMarginsDidChange()
-        navigationController?.navigationBar.layoutMargins = view.layoutMargins
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         becomeFirstResponder()
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
+        let thought = Document.shared.sortedThoughts[indexPath.section].thoughts[indexPath.row]
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
             UIMenu(title: "", children: [
                 UIAction(title: NSLocalizedString("Copy", comment: "")) { _ in
-                    UIPasteboard.general.string = Document.shared.sortedThoughts[indexPath.section].thoughts[indexPath.row].content
+                    UIPasteboard.general.string = thought.content
                 },
                 UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-                    let thought = Document.shared.sortedThoughts[indexPath.section].thoughts[indexPath.row]
+                    
                     Document.shared.thoughts.remove(thought)
+                    self.undoManager?.setActionName("Delete Thought")
                 },
             ])
         }

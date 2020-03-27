@@ -9,6 +9,9 @@
 import UIKit
 import Combine
 
+
+/// Display the Model. Is synced with it.
+/// Using a diffable data source object to do diff.
 class ThoughtListView: UITableView {
     
     var subscriptions = Set<AnyCancellable>()
@@ -29,6 +32,12 @@ class ThoughtListView: UITableView {
                 }
                 self.diffableDataSource.apply(snapshot) }
             .store(in: &subscriptions)
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        
+        subscriptions.removeAll()
     }
     
 }

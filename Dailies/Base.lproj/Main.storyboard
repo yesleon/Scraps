@@ -110,9 +110,9 @@
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGw-6q-O58" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="102"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

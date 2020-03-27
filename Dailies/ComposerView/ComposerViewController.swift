@@ -11,6 +11,8 @@ import Combine
 
 class ComposerViewController: UIViewController {
     
+    override var undoManager: UndoManager? { Document.shared.undoManager }
+    
     var subscriptions = Set<AnyCancellable>()
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
@@ -28,6 +30,7 @@ class ComposerViewController: UIViewController {
         if let draft = Document.shared.draft {
             Document.shared.thoughts.insert(.init(content: draft, date: .init()))
             Document.shared.draft = nil
+            undoManager?.setActionName("Publish Draft")
         }
         presentingViewController?.dismiss(animated: true)
     }

@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// Basic data structure.
 struct Thought: Codable, Hashable {
     var content: String
     var date: Date
