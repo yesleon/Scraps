@@ -13,14 +13,6 @@ class TextView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
     
-    override var text: String! {
-        didSet {
-            if Document.shared.draft != text {
-                Document.shared.draft = text
-            }
-        }
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -40,15 +32,11 @@ class TextView: UITextView {
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)
         
-        Document.shared.$draft
-            .filter { $0 != self.text }
-            .assign(to: \.text, on: self)
-            .store(in: &subscriptions)
-        
     }
     
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
         becomeFirstResponder()
     }
     
