@@ -22,7 +22,7 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
-                                    <outlet property="delegate" destination="8rr-SM-NiG" id="6bT-iH-0nU"/>
+                                    <outlet property="delegate" destination="8rr-SM-NiG" id="wft-wq-IvR"/>
                                 </connections>
                             </textView>
                         </subviews>
@@ -49,6 +49,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="saveButton" destination="QlW-hQ-Gnb" id="AFk-Y4-f5V"/>
+                        <outlet property="textView" destination="q5K-Dc-f5S" id="lOQ-Ym-97M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32e-Xh-SdS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -97,7 +98,7 @@
                     <navigationItem key="navigationItem" title="River" id="EFZ-Oz-kza">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="3Pe-zY-JwH">
                             <connections>
-                                <segue destination="eje-5e-k4h" kind="presentation" id="qOc-1I-8CX"/>
+                                <segue destination="eje-5e-k4h" kind="presentation" identifier="PresentComposer" id="qOc-1I-8CX"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

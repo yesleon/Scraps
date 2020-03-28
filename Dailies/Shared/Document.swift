@@ -47,7 +47,8 @@ class Document: UIDocument {
     /// Data structured for table view.
     @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
     
-    @Published var draft: String?
+    /// Just a place for storing draft.
+    @Published var draft = ""
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }

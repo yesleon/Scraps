@@ -9,6 +9,8 @@
 import UIKit
 import Combine
 
+
+/// Handles keyboard. Synced to `Document.shared.draft`.
 class TextView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
@@ -32,9 +34,10 @@ class TextView: UITextView {
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)
         
-        Document.shared.$draft.assign(to: \.text, on: self).store(in: &subscriptions)
-        
-        becomeFirstResponder()
+        Document.shared.$draft
+            .filter { $0 != self.text }
+            .assign(to: \.text, on: self)
+            .store(in: &subscriptions)
     }
     
     override func removeFromSuperview() {

@@ -18,11 +18,6 @@ class ThoughtListViewController: UITableViewController {
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        becomeFirstResponder()
-    }
-    
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let thought = Document.shared.sortedThoughts[indexPath.section].thoughts[indexPath.row]
         return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
