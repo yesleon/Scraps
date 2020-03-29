@@ -11,6 +11,7 @@
 		7161D7542427122000F8021C /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7532427122000F8021C /* Thought.swift */; };
 		7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75724273DBC00F8021C /* ThoughtListView.swift */; };
 		7161D75C242748A400F8021C /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75B242748A400F8021C /* TextView.swift */; };
+		716994F024310E82007DE38D /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716994EF24310E82007DE38D /* TagListViewController.swift */; };
 		7182ED37242DFA21005DD45D /* ThoughtListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
@@ -28,6 +29,7 @@
 		7161D7532427122000F8021C /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		7161D75724273DBC00F8021C /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
 		7161D75B242748A400F8021C /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		716994EF24310E82007DE38D /* TagListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
 		7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListViewDataSource.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				71FC15C0242E16F00092DD24 /* Shared */,
 				71FC15C1242E16FF0092DD24 /* ThoughtListView */,
 				71FC15C2242E178D0092DD24 /* ComposerView */,
+				716994EF24310E82007DE38D /* TagListViewController.swift */,
 				71D9D97524261FB60062505B /* Main.storyboard */,
 				71D9D97824261FB90062505B /* Assets.xcassets */,
 				71D9D97A24261FB90062505B /* LaunchScreen.storyboard */,
@@ -206,6 +209,7 @@
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				71FC15B9242DFDFD0092DD24 /* Document.swift in Sources */,
+				716994F024310E82007DE38D /* TagListViewController.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
 				71FC15BD242E158C0092DD24 /* NavigationController.swift in Sources */,
 				7161D75824273DBC00F8021C /* ThoughtListView.swift in Sources */,

@@ -10,6 +10,10 @@ import UIKit
 import Combine
 
 
+enum TagFilter: Equatable {
+    case noTags, hasTags(Set<Tag>)
+}
+
 /// The Model. Holds data and publishes data changes. I/O to disk.
 /// Converts between disk data structure and data structure in app.
 class Document: UIDocument {
@@ -23,18 +27,39 @@ class Document: UIDocument {
                 $0.thoughts = oldValue
             }
             
-            sortedThoughts = thoughts
-                .sorted(by: { $0.date > $1.date })
-                .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
-                    let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
-                    var list = list
-                    if list.last?.dateComponents == dateComponents, var last = list.popLast() {
-                        last.thoughts.append(thought)
-                        list.append(last)
-                    } else {
-                        list.append((dateComponents: dateComponents, thoughts: [thought]))
-                    }
-                    return list }
+            sortThoughts()
+        }
+    }
+    
+    func sortThoughts() {
+        sortedThoughts = thoughts
+            .filter({ thought in
+                switch tagFilter {
+                case .noTags:
+                    return thought.tags?.isEmpty != false
+                case .hasTags(let tags):
+                    return tags.isEmpty || !tags.isDisjoint(with: thought.tags ?? [])
+                }
+            })
+            .sorted(by: { $0.date > $1.date })
+            .reduce([(dateComponents: DateComponents, thoughts: [Thought])](), { list, thought in
+                let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
+                var list = list
+                if list.last?.dateComponents == dateComponents, var last = list.popLast() {
+                    last.thoughts.append(thought)
+                    list.append(last)
+                } else {
+                    list.append((dateComponents: dateComponents, thoughts: [thought]))
+                }
+                return list
+            })
+    }
+    
+    var tagFilter = TagFilter.hasTags([]) {
+        didSet {
+            if tagFilter != oldValue {
+                sortThoughts()
+            }
         }
     }
     

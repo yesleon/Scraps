@@ -103,17 +103,59 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="River" id="EFZ-Oz-kza">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="3Pe-zY-JwH">
-                            <connections>
-                                <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="3Pe-zY-JwH">
+                                <connections>
+                                    <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="bookmarks" id="pMY-ms-0KF">
+                                <connections>
+                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" popoverAnchorBarButtonItem="pMY-ms-0KF" id="rek-L4-nuy">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-136.23188405797103" y="-908.70535714285711"/>
+        </scene>
+        <!--Tag List View Controller-->
+        <scene sceneID="GQE-8V-7Be">
+            <objects>
+                <tableViewController id="WOy-6y-hyc" customClass="TagListViewController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7QT-7Y-zlG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="680"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="ux1-6J-P9P">
+                            <rect key="frame" x="0.0" y="99.5" width="375" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="7nH-qp-Gwi">
+                                <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7nH-qp-Gwi" id="x4p-df-dXK">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="WOy-6y-hyc" id="rRm-B7-AaB"/>
+                            <outlet property="delegate" destination="WOy-6y-hyc" id="UCI-7W-Az7"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IMV-Nb-b1W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-137.109375" y="-167.1875"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
