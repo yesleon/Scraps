@@ -16,24 +16,29 @@ class Document: UIDocument {
 
     static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
     
-    /// The interface of the data.
-    var thoughts: Set<Thought> {
-        get {
-            _thoughts
-        }
-        set {
-            let oldValue = _thoughts
-            undoManager.registerUndo(withTarget: self) { $0.thoughts = oldValue }
-            _thoughts = newValue
-            
-            sortThoughts(newValue: newValue)
-        }
-    }
+    /// Backing store for `thoughts`.
+    private(set) var thoughts = Set<Thought>()
+
+    /// Data structured for table view.
+    @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
     
-    func sortThoughts(newValue: Set<Thought>) {
-        sortedThoughts = newValue
+    /// Just a place for storing draft.
+    @Published var draft = ""
+    
+    func editThoughts(handler: (inout Set<Thought>) -> Void) {
+        var thoughts = self.thoughts
+        
+        let oldValue = thoughts
+        undoManager.registerUndo(withTarget: self) {
+            $0.editThoughts {
+                $0 = oldValue
+            }
+        }
+        
+        handler(&thoughts)
+        
+        sortedThoughts = thoughts
             .sorted(by: { $0.date > $1.date })
-            .filter(filter)
             .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
                 let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
                 var list = list
@@ -44,22 +49,9 @@ class Document: UIDocument {
                     list.append((dateComponents: dateComponents, thoughts: [thought]))
                 }
                 return list }
+        
+        self.thoughts = thoughts
     }
-    
-    var filter: (Thought) -> Bool = { _ in true } {
-        didSet {
-            sortThoughts(newValue: thoughts)
-        }
-    }
-    
-    /// Data cache.
-    private var _thoughts = Set<Thought>()
-
-    /// Data structured for table view.
-    @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
-    
-    /// Just a place for storing draft.
-    @Published var editingThought: Thought?
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
