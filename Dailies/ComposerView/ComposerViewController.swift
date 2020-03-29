@@ -36,7 +36,11 @@ class ComposerViewController: UIViewController {
     }
 
     @IBAction func save(_ sender: Any) {
-        Document.shared.thoughts.insert(.init(content: Document.shared.draft, date: .init()))
+        var thought = Thought(content: Document.shared.draft, date: .init())
+        if case .hasTags(let tags) = Document.shared.tagFilter {
+            thought.tags = tags
+        }
+        Document.shared.thoughts.insert(thought)
         Document.shared.draft.removeAll()
         undoManager?.setActionName("Publish Draft")
         

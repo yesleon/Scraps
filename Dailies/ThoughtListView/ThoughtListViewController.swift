@@ -40,10 +40,11 @@ class ThoughtListViewController: UITableViewController {
                         }
                         $0.addAction(.init(title: "Save", style: .default, handler: { _ in
                             guard let text = textField?.text else { return }
-                            thought.tags = text.split(separator: ",")
+                            let tags = text.split(separator: ",")
                                 .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                                 .filter { !$0.isEmpty }
                                 .map(Tag.init(title:))
+                            thought.tags = Set(tags)
                             var thoughts = Document.shared.thoughts
                             if let thought = thoughts.first(where: { $0.date == thought.date }) {
                                 thoughts.remove(thought)

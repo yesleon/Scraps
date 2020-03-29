@@ -13,7 +13,7 @@ import Foundation
 struct Thought: Codable, Hashable {
     var content: String
     var date: Date
-    var tags: [Tag]?
+    var tags: Set<Tag>?
 }
 
 struct Tag: Codable, Hashable {
