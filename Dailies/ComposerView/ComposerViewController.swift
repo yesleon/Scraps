@@ -22,7 +22,14 @@ class ComposerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Document.shared.$draft
+        if let thought = Document.shared.editingThought {
+            title = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .medium)
+        } else {
+            Document.shared.editingThought = .init(content: "", date: .init())
+        }
+        
+        Document.shared.$editingThought
+            .compactMap { $0?.content }
             .map { !$0.isEmpty }
             .assign(to: \.isEnabled, on: saveButton)
             .store(in: &subscriptions)
@@ -33,11 +40,20 @@ class ComposerViewController: UIViewController {
         
         textView.becomeFirstResponder()
     }
+    
+    deinit {
+        if Document.shared.thoughts.contains(where: { $0.date == Document.shared.editingThought?.date }) {
+            Document.shared.editingThought = nil
+        }
+    }
 
     @IBAction func save(_ sender: Any) {
         
-        Document.shared.thoughts.insert(.init(content: Document.shared.draft, date: .init()))
-        Document.shared.draft.removeAll()
+        Document.shared.thoughts.first(where: { $0.date == Document.shared.editingThought?.date }).map {
+            _ = Document.shared.thoughts.remove($0)
+        }
+        Document.shared.editingThought.map { _ = Document.shared.thoughts.insert($0) }
+        Document.shared.editingThought = nil
         undoManager?.setActionName("Publish Draft")
         
         presentingViewController?.dismiss(animated: true)
@@ -48,8 +64,8 @@ class ComposerViewController: UIViewController {
 extension ComposerViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        if Document.shared.draft != textView.text {
-            Document.shared.draft = textView.text
+        if Document.shared.editingThought?.content != textView.text {
+            Document.shared.editingThought?.content = textView.text
         }
     }
     

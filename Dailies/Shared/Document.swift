@@ -59,7 +59,7 @@ class Document: UIDocument {
     @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
     
     /// Just a place for storing draft.
-    @Published var draft = ""
+    @Published var editingThought: Thought?
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }

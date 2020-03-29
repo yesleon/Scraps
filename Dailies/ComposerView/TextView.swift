@@ -34,7 +34,8 @@ class TextView: UITextView {
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)
         
-        Document.shared.$draft
+        Document.shared.$editingThought
+            .compactMap { $0?.content }
             .filter { $0 != self.text }
             .assign(to: \.text, on: self)
             .store(in: &subscriptions)

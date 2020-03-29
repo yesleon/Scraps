@@ -21,7 +21,7 @@ class ThoughtListViewController: UITableViewController {
         
         becomeFirstResponder()
         
-        navigationItem.searchController = .init(searchResultsController: nil)
+        navigationItem.searchController = SearchController(searchResultsController: nil)
         navigationItem.searchController.map {
             $0.searchResultsUpdater = self
             $0.obscuresBackgroundDuringPresentation = false
@@ -30,6 +30,10 @@ class ThoughtListViewController: UITableViewController {
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Document.shared.editingThought = Document.shared.sortedThoughts[indexPath.section].thoughts[indexPath.row]
+    }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let thought = Document.shared.sortedThoughts[indexPath.section].thoughts[indexPath.row]
