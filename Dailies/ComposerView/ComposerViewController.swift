@@ -36,9 +36,7 @@ class ComposerViewController: UIViewController {
     }
 
     @IBAction func save(_ sender: Any) {
-        Document.shared.editThoughts {
-            $0.insert(.init(content: Document.shared.draft, date: .init()))
-        }
+        Document.shared.thoughts.insert(.init(content: Document.shared.draft, date: .init()))
         Document.shared.draft.removeAll()
         undoManager?.setActionName("Publish Draft")
         

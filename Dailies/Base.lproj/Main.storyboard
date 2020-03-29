@@ -89,7 +89,7 @@
                                             <rect key="frame" x="176" y="31.5" width="44" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="textColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -101,15 +101,14 @@
                             <outlet property="delegate" destination="1fT-Lp-UQ9" id="AAP-3c-xWb"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="nOg-tQ-DUG"/>
-                        <barButtonItem systemItem="add" id="3Pe-zY-JwH">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="River" id="EFZ-Oz-kza">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="3Pe-zY-JwH">
                             <connections>
                                 <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
                             </connections>
                         </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="River" id="EFZ-Oz-kza"/>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -119,7 +118,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="102"/>
@@ -127,7 +126,6 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XkX-rq-ygz">
-                        <rect key="frame" x="0.0" y="718" width="1024" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>

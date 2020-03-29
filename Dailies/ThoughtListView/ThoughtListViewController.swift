@@ -33,9 +33,7 @@ class ThoughtListViewController: UITableViewController {
                 },
                 UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
                     
-                    Document.shared.editThoughts {
-                        $0.remove(thought)
-                    }
+                    Document.shared.thoughts.remove(thought)
                     self.undoManager?.setActionName("Delete Thought")
                 },
             ])

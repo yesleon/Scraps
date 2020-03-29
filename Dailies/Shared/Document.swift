@@ -17,41 +17,32 @@ class Document: UIDocument {
     static let shared = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
     
     /// Backing store for `thoughts`.
-    private(set) var thoughts = Set<Thought>()
+    var thoughts = Set<Thought>() {
+        didSet {
+            undoManager.registerUndo(withTarget: self) {
+                $0.thoughts = oldValue
+            }
+            
+            sortedThoughts = thoughts
+                .sorted(by: { $0.date > $1.date })
+                .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
+                    let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
+                    var list = list
+                    if list.last?.dateComponents == dateComponents, var last = list.popLast() {
+                        last.thoughts.append(thought)
+                        list.append(last)
+                    } else {
+                        list.append((dateComponents: dateComponents, thoughts: [thought]))
+                    }
+                    return list }
+        }
+    }
 
     /// Data structured for table view.
     @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()
     
     /// Just a place for storing draft.
     @Published var draft = ""
-    
-    func editThoughts(handler: (inout Set<Thought>) -> Void) {
-        var thoughts = self.thoughts
-        
-        let oldValue = thoughts
-        undoManager.registerUndo(withTarget: self) {
-            $0.editThoughts {
-                $0 = oldValue
-            }
-        }
-        
-        handler(&thoughts)
-        
-        sortedThoughts = thoughts
-            .sorted(by: { $0.date > $1.date })
-            .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
-                let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
-                var list = list
-                if list.last?.dateComponents == dateComponents, var last = list.popLast() {
-                    last.thoughts.append(thought)
-                    list.append(last)
-                } else {
-                    list.append((dateComponents: dateComponents, thoughts: [thought]))
-                }
-                return list }
-        
-        self.thoughts = thoughts
-    }
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
