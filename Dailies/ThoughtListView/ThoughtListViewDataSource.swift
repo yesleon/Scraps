@@ -18,6 +18,7 @@ class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, T
             cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
             return cell
         }
+        self.defaultRowAnimation = .none
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

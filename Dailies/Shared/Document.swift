@@ -26,18 +26,29 @@ class Document: UIDocument {
             undoManager.registerUndo(withTarget: self) { $0.thoughts = oldValue }
             _thoughts = newValue
             
-            sortedThoughts = newValue
-                .sorted(by: { $0.date < $1.date })
-                .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
-                    let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
-                    var list = list
-                    if list.last?.dateComponents == dateComponents, var last = list.popLast() {
-                        last.thoughts.append(thought)
-                        list.append(last)
-                    } else {
-                        list.append((dateComponents: dateComponents, thoughts: [thought]))
-                    }
-                    return list }
+            sortThoughts(newValue: newValue)
+        }
+    }
+    
+    func sortThoughts(newValue: Set<Thought>) {
+        sortedThoughts = newValue
+            .sorted(by: { $0.date > $1.date })
+            .filter(filter)
+            .reduce([(dateComponents: DateComponents, thoughts: [Thought])]()) { list, thought in
+                let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
+                var list = list
+                if list.last?.dateComponents == dateComponents, var last = list.popLast() {
+                    last.thoughts.append(thought)
+                    list.append(last)
+                } else {
+                    list.append((dateComponents: dateComponents, thoughts: [thought]))
+                }
+                return list }
+    }
+    
+    var filter: (Thought) -> Bool = { _ in true } {
+        didSet {
+            sortThoughts(newValue: thoughts)
         }
     }
     

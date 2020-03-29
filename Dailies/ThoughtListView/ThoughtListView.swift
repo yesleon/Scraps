@@ -31,11 +31,6 @@ class ThoughtListView: UITableView {
                     snapshot.appendItems($0.thoughts, toSection: $0.dateComponents)
                 }
                 self.diffableDataSource.apply(snapshot)
-                
-                thoughts.last
-                    .flatMap { $0.thoughts.last }
-                    .flatMap(self.diffableDataSource.indexPath(for:))
-                    .map { self.scrollToRow(at: $0, at: .bottom, animated: true) }
             })
             .store(in: &subscriptions)
     }

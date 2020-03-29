@@ -16,6 +16,19 @@ class ThoughtListViewController: UITableViewController {
     
     override var undoManager: UndoManager? { Document.shared.undoManager }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        becomeFirstResponder()
+        
+        navigationItem.searchController = .init(searchResultsController: nil)
+        navigationItem.searchController.map {
+            $0.searchResultsUpdater = self
+            $0.obscuresBackgroundDuringPresentation = false
+            $0.delegate = self
+        }
+    }
+    
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -34,4 +47,25 @@ class ThoughtListViewController: UITableViewController {
         }
     }
 
+}
+
+extension ThoughtListViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let text = searchController.searchBar.text, !text.isEmpty {
+            Document.shared.filter = {
+                $0.content.contains(text)
+            }
+        } else {
+            Document.shared.filter = { _ in true }
+        }
+    }
+    
+}
+
+extension ThoughtListViewController: UISearchControllerDelegate {
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        becomeFirstResponder()
+    }
 }
