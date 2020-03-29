@@ -37,6 +37,8 @@ class Document: UIDocument {
                     return list }
         }
     }
+    
+    @Published var tags = [Tag]()
 
     /// Data structured for table view.
     @Published private(set) var sortedThoughts = [(dateComponents: DateComponents, thoughts: [Thought])]()

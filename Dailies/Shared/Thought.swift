@@ -13,4 +13,9 @@ import Foundation
 struct Thought: Codable, Hashable {
     var content: String
     var date: Date
+    var tags: [Tag]?
+}
+
+struct Tag: Codable, Hashable {
+    var title: String
 }

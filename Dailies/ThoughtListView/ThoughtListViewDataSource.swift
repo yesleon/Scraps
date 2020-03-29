@@ -16,7 +16,7 @@ class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, T
             let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
             cell.textLabel?.text = thought.content
             
-            cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
+            cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + (thought.tags ?? []).map({ $0.title }).joined(separator: ", ")
             return cell
         }
         self.defaultRowAnimation = .none
