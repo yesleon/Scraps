@@ -22,7 +22,7 @@ class ThoughtListView: UITableView {
         
         dataSource = diffableDataSource
         Document.shared.$sortedThoughts
-            .sink { [weak self] thoughts in
+            .sink(receiveValue: { [weak self] thoughts in
                 guard let self = self else { return }
                 var snapshot = self.diffableDataSource.snapshot()
                 snapshot.deleteAllItems()
@@ -30,7 +30,13 @@ class ThoughtListView: UITableView {
                     snapshot.appendSections([$0.dateComponents])
                     snapshot.appendItems($0.thoughts, toSection: $0.dateComponents)
                 }
-                self.diffableDataSource.apply(snapshot) }
+                self.diffableDataSource.apply(snapshot)
+                
+                thoughts.last
+                    .flatMap { $0.thoughts.last }
+                    .flatMap(self.diffableDataSource.indexPath(for:))
+                    .map { self.scrollToRow(at: $0, at: .bottom, animated: true) }
+            })
             .store(in: &subscriptions)
     }
     

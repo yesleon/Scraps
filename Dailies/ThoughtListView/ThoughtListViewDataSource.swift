@@ -15,6 +15,7 @@ class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, T
         super.init(tableView: tableView) { tableView, indexPath, thought -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
             cell.textLabel?.text = thought.content
+            cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
             return cell
         }
     }
