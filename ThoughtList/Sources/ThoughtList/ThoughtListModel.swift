@@ -9,7 +9,6 @@
 import UIKit
 import Combine
 import MainModel
-import TagList
 
 @available(iOS 13.0, *)
 typealias Tag = MainModel.Tag
@@ -44,7 +43,7 @@ class ThoughtListModel: UITableViewDiffableDataSource<DateComponents, Thought> {
                         case .noTags:
                             return thought.tags?.isEmpty != false
                         case .hasTags(let tags):
-                            return tags.isEmpty || !tags.isDisjoint(with: thought.tags ?? [])
+                            return tags.isEmpty || tags.isSubset(of: thought.tags ?? [])
                         }
                     })
                     .sorted(by: { $0.date > $1.date })

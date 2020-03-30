@@ -14,53 +14,47 @@ import Combine
 @available(iOS 13.0, *)
 class TagListViewController: UITableViewController {
     
-    lazy var model = TagListModel(tableView: tableView)
+    var model: TagListModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.dataSource = model
+        model = TagListModel(tableView: tableView)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         preferredContentSize = tableView.contentSize
     }
-    
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        model.itemIdentifier(for: indexPath).map {
-            switch $0 {
-            case .noTags:
-                model.tagFilter = .hasTags([])
-            case .tag(let tag):
-                if case .hasTags(var tags) = model.tagFilter {
-                    tags.remove(tag)
-                    model.tagFilter = .hasTags(tags)
-                }
-            }
-        }
-    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         model.itemIdentifier(for: indexPath).map {
             switch $0 {
             case .noTags:
-                model.tagFilter = .noTags
-                tableView.indexPathsForSelectedRows?.filter { $0 != indexPath }.forEach {
-                    tableView.deselectRow(at: $0, animated: false)
-                }
+                model.selection = .noTags
+                
             case .tag(let tag):
-                model.indexPath(for: .noTags).map {
-                    tableView.deselectRow(at: $0, animated: false)
-                }
-                if case .hasTags(var tags) = model.tagFilter {
+                if case .hasTags(var tags) = model.selection {
                     tags.insert(tag)
-                    model.tagFilter = .hasTags(tags)
+                    model.selection = .hasTags(tags)
                 } else {
-                    model.tagFilter = .hasTags([tag])
+                    model.selection = .hasTags([tag])
                 }
             }
-            
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        model.itemIdentifier(for: indexPath).map {
+            switch $0 {
+            case .noTags:
+                model.selection = .hasTags([])
+            case .tag(let tag):
+                if case .hasTags(var tags) = model.selection {
+                    tags.remove(tag)
+                    model.selection = .hasTags(tags)
+                }
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 import Combine
 import MainModel
 
+
 @available(iOS 13.0, *)
 class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListModel.Row> {
     
@@ -23,16 +24,16 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
     
     var subscriptions = Set<AnyCancellable>()
     
-    var tagFilter: TagFilter {
-        get {
-            Document.shared.tagFilter
-        }
-        set {
-            Document.shared.tagFilter = newValue
+    @Published var selection: TagFilter {
+        didSet {
+            selectionSetter(selection)
         }
     }
+    private let selectionSetter: (TagFilter) -> Void
 
-    init(tableView: UITableView) {
+    init(tableView: UITableView, selection: TagFilter = Document.shared.tagFilter, selectionSetter: @escaping (TagFilter) -> Void = { Document.shared.tagFilter = $0 }) {
+        self.selection = selection
+        self.selectionSetter = selectionSetter
         super.init(tableView: tableView) { tableView, indexPath, row in
             let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
             switch row {

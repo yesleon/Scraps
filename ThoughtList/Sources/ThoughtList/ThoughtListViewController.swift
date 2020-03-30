@@ -19,7 +19,7 @@ class ThoughtListViewController: UITableViewController {
     
     override var undoManager: UndoManager? { model.undoManager }
     
-    lazy var model = ThoughtListModel(tableView: tableView)
+    var model: ThoughtListModel!
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -27,7 +27,7 @@ class ThoughtListViewController: UITableViewController {
         super.viewDidLoad()
         
         becomeFirstResponder()
-        tableView.dataSource = model
+        model = ThoughtListModel(tableView: tableView)
         
         model.tagFilterPublisher
             .map({ tagFilter in
