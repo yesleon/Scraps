@@ -12,6 +12,8 @@ import Combine
 class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, Thought> {
     
     var subscriptions = Set<AnyCancellable>()
+    
+    var undoManager: UndoManager { Document.shared.undoManager }
 
     init(tableView: UITableView) {
         super.init(tableView: tableView) { tableView, indexPath, thought -> UITableViewCell? in
@@ -40,5 +42,24 @@ class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, T
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         Calendar.current.date(from: snapshot().sectionIdentifiers[section])
             .map { DateFormatter.localizedString(from: $0, dateStyle: .full, timeStyle: .none) }
+    }
+    
+    func removeThought(_ thought: Thought) {
+        Document.shared.thoughts.remove(thought)
+    }
+    
+    func insertThought(_ thought: Thought) {
+        var thoughts = Document.shared.thoughts
+        if let thought = thoughts.first(where: { $0.date == thought.date }) {
+            thoughts.remove(thought)
+        }
+        thoughts.insert(thought)
+        Document.shared.thoughts = thoughts
+        
+        thought.tags?.forEach {
+            if !Document.shared.tags.contains($0) {
+                Document.shared.tags.append($0)
+            }
+        }
     }
 }

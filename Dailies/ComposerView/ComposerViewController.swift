@@ -13,35 +13,25 @@ import Combine
 /// Handles user input in `ComposerView`.
 class ComposerViewController: UIViewController {
     
-    override var undoManager: UndoManager? { Document.shared.undoManager }
-    @IBOutlet weak var textView: UITextView!
+    override var undoManager: UndoManager? { model.undoManager }
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     var subscriptions = Set<AnyCancellable>()
     
+    let model = ComposerModel.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Document.shared.$draft
+        model.$draft
             .map { !$0.isEmpty }
             .assign(to: \.isEnabled, on: saveButton)
             .store(in: &subscriptions)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        textView.becomeFirstResponder()
-        textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
-    }
 
     @IBAction func save(_ sender: Any) {
-        var thought = Thought(content: Document.shared.draft, date: .init())
-        if case .hasTags(let tags) = Document.shared.tagFilter {
-            thought.tags = tags
-        }
-        Document.shared.thoughts.insert(thought)
-        Document.shared.draft.removeAll()
+        
+        model.publishDraft()
         undoManager?.setActionName("Publish Draft")
         
         presentingViewController?.dismiss(animated: true)
@@ -52,9 +42,7 @@ class ComposerViewController: UIViewController {
 extension ComposerViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        if Document.shared.draft != textView.text {
-            Document.shared.draft = textView.text
-        }
+        model.draft = textView.text
     }
     
 }

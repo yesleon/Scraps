@@ -15,6 +15,8 @@ class TextView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
     
+    let model = ComposerModel.shared
+    
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
@@ -34,10 +36,13 @@ class TextView: UITextView {
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)
         
-        Document.shared.$draft
+        model.$draft
             .filter { $0 != self.text }
             .assign(to: \.text, on: self)
             .store(in: &subscriptions)
+        
+        becomeFirstResponder()
+        selectedTextRange = textRange(from: beginningOfDocument, to: beginningOfDocument)
     }
     
     override func removeFromSuperview() {

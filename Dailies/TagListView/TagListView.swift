@@ -12,12 +12,14 @@ import Combine
 class TagListView: UITableView {
 
     var subscriptions = Set<AnyCancellable>()
-    lazy var diffableDataSource = TagListViewDataSource(tableView: self)
+    var diffableDataSource: TagListViewDataSource! {
+        dataSource as? TagListViewDataSource
+    }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         
-        dataSource = diffableDataSource
+        
         
         switch Document.shared.tagFilter {
         case .noTags:

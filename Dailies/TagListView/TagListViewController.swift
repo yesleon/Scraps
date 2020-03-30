@@ -20,7 +20,7 @@ enum Row: Hashable {
 
 class TagListViewController: UITableViewController {
     
-    weak var diffableDataSource: TagListViewDataSource!
+    lazy var diffableDataSource = TagListViewDataSource(tableView: tableView)
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,11 +33,11 @@ class TagListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        diffableDataSource = tableView.dataSource as? TagListViewDataSource
+        tableView.dataSource = diffableDataSource
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        diffableDataSource?.itemIdentifier(for: indexPath).map {
+        diffableDataSource.itemIdentifier(for: indexPath).map {
             switch $0 {
             case .noTags:
                 Document.shared.tagFilter = .hasTags([])
@@ -51,7 +51,7 @@ class TagListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        diffableDataSource?.itemIdentifier(for: indexPath).map {
+        diffableDataSource.itemIdentifier(for: indexPath).map {
             switch $0 {
             case .noTags:
                 Document.shared.tagFilter = .noTags
@@ -59,7 +59,7 @@ class TagListViewController: UITableViewController {
                     tableView.deselectRow(at: $0, animated: false)
                 }
             case .tag(let tag):
-                diffableDataSource?.indexPath(for: .noTags).map {
+                diffableDataSource.indexPath(for: .noTags).map {
                     tableView.deselectRow(at: $0, animated: false)
                 }
                 if case .hasTags(var tags) = Document.shared.tagFilter {
