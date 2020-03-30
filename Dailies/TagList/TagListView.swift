@@ -12,25 +12,28 @@ import Combine
 class TagListView: UITableView {
 
     var subscriptions = Set<AnyCancellable>()
-    var diffableDataSource: TagListViewDataSource! {
-        dataSource as? TagListViewDataSource
+    var model: TagListModel! {
+        dataSource as? TagListModel
     }
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
-        
-        
-        switch Document.shared.tagFilter {
+        switch model.tagFilter {
         case .noTags:
-            diffableDataSource.indexPath(for: .noTags)
+            model.indexPath(for: .noTags)
                 .map { selectRow(at: $0, animated: false, scrollPosition: .none) }
         case .hasTags(let tags):
             tags.lazy
-                .map(Row.tag)
-                .compactMap(diffableDataSource.indexPath(for:))
+                .map(TagListModel.Row.tag)
+                .compactMap(model.indexPath(for:))
                 .forEach { selectRow(at: $0, animated: false, scrollPosition: .none) }
         }
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        subscriptions.removeAll()
     }
 
 }

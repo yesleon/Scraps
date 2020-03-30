@@ -10,7 +10,6 @@ import UIKit
 import Combine
 
 
-/// Handles keyboard. Synced to `Document.shared.draft`.
 class TextView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
@@ -45,12 +44,6 @@ class TextView: UITextView {
         selectedTextRange = textRange(from: beginningOfDocument, to: beginningOfDocument)
     }
     
-    override func removeFromSuperview() {
-        super.removeFromSuperview()
-        
-        subscriptions.removeAll()
-    }
-    
     override func layoutMarginsDidChange() {
         super.layoutMarginsDidChange()
         
@@ -60,6 +53,12 @@ class TextView: UITextView {
             bottom: 8,
             right: layoutMargins.right
         )
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        
+        subscriptions.removeAll()
     }
 
 }

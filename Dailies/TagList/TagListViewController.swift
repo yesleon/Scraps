@@ -10,17 +10,10 @@ import UIKit
 import Combine
 
 
-enum Section: Hashable, CaseIterable {
-    case base, tags
-}
-
-enum Row: Hashable {
-    case noTags, tag(Tag)
-}
 
 class TagListViewController: UITableViewController {
     
-    lazy var diffableDataSource = TagListViewDataSource(tableView: tableView)
+    lazy var model = TagListModel(tableView: tableView)
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,40 +26,40 @@ class TagListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.dataSource = diffableDataSource
+        tableView.dataSource = model
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        diffableDataSource.itemIdentifier(for: indexPath).map {
+        model.itemIdentifier(for: indexPath).map {
             switch $0 {
             case .noTags:
-                Document.shared.tagFilter = .hasTags([])
+                model.tagFilter = .hasTags([])
             case .tag(let tag):
-                if case .hasTags(var tags) = Document.shared.tagFilter {
+                if case .hasTags(var tags) = model.tagFilter {
                     tags.remove(tag)
-                    Document.shared.tagFilter = .hasTags(tags)
+                    model.tagFilter = .hasTags(tags)
                 }
             }
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        diffableDataSource.itemIdentifier(for: indexPath).map {
+        model.itemIdentifier(for: indexPath).map {
             switch $0 {
             case .noTags:
-                Document.shared.tagFilter = .noTags
+                model.tagFilter = .noTags
                 tableView.indexPathsForSelectedRows?.filter { $0 != indexPath }.forEach {
                     tableView.deselectRow(at: $0, animated: false)
                 }
             case .tag(let tag):
-                diffableDataSource.indexPath(for: .noTags).map {
+                model.indexPath(for: .noTags).map {
                     tableView.deselectRow(at: $0, animated: false)
                 }
-                if case .hasTags(var tags) = Document.shared.tagFilter {
+                if case .hasTags(var tags) = model.tagFilter {
                     tags.insert(tag)
-                    Document.shared.tagFilter = .hasTags(tags)
+                    model.tagFilter = .hasTags(tags)
                 } else {
-                    Document.shared.tagFilter = .hasTags([tag])
+                    model.tagFilter = .hasTags([tag])
                 }
             }
             

@@ -1,5 +1,5 @@
 //
-//  ThoughtListViewDataSource.swift
+//  ThoughtListModel.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/27.
@@ -9,7 +9,7 @@
 import UIKit
 import Combine
 
-class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, Thought> {
+class ThoughtListModel: UITableViewDiffableDataSource<DateComponents, Thought> {
     
     var subscriptions = Set<AnyCancellable>()
     

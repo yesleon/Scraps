@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7126C9072431F9D900AEFAA2 /* TagListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7126C9062431F9D900AEFAA2 /* TagListViewDataSource.swift */; };
+		7126C9072431F9D900AEFAA2 /* TagListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7126C9062431F9D900AEFAA2 /* TagListModel.swift */; };
 		7126C9092431FB8300AEFAA2 /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7126C9082431FB8300AEFAA2 /* TagListView.swift */; };
 		7126C90B243200BF00AEFAA2 /* ComposerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7126C90A243200BF00AEFAA2 /* ComposerModel.swift */; };
 		7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D74F2426A07A00F8021C /* ComposerViewController.swift */; };
 		7161D7542427122000F8021C /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D7532427122000F8021C /* Thought.swift */; };
 		7161D75C242748A400F8021C /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161D75B242748A400F8021C /* TextView.swift */; };
 		716994F024310E82007DE38D /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716994EF24310E82007DE38D /* TagListViewController.swift */; };
-		7182ED37242DFA21005DD45D /* ThoughtListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */; };
+		7182ED37242DFA21005DD45D /* ThoughtListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182ED36242DFA21005DD45D /* ThoughtListModel.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -27,14 +27,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7126C9062431F9D900AEFAA2 /* TagListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewDataSource.swift; sourceTree = "<group>"; };
+		7126C9062431F9D900AEFAA2 /* TagListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListModel.swift; sourceTree = "<group>"; };
 		7126C9082431FB8300AEFAA2 /* TagListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
 		7126C90A243200BF00AEFAA2 /* ComposerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModel.swift; sourceTree = "<group>"; };
 		7161D74F2426A07A00F8021C /* ComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		7161D7532427122000F8021C /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		7161D75B242748A400F8021C /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		716994EF24310E82007DE38D /* TagListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
-		7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListViewDataSource.swift; sourceTree = "<group>"; };
+		7182ED36242DFA21005DD45D /* ThoughtListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListModel.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,14 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7126C9052431F96F00AEFAA2 /* TagListView */ = {
+		7126C9052431F96F00AEFAA2 /* TagList */ = {
 			isa = PBXGroup;
 			children = (
+				7126C9062431F9D900AEFAA2 /* TagListModel.swift */,
 				7126C9082431FB8300AEFAA2 /* TagListView.swift */,
-				7126C9062431F9D900AEFAA2 /* TagListViewDataSource.swift */,
 				716994EF24310E82007DE38D /* TagListViewController.swift */,
 			);
-			path = TagListView;
+			path = TagList;
 			sourceTree = "<group>";
 		};
 		71C30DC02429F0B400C9F12E /* Frameworks */ = {
@@ -99,9 +99,9 @@
 			isa = PBXGroup;
 			children = (
 				71FC15C0242E16F00092DD24 /* Shared */,
-				71FC15C1242E16FF0092DD24 /* ThoughtListView */,
-				71FC15C2242E178D0092DD24 /* ComposerView */,
-				7126C9052431F96F00AEFAA2 /* TagListView */,
+				71FC15C1242E16FF0092DD24 /* ThoughtList */,
+				71FC15C2242E178D0092DD24 /* Composer */,
+				7126C9052431F96F00AEFAA2 /* TagList */,
 				71D9D97524261FB60062505B /* Main.storyboard */,
 				71D9D97824261FB90062505B /* Assets.xcassets */,
 				71D9D97A24261FB90062505B /* LaunchScreen.storyboard */,
@@ -123,23 +123,23 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		71FC15C1242E16FF0092DD24 /* ThoughtListView */ = {
+		71FC15C1242E16FF0092DD24 /* ThoughtList */ = {
 			isa = PBXGroup;
 			children = (
-				7182ED36242DFA21005DD45D /* ThoughtListViewDataSource.swift */,
+				7182ED36242DFA21005DD45D /* ThoughtListModel.swift */,
 				71E823632427D0D8004E00C1 /* ThoughtListViewController.swift */,
 			);
-			path = ThoughtListView;
+			path = ThoughtList;
 			sourceTree = "<group>";
 		};
-		71FC15C2242E178D0092DD24 /* ComposerView */ = {
+		71FC15C2242E178D0092DD24 /* Composer */ = {
 			isa = PBXGroup;
 			children = (
 				7126C90A243200BF00AEFAA2 /* ComposerModel.swift */,
 				7161D75B242748A400F8021C /* TextView.swift */,
 				7161D74F2426A07A00F8021C /* ComposerViewController.swift */,
 			);
-			path = ComposerView;
+			path = Composer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,13 +220,13 @@
 				71E823642427D0D8004E00C1 /* ThoughtListViewController.swift in Sources */,
 				7126C90B243200BF00AEFAA2 /* ComposerModel.swift in Sources */,
 				7161D7502426A07A00F8021C /* ComposerViewController.swift in Sources */,
-				7182ED37242DFA21005DD45D /* ThoughtListViewDataSource.swift in Sources */,
+				7182ED37242DFA21005DD45D /* ThoughtListModel.swift in Sources */,
 				7161D7542427122000F8021C /* Thought.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				71FC15B9242DFDFD0092DD24 /* Document.swift in Sources */,
 				716994F024310E82007DE38D /* TagListViewController.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
-				7126C9072431F9D900AEFAA2 /* TagListViewDataSource.swift in Sources */,
+				7126C9072431F9D900AEFAA2 /* TagListModel.swift in Sources */,
 				71FC15BD242E158C0092DD24 /* NavigationController.swift in Sources */,
 				7126C9092431FB8300AEFAA2 /* TagListView.swift in Sources */,
 				7161D75C242748A400F8021C /* TextView.swift in Sources */,

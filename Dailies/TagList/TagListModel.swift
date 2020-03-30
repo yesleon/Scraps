@@ -1,5 +1,5 @@
 //
-//  TagListViewDataSource.swift
+//  TagListModel.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/30.
@@ -9,9 +9,26 @@
 import UIKit
 import Combine
 
-class TagListViewDataSource: UITableViewDiffableDataSource<Section, Row> {
+class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListModel.Row> {
+    
+    enum Section: Hashable, CaseIterable {
+        case base, tags
+    }
+
+    enum Row: Hashable {
+        case noTags, tag(Tag)
+    }
     
     var subscriptions = Set<AnyCancellable>()
+    
+    var tagFilter: TagFilter {
+        get {
+            Document.shared.tagFilter
+        }
+        set {
+            Document.shared.tagFilter = newValue
+        }
+    }
 
     init(tableView: UITableView) {
         super.init(tableView: tableView) { tableView, indexPath, row in

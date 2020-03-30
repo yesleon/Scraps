@@ -14,21 +14,21 @@ class ThoughtListViewController: UITableViewController {
     
     override var canBecomeFirstResponder: Bool { true }
     
-    override var undoManager: UndoManager? { diffableDataSource.undoManager }
+    override var undoManager: UndoManager? { model.undoManager }
     
-    lazy var diffableDataSource = ThoughtListViewDataSource(tableView: tableView)
+    lazy var model = ThoughtListModel(tableView: tableView)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         becomeFirstResponder()
-        tableView.dataSource = diffableDataSource
+        tableView.dataSource = model
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let thought = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
+        guard let thought = model.itemIdentifier(for: indexPath) else { return nil }
         let copyAction = UIAction(title: NSLocalizedString("Copy", comment: "")) { _ in
             UIPasteboard.general.string = thought.content
         }
@@ -47,7 +47,7 @@ class ThoughtListViewController: UITableViewController {
                         .filter { !$0.isEmpty }
                         .map(Tag.init(title:))
                     thought.tags = Set(tags)
-                    self.diffableDataSource.insertThought(thought)
+                    self.model.insertThought(thought)
                     
                 }))
                 $0.addAction(.init(title: "Cancel", style: .cancel))
@@ -55,7 +55,7 @@ class ThoughtListViewController: UITableViewController {
             }
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-            self.diffableDataSource.removeThought(thought)
+            self.model.removeThought(thought)
             self.undoManager?.setActionName("Delete Thought")
         }
         return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
