@@ -11,6 +11,7 @@ import Combine
 
 
 /// Handles user input in `ComposerView`.
+@available(iOS 13.0, *)
 class ComposerViewController: UIViewController {
     
     override var undoManager: UndoManager? { model.undoManager }
@@ -39,6 +40,7 @@ class ComposerViewController: UIViewController {
     
 }
 
+@available(iOS 13.0, *)
 extension ComposerViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {

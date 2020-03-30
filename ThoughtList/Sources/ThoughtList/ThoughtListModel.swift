@@ -8,7 +8,12 @@
 
 import UIKit
 import Combine
+import MainModel
 
+@available(iOS 13.0, *)
+typealias Tag = MainModel.Tag
+
+@available(iOS 13.0, *)
 class ThoughtListModel: UITableViewDiffableDataSource<DateComponents, Thought> {
     
     var subscriptions = Set<AnyCancellable>()

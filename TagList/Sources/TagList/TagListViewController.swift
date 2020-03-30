@@ -11,6 +11,7 @@ import Combine
 
 
 
+@available(iOS 13.0, *)
 class TagListViewController: UITableViewController {
     
     lazy var model = TagListModel(tableView: tableView)
@@ -27,6 +28,11 @@ class TagListViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.dataSource = model
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize = tableView.contentSize
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -67,6 +73,7 @@ class TagListViewController: UITableViewController {
     }
 }
 
+@available(iOS 13.0, *)
 extension TagListViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         .none

@@ -10,6 +10,7 @@ import UIKit
 
 
 /// Handles user input in `ThoughtListView`.
+@available(iOS 13.0, *)
 class ThoughtListViewController: UITableViewController {
     
     override var canBecomeFirstResponder: Bool { true }
@@ -45,7 +46,7 @@ class ThoughtListViewController: UITableViewController {
                     let tags = text.split(separator: ",")
                         .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                         .filter { !$0.isEmpty }
-                        .map(Tag.init(title:))
+                        .map(Tag.init(_:))
                     thought.tags = Set(tags)
                     self.model.insertThought(thought)
                     

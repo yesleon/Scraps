@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import MainModel
 
+@available(iOS 13.0, *)
 class ComposerModel {
     
     static let shared = ComposerModel()

@@ -9,6 +9,7 @@
 import UIKit
 import Combine
 
+@available(iOS 13.0, *)
 class TagListView: UITableView {
 
     var subscriptions = Set<AnyCancellable>()
