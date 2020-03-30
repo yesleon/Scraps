@@ -26,7 +26,6 @@ class ThoughtListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        becomeFirstResponder()
         model = ThoughtListModel(tableView: tableView)
         
         model.tagFilterPublisher
@@ -57,13 +56,15 @@ class ThoughtListViewController: UITableViewController {
             })
             .assign(to: \.title, on: self)
             .store(in: &subscriptions)
+        
+        Timer.publish(every: 0.1, on: .main, in: .default).autoconnect()
+            .filter({ _ in self.presentedViewController == nil })
+            .filter({ _ in !self.isFirstResponder })
+            .sink(receiveValue: { _ in self.becomeFirstResponder() })
+            .store(in: &subscriptions)
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        becomeFirstResponder()
-    }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let thought = model.itemIdentifier(for: indexPath) else { return nil }
