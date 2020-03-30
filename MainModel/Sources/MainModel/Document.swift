@@ -42,7 +42,7 @@ public class Document: UIDocument {
         guard let data = contents as? Data else { fatalError() }
         let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
         self.thoughts = documentData.thoughts
-        self.tags = documentData.tags
+        self.tags = Array(Set(documentData.tags + [Tag("😊")]))
         undoManager.removeAllActions()
     }
 

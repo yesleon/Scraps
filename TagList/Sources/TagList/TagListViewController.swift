@@ -56,4 +56,16 @@ class TagListViewController: UITableViewController {
             }
         }
     }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
+            if case .tag(let tag) = self.model.itemIdentifier(for: indexPath) {
+                self.model.deleteTag(tag)
+            }
+        }
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
+            UIMenu(title: "", children: [deleteAction])
+        }
+        
+    }
 }

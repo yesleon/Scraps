@@ -37,7 +37,7 @@ extension UIViewController {
 class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListModel.Row> {
     
     enum Section: Hashable, CaseIterable {
-        case base, tags
+        case tags, base
     }
 
     enum Row: Hashable {
@@ -83,5 +83,23 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
                 self.apply(snapshot, animatingDifferences: false)
             })
             .store(in: &subscriptions)
+    }
+    
+    func deleteTag(_ tag: Tag) {
+        Document.shared.undoManager.beginUndoGrouping()
+        var tags = Document.shared.tags
+        tags.removeAll(where: { $0 == tag })
+        Document.shared.tags = tags
+        var thoughts = Set<Thought>()
+        for var thought in Document.shared.thoughts {
+            thought.tags?.remove(tag)
+            thoughts.insert(thought)
+        }
+        Document.shared.thoughts = thoughts
+        if case var .hasTags(tags) = Document.shared.tagFilter, tags.contains(tag) {
+            tags.remove(tag)
+            Document.shared.tagFilter = .hasTags(tags)
+        }
+        Document.shared.undoManager.endUndoGrouping()
     }
 }
