@@ -108,9 +108,9 @@
                                     <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="bookmarks" id="pMY-ms-0KF">
+                            <barButtonItem image="book" catalog="system" id="pMY-ms-0KF">
                                 <connections>
-                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" popoverAnchorBarButtonItem="pMY-ms-0KF" id="rek-L4-nuy">
+                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Dailies" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="rek-L4-nuy">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -118,6 +118,9 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tagListButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -137,12 +140,21 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="7nH-qp-Gwi">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" textLabel="2D2-da-JwE" style="IBUITableViewCellStyleDefault" id="7nH-qp-Gwi">
                                 <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7nH-qp-Gwi" id="x4p-df-dXK">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2D2-da-JwE">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -196,4 +208,7 @@
             <point key="canvasLocation" x="680.859375" y="-687.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="book" catalog="system" width="128" height="101"/>
+    </resources>
 </document>

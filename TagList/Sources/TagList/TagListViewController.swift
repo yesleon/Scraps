@@ -16,14 +16,6 @@ class TagListViewController: UITableViewController {
     
     lazy var model = TagListModel(tableView: tableView)
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        modalPresentationStyle = .popover
-        popoverPresentationController?.delegate = self
-        preferredContentSize = .init(width: 240, height: 360)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,12 +62,5 @@ class TagListViewController: UITableViewController {
             }
             
         }
-    }
-}
-
-@available(iOS 13.0, *)
-extension TagListViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        .none
     }
 }

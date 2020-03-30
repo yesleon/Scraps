@@ -9,6 +9,7 @@
 import UIKit
 import Combine
 import MainModel
+import TagList
 
 @available(iOS 13.0, *)
 typealias Tag = MainModel.Tag
@@ -19,6 +20,10 @@ class ThoughtListModel: UITableViewDiffableDataSource<DateComponents, Thought> {
     var subscriptions = Set<AnyCancellable>()
     
     var undoManager: UndoManager { Document.shared.undoManager }
+    
+    var tagFilterPublisher: Published<TagFilter>.Publisher {
+        Document.shared.$tagFilter
+    }
 
     init(tableView: UITableView) {
         super.init(tableView: tableView) { tableView, indexPath, thought -> UITableViewCell? in
@@ -28,9 +33,33 @@ class ThoughtListModel: UITableViewDiffableDataSource<DateComponents, Thought> {
             cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + (thought.tags ?? []).map(\.title).joined(separator: ", ")
             return cell
         }
-        self.defaultRowAnimation = .none
+        self.defaultRowAnimation = .fade
         
-        Document.shared.$sortedThoughts
+        Document.shared.$thoughts
+            .combineLatest(Document.shared.$tagFilter)
+            .map({ tuple in
+                tuple.0
+                    .filter({ thought in
+                        switch tuple.1 {
+                        case .noTags:
+                            return thought.tags?.isEmpty != false
+                        case .hasTags(let tags):
+                            return tags.isEmpty || !tags.isDisjoint(with: thought.tags ?? [])
+                        }
+                    })
+                    .sorted(by: { $0.date > $1.date })
+                    .reduce([(dateComponents: DateComponents, thoughts: [Thought])](), { list, thought in
+                        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
+                        var list = list
+                        if list.last?.dateComponents == dateComponents, var last = list.popLast() {
+                            last.thoughts.append(thought)
+                            list.append(last)
+                        } else {
+                            list.append((dateComponents: dateComponents, thoughts: [thought]))
+                        }
+                        return list
+                    })
+            })
             .sink(receiveValue: { [weak self] thoughts in
                 guard let self = self else { return }
                 

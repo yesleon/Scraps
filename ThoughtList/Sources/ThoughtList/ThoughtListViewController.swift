@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import Combine
 
 
 /// Handles user input in `ThoughtListView`.
 @available(iOS 13.0, *)
 class ThoughtListViewController: UITableViewController {
+    @IBOutlet weak var tagListButton: UIBarButtonItem!
     
     override var canBecomeFirstResponder: Bool { true }
     
@@ -19,11 +21,42 @@ class ThoughtListViewController: UITableViewController {
     
     lazy var model = ThoughtListModel(tableView: tableView)
     
+    var subscriptions = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         becomeFirstResponder()
         tableView.dataSource = model
+        
+        model.tagFilterPublisher
+            .map({ tagFilter in
+                if case let .hasTags(tags) = tagFilter {
+                    return !tags.isEmpty
+                } else {
+                    return true
+                }
+            })
+            .compactMap({ $0 ? UIImage(systemName: "book.fill") : UIImage(systemName: "book") })
+            .assign(to: \.image, on: tagListButton)
+            .store(in: &subscriptions)
+        
+        model.tagFilterPublisher
+            .map({
+                switch $0 {
+                case .hasTags(let tags):
+                    if !tags.isEmpty {
+                        
+                        return tags.map(\.title).joined(separator: ", ")
+                    } else {
+                        return "Thoughts"
+                    }
+                case .noTags:
+                    return "No Tags"
+                }
+            })
+            .assign(to: \.title, on: self)
+            .store(in: &subscriptions)
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }

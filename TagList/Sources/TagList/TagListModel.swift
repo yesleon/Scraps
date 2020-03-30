@@ -38,8 +38,10 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
             switch row {
             case .noTags:
                 cell.textLabel?.text = "No Tags"
+                cell.imageView?.image = nil
             case .tag(let tag):
                 cell.textLabel?.text = tag.title
+                cell.imageView?.image = UIImage.init(systemName: "tag")
             }
             return cell
         }

@@ -11,6 +11,7 @@
 		71AB911C24320B2000EAE8B8 /* MainModel in Frameworks */ = {isa = PBXBuildFile; productRef = 71AB911B24320B2000EAE8B8 /* MainModel */; };
 		71AB9120243222F100EAE8B8 /* Composer in Frameworks */ = {isa = PBXBuildFile; productRef = 71AB911F243222F100EAE8B8 /* Composer */; };
 		71AB9122243222F100EAE8B8 /* TagList in Frameworks */ = {isa = PBXBuildFile; productRef = 71AB9121243222F100EAE8B8 /* TagList */; };
+		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 		71AB911A24320B0200EAE8B8 /* MainModel */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MainModel; sourceTree = SOURCE_ROOT; };
 		71AB911D24320D0300EAE8B8 /* Composer */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Composer; sourceTree = SOURCE_ROOT; };
 		71AB911E24320DFA00EAE8B8 /* TagList */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TagList; sourceTree = SOURCE_ROOT; };
+		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				71FC15BC242E158C0092DD24 /* NavigationController.swift */,
+				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 			files = (
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
+				71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */,
 				71FC15BD242E158C0092DD24 /* NavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
