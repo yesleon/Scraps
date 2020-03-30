@@ -10,7 +10,6 @@ import UIKit
 import Combine
 
 
-
 @available(iOS 13.0, *)
 class TagListViewController: UITableViewController {
     
@@ -19,7 +18,7 @@ class TagListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        model = TagListModel(tableView: tableView)
+        model = model ?? TagListModel(tableView: tableView)
     }
     
     override func viewDidLayoutSubviews() {

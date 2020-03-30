@@ -56,6 +56,34 @@
             </objects>
             <point key="canvasLocation" x="1405.078125" y="-687.5"/>
         </scene>
+        <!--Tag List View Controller-->
+        <scene sceneID="UwS-6h-Vt9">
+            <objects>
+                <tableViewController storyboardIdentifier="TagsVC" id="kbz-Aa-WEk" customClass="TagListViewController" customModule="TagList" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZEQ-cr-Mwp" customClass="TagListView" customModule="TagList">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="680"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="q8E-HX-xSc">
+                                <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="q8E-HX-xSc" id="vM6-ue-iRS">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="kbz-Aa-WEk" id="44W-ru-Wt9"/>
+                            <outlet property="delegate" destination="kbz-Aa-WEk" id="0IK-Wn-JWs"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="twI-Zh-fsP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13" y="-1674"/>
+        </scene>
         <!--River-->
         <scene sceneID="dLr-46-qTM">
             <objects>
@@ -110,7 +138,7 @@
                             </barButtonItem>
                             <barButtonItem image="book" catalog="system" id="pMY-ms-0KF">
                                 <connections>
-                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Dailies" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="rek-L4-nuy">
+                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Dailies" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="N6H-Hx-Yhh">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -120,6 +148,9 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tagListButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
+                        <segue destination="kbz-Aa-WEk" kind="popoverPresentation" identifier="a" customClass="PresentTagListSegue" customModule="Dailies" customModuleProvider="target" popoverAnchorView="Olw-UH-DAN" id="PAq-2C-952">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

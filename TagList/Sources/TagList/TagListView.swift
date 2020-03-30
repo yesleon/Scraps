@@ -25,12 +25,14 @@ class TagListView: UITableView {
                 let selectedIndexPaths = self.indexPathsForSelectedRows ?? []
                 switch $0 {
                 case .noTags:
-                    selectedIndexPaths.forEach {
-                        self.deselectRow(at: $0, animated: false)
-                    }
-                    if let indexPath = self.model.indexPath(for: .noTags),
-                        !selectedIndexPaths.contains(indexPath) {
-                        self.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    
+                    if let indexPath = self.model.indexPath(for: .noTags) {
+                        selectedIndexPaths.filter({ $0 != indexPath }).forEach {
+                            self.deselectRow(at: $0, animated: false)
+                        }
+                        if !selectedIndexPaths.contains(indexPath) {
+                            self.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                        }
                     }
                     
                 case .hasTags(let tags):

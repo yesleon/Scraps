@@ -11,7 +11,6 @@ import UIKit
 class PresentTagListSegue: UIStoryboardSegue {
 
     override func perform() {
-        destination.modalPresentationStyle = .popover
         destination.popoverPresentationController?.delegate = self
         destination.preferredContentSize = .init(width: 240, height: 360)
         
