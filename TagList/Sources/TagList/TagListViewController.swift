@@ -25,6 +25,12 @@ class TagListViewController: UITableViewController {
         super.viewDidLayoutSubviews()
         preferredContentSize = tableView.contentSize
     }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if case .hasTags(let tags) = model.selection, case let .tag(tag) = model.itemIdentifier(for: indexPath) {
+            cell.setSelected(tags.contains(tag), animated: false)
+        }
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         model.itemIdentifier(for: indexPath).map {
@@ -38,6 +44,25 @@ class TagListViewController: UITableViewController {
                     model.selection = .hasTags(tags)
                 } else {
                     model.selection = .hasTags([tag])
+                }
+            case .newTag:
+                tableView.deselectRow(at: indexPath, animated: false)
+                [UIAlertController(title: "New Tag", message: nil, preferredStyle: .alert)].forEach {
+                    var textField: UITextField?
+                    $0.addTextField {
+                        textField = $0
+                    }
+                    [UIAlertAction(title: "Done", style: .default, handler: { _ in
+                        [textField?.text]
+                            .compactMap { $0 }
+                            .filter { !$0.isEmpty }
+                            .forEach { self.model.insertTag(.init($0)) }
+                        
+                    })].forEach($0.addAction(_:))
+                    
+                    
+                    
+                    present($0, animated: true)
                 }
             }
         }
@@ -53,19 +78,22 @@ class TagListViewController: UITableViewController {
                     tags.remove(tag)
                     model.selection = .hasTags(tags)
                 }
+            case .newTag:
+                break
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-            if case .tag(let tag) = self.model.itemIdentifier(for: indexPath) {
+        if case .tag(let tag) = self.model.itemIdentifier(for: indexPath) {
+            let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
                 self.model.deleteTag(tag)
             }
+            return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
+                UIMenu(title: "", children: [deleteAction])
+            }
+        } else {
+            return nil
         }
-        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
-            UIMenu(title: "", children: [deleteAction])
-        }
-        
     }
 }

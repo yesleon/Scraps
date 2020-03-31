@@ -41,7 +41,7 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
     }
 
     enum Row: Hashable {
-        case noTags, tag(Tag)
+        case noTags, tag(Tag), newTag
     }
     
     var subscriptions = Set<AnyCancellable>()
@@ -65,6 +65,9 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
             case .tag(let tag):
                 cell.textLabel?.text = tag.title
                 cell.imageView?.image = UIImage.init(systemName: "tag")
+            case .newTag:
+                cell.textLabel?.text = "New Tag"
+                cell.imageView?.image = nil
             }
             return cell
         }
@@ -75,11 +78,12 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 if showNoTags {
                     snapshot.appendSections(Section.allCases)
-                    snapshot.appendItems([.noTags], toSection: .base)
+                    snapshot.appendItems([.newTag], toSection: .base)
                 } else {
                     snapshot.appendSections([.tags])
                 }
                 snapshot.appendItems(tags, toSection: .tags)
+                snapshot.appendItems([.newTag], toSection: .tags)
                 self.apply(snapshot, animatingDifferences: false)
             })
             .store(in: &subscriptions)
@@ -101,5 +105,11 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
             Document.shared.tagFilter = .hasTags(tags)
         }
         Document.shared.undoManager.endUndoGrouping()
+    }
+    
+    func insertTag(_ tag: Tag) {
+        if !Document.shared.tags.contains(tag) {
+            Document.shared.tags.append(tag)
+        }
     }
 }
