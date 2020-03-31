@@ -46,7 +46,7 @@ class ThoughtListViewController: UITableViewController {
                 case .hasTags(let tags):
                     if !tags.isEmpty {
                         
-                        return tags.map(\.title).joined(separator: ", ")
+                        return tags.map(\.title).map({ "#" + $0 }).joined(separator: ", ")
                     } else {
                         return "Thoughts"
                     }

@@ -37,7 +37,7 @@ extension UIViewController {
 class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListModel.Row> {
     
     enum Section: Hashable, CaseIterable {
-        case tags, base
+        case base, tags
     }
 
     enum Row: Hashable {
@@ -61,13 +61,10 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
             switch row {
             case .noTags:
                 cell.textLabel?.text = "No Tags"
-                cell.imageView?.image = nil
             case .tag(let tag):
-                cell.textLabel?.text = tag.title
-                cell.imageView?.image = UIImage.init(systemName: "tag")
+                cell.textLabel?.text = "#" + tag.title
             case .newTag:
-                cell.textLabel?.text = "New Tag"
-                cell.imageView?.image = nil
+                cell.textLabel?.text = "New Tag..."
             }
             return cell
         }
@@ -78,7 +75,7 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 if showNoTags {
                     snapshot.appendSections(Section.allCases)
-                    snapshot.appendItems([.newTag], toSection: .base)
+                    snapshot.appendItems([.noTags], toSection: .base)
                 } else {
                     snapshot.appendSections([.tags])
                 }
@@ -107,9 +104,12 @@ class TagListModel: UITableViewDiffableDataSource<TagListModel.Section, TagListM
         Document.shared.undoManager.endUndoGrouping()
     }
     
+    func canInsertTag(_ tag: Tag) -> Bool {
+        !Document.shared.tags.contains(tag) && !tag.title.isEmpty && !tag.title.hasPrefix("#")
+    }
+    
     func insertTag(_ tag: Tag) {
-        if !Document.shared.tags.contains(tag) {
-            Document.shared.tags.append(tag)
-        }
+        guard canInsertTag(tag) else { return }
+        Document.shared.tags = Document.shared.tags + [tag]
     }
 }

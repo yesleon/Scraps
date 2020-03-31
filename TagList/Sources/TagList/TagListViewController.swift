@@ -46,21 +46,33 @@ class TagListViewController: UITableViewController {
                     model.selection = .hasTags([tag])
                 }
             case .newTag:
-                tableView.deselectRow(at: indexPath, animated: false)
+                tableView.deselectRow(at: indexPath, animated: true)
                 [UIAlertController(title: "New Tag", message: nil, preferredStyle: .alert)].forEach {
-                    var textField: UITextField?
+                    var subscriptions = Set<AnyCancellable>()
+                    var text = ""
+                    let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
+                        self.model.insertTag(.init(text))
+                        subscriptions.removeAll()
+                    })
+                    doneAction.isEnabled = false
                     $0.addTextField {
-                        textField = $0
-                    }
-                    [UIAlertAction(title: "Done", style: .default, handler: { _ in
-                        [textField?.text]
-                            .compactMap { $0 }
-                            .filter { !$0.isEmpty }
-                            .forEach { self.model.insertTag(.init($0)) }
+                        let publisher = NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: $0)
+                            .compactMap { $0.object as? UITextField }
+                            .compactMap(\.text)
+                            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                            .share()
                         
-                    })].forEach($0.addAction(_:))
+                        publisher
+                            .map { self.model.canInsertTag(.init($0)) }
+                            .assign(to: \.isEnabled, on: doneAction)
+                            .store(in: &subscriptions)
+                        
+                        publisher
+                            .sink(receiveValue: { text = $0 })
+                            .store(in: &subscriptions)
+                    }
                     
-                    
+                    [doneAction, .init(title: "Cancel", style: .cancel)].forEach($0.addAction(_:))
                     
                     present($0, animated: true)
                 }

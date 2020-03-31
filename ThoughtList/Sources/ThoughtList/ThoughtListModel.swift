@@ -29,7 +29,7 @@ class ThoughtListModel: UITableViewDiffableDataSource<DateComponents, Thought> {
             let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
             cell.textLabel?.text = thought.content
             
-            cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + (thought.tags ?? []).map(\.title).joined(separator: ", ")
+            cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + (thought.tags ?? []).map(\.title).map({ "#" + $0 }).joined(separator: " ")
             return cell
         }
         self.defaultRowAnimation = .fade
