@@ -1,5 +1,5 @@
 //
-//  ComposerViewController.swift
+//  DraftViewController.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/22.
@@ -12,28 +12,23 @@ import Combine
 
 /// Handles user input in `ComposerView`.
 @available(iOS 13.0, *)
-class ComposerViewController: UIViewController {
+class DraftViewController: UIViewController {
     
-    override var undoManager: UndoManager? { model.undoManager }
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     var subscriptions = Set<AnyCancellable>()
     
-    let model = ComposerModel.shared
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        model.$draft
+        Draft.shared.$value
             .map { !$0.isEmpty }
             .assign(to: \.isEnabled, on: saveButton)
             .store(in: &subscriptions)
     }
 
     @IBAction func save(_ sender: Any) {
-        
-        model.publishDraft()
-        undoManager?.setActionName("Publish Draft")
+        Draft.shared.publish()
         
         presentingViewController?.dismiss(animated: true)
     }
@@ -41,10 +36,10 @@ class ComposerViewController: UIViewController {
 }
 
 @available(iOS 13.0, *)
-extension ComposerViewController: UITextViewDelegate {
+extension DraftViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        model.draft = textView.text
+        Draft.shared.value = textView.text
     }
     
 }

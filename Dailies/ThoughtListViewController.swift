@@ -8,27 +8,24 @@
 
 import UIKit
 import Combine
-import TagList
+
 
 /// Handles user input in `ThoughtListView`.
 @available(iOS 13.0, *)
 class ThoughtListViewController: UITableViewController {
+    
     @IBOutlet weak var tagListButton: UIBarButtonItem!
     
     override var canBecomeFirstResponder: Bool { true }
     
-    override var undoManager: UndoManager? { model.undoManager }
-    
-    var model: ThoughtListModel!
+    override var undoManager: UndoManager? { .main }
     
     var subscriptions = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        model = ThoughtListModel(tableView: tableView)
-        
-        model.tagFilterPublisher
+        ThoughtListFilter.shared.$tagFilter
             .map({ tagFilter in
                 if case let .hasTags(tags) = tagFilter {
                     return !tags.isEmpty
@@ -39,13 +36,12 @@ class ThoughtListViewController: UITableViewController {
             .compactMap({ $0 ? UIImage(systemName: "book.fill") : UIImage(systemName: "book") })
             .assign(to: \.image, on: tagListButton)
             .store(in: &subscriptions)
-        
-        model.tagFilterPublisher
+
+        ThoughtListFilter.shared.$tagFilter
             .map({
                 switch $0 {
                 case .hasTags(let tags):
                     if !tags.isEmpty {
-                        
                         return tags.map(\.title).map({ "#" + $0 }).joined(separator: ", ")
                     } else {
                         return "Thoughts"
@@ -66,25 +62,21 @@ class ThoughtListViewController: UITableViewController {
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let thought = model.itemIdentifier(for: indexPath) else { return nil }
-        let copyAction = UIAction(title: NSLocalizedString("Copy", comment: "")) { _ in
-            UIPasteboard.general.string = thought.content
+    func contextMenuConfiguration(for thought: Thought, sourceView: UIView) -> UIContextMenuConfiguration? {
+        let shareAction = UIAction(title: "Share") { _ in
+            [UIActivityViewController(activityItems: [thought.content], applicationActivities: nil)]
+                .forEach { self.present($0, animated: true) }
         }
         let tagsAction = UIAction(title: "Tags") { _ in
-            self.present(.tagsVC(selection: .hasTags(thought.tags ?? []), selectionSetter: {
-                guard case let .hasTags(tags) = $0 else { return }
-                var thought = thought
-                thought.tags = Set(tags)
-                self.model.insertThought(thought)
-            }, sourceView: tableView.cellForRow(at: indexPath)!), animated: true)
+            self.present(.makeTagListViewController(thought: thought, sourceView: sourceView), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-            self.model.removeThought(thought)
-            self.undoManager?.setActionName("Delete Thought")
+            ThoughtList.shared.modifyValue {
+                $0.remove(thought)
+            }
         }
-        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
-            UIMenu(title: "", children: [copyAction, tagsAction, deleteAction])
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "", children: [shareAction, tagsAction, deleteAction])
         }
     }
 

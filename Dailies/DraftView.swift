@@ -1,5 +1,5 @@
 //
-//  TextView.swift
+//  DraftView.swift
 //  Dailies
 //
 //  Created by Li-Heng Hsu on 2020/3/22.
@@ -11,11 +11,9 @@ import Combine
 
 
 @available(iOS 13.0, *)
-class TextView: UITextView {
+class DraftView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
-    
-    let model = ComposerModel.shared
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -36,7 +34,7 @@ class TextView: UITextView {
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)
         
-        model.$draft
+        Draft.shared.$value
             .filter { $0 != self.text }
             .assign(to: \.text, on: self)
             .store(in: &subscriptions)

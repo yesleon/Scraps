@@ -7,13 +7,20 @@
 //
 
 import UIKit
-import MainModel
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    lazy var document = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        Document.shared.open()
+        if FileManager.default.fileExists(atPath: document.fileURL.path) {
+            document.open()
+        } else {
+            document.save(to: document.fileURL, for: .forCreating)
+        }
+        
         return true
     }
 
