@@ -98,6 +98,28 @@ class TagListViewController: UITableViewController {
             $0.insert(thought)
         }
     }
+    
+    func contextMenuConfiguration(for row: TagListView.Row) -> UIContextMenuConfiguration? {
+        guard case .tag(let tag) = row else { return nil }
+        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
+            
+            TagList.shared.modifyValue {
+                $0.remove(tag)
+            }
+            let value: [Thought] = ThoughtList.shared.value.map { thought in
+                var thought = thought
+                thought.tags?.remove(tag)
+                return thought
+            }
+            ThoughtList.shared.modifyValue {
+                $0 = Set(value)
+            }
+            
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "", children: [deleteAction])
+        }
+    }
 
 }
 

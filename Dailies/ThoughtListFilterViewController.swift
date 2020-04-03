@@ -48,28 +48,4 @@ class ThoughtListFilterViewController: UITableViewController {
             }
         }
     }
-    
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let dataSource = tableView.dataSource as? ThoughtListFilterView.DataSource else { return nil }
-        guard case .tag(let tag) = dataSource.itemIdentifier(for: indexPath) else { return nil }
-        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-            UndoManager.main.beginUndoGrouping()
-            TagList.shared.modifyValue {
-                $0.remove(tag)
-            }
-            let value: [Thought] = ThoughtList.shared.value.map { thought in
-                var thought = thought
-                thought.tags?.remove(tag)
-                return thought
-            }
-            ThoughtList.shared.modifyValue {
-                $0 = Set(value)
-            }
-            UndoManager.main.endUndoGrouping()
-        }
-        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
-            UIMenu(title: "", children: [deleteAction])
-        }
-        
-    }
 }

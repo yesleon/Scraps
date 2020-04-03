@@ -97,6 +97,13 @@ class TagListView: UITableView {
 
 extension TagListView: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let dataSource = tableView.dataSource as? UITableViewDiffableDataSource<Section, Row> else { return nil }
+        guard let row = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        return controller?.contextMenuConfiguration(for: row)
+        
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let row = diffableDataSource.itemIdentifier(for: indexPath) else { return }
         controller?.didSelectRow(row)

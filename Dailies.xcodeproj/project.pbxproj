@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		7144AA412435E84400B72934 /* Draft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA402435E84400B72934 /* Draft.swift */; };
-		7144AA4324360FC500B72934 /* UndoManager+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA4224360FC500B72934 /* UndoManager+.swift */; };
 		7144AA452436241600B72934 /* ThoughtListFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA442436241600B72934 /* ThoughtListFilter.swift */; };
 		7144AA47243658AE00B72934 /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA46243658AE00B72934 /* TagListView.swift */; };
 		7144AA4924365B2F00B72934 /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA4824365B2F00B72934 /* TagListViewController.swift */; };
@@ -23,6 +22,7 @@
 		715F63C82435B52500E12D26 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63C72435B52400E12D26 /* TagList.swift */; };
 		715F63CC2435C61A00E12D26 /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ThoughtListView.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
+		71D4259D24372E2000159911 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D4259C24372E2000159911 /* Window.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -34,7 +34,6 @@
 
 /* Begin PBXFileReference section */
 		7144AA402435E84400B72934 /* Draft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Draft.swift; sourceTree = "<group>"; };
-		7144AA4224360FC500B72934 /* UndoManager+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UndoManager+.swift"; sourceTree = "<group>"; };
 		7144AA442436241600B72934 /* ThoughtListFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListFilter.swift; sourceTree = "<group>"; };
 		7144AA46243658AE00B72934 /* TagListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
 		7144AA4824365B2F00B72934 /* TagListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +48,7 @@
 		715F63C72435B52400E12D26 /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
 		715F63CB2435C61A00E12D26 /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
+		71D4259C24372E2000159911 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,9 +103,9 @@
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				71FC15BC242E158C0092DD24 /* NavigationController.swift */,
-				7144AA4224360FC500B72934 /* UndoManager+.swift */,
 				715F63B22435B20F00E12D26 /* Thought.swift */,
 				715F63B12435B20F00E12D26 /* Document.swift */,
+				71D4259C24372E2000159911 /* Window.swift */,
 				715F63C72435B52400E12D26 /* TagList.swift */,
 				7144AA46243658AE00B72934 /* TagListView.swift */,
 				7144AA4824365B2F00B72934 /* TagListViewController.swift */,
@@ -217,10 +217,10 @@
 				7144AA412435E84400B72934 /* Draft.swift in Sources */,
 				715F63C62435B26800E12D26 /* ThoughtList.swift in Sources */,
 				71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */,
-				7144AA4324360FC500B72934 /* UndoManager+.swift in Sources */,
 				715F63CC2435C61A00E12D26 /* ThoughtListView.swift in Sources */,
 				71FC15BD242E158C0092DD24 /* NavigationController.swift in Sources */,
 				715F63C02435B22100E12D26 /* ThoughtListFilterViewController.swift in Sources */,
+				71D4259D24372E2000159911 /* Window.swift in Sources */,
 				715F63BE2435B22100E12D26 /* ThoughtListFilterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

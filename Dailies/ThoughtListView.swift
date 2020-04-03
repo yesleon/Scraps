@@ -36,22 +36,34 @@ class ThoughtListView: UITableView {
         
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
         
-        ThoughtList.shared.$valueByDates.combineLatest(ThoughtListFilter.shared.$tagFilter)
-            .map({ thoughtsByDates, tagFilter in
-                var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Thought>()
-                thoughtsByDates.forEach {
-                    let thoughts = $0.thoughts.filter {
+        ThoughtList.shared.$value.combineLatest(ThoughtListFilter.shared.$tagFilter)
+            .map({ thoughts, tagFilter in
+                thoughts.sorted(by: { $0.date > $1.date })
+                    .filter({
                         switch tagFilter {
                         case .hasTags(let tags):
                             return tags.isEmpty || ($0.tags ?? []).isSuperset(of: tags)
                         case .noTags:
                             return ($0.tags ?? []).isEmpty
                         }
-                    }
-                    if !thoughts.isEmpty {
-                        snapshot.appendSections([$0.dateComponents])
-                        snapshot.appendItems(thoughts, toSection: $0.dateComponents)
-                    }
+                    })
+                    .reduce([(dateComponents: DateComponents, thoughts: [Thought])](), { list, thought in
+                        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
+                        var list = list
+                        if list.last?.dateComponents == dateComponents, var last = list.popLast() {
+                            last.thoughts.append(thought)
+                            list.append(last)
+                        } else {
+                            list.append((dateComponents: dateComponents, thoughts: [thought]))
+                        }
+                        return list
+                    })
+            })
+            .map({ thoughtsByDates in
+                var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Thought>()
+                thoughtsByDates.forEach {
+                    snapshot.appendSections([$0.dateComponents])
+                    snapshot.appendItems($0.thoughts, toSection: $0.dateComponents)
                 }
                 return snapshot
             })

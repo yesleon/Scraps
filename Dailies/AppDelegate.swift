@@ -12,17 +12,14 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    override var undoManager: UndoManager? { document.undoManager }
+    
     lazy var document = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("data"))
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if FileManager.default.fileExists(atPath: document.fileURL.path) {
-            document.open()
-        } else {
-            document.save(to: document.fileURL, for: .forCreating)
-        }
+        document.load()
         
         return true
     }
 
 }
-

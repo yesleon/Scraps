@@ -12,13 +12,7 @@ class TagList {
     
     static let shared = TagList()
     
-    @Published private(set) var value = Set<Tag>() {
-        didSet {
-            UndoManager.main.registerUndo(withTarget: self) {
-                $0.value = oldValue
-            }
-        }
-    }
+    @Published private(set) var value = Set<Tag>() 
     
     func isTitleValid(_ title: String) -> Bool {
         !value.contains(where: { $0.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
