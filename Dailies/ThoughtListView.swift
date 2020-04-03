@@ -97,13 +97,13 @@ extension ThoughtListView: UITableViewDelegate {
                 view.textLabel?.sizeToFit()
             })
         view.textLabel?.text = formatter.string(from: date)
+        
         return view
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let thought = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
-        guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
-        return controller?.contextMenuConfiguration(for: thought, sourceView: cell)
+        return controller?.thoughtListView(self, contextMenuConfigurationFor: thought, for: indexPath)
     }
     
 }

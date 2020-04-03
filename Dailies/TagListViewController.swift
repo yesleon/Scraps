@@ -11,14 +11,14 @@ import Combine
 
 extension UIViewController {
     
-    static func makeTagListViewController(thought: Thought, sourceView: UIView) -> UIViewController {
+    static func makeTagListViewController(thought: Thought, sourceView: UIView, sourceRect: CGRect) -> UIViewController {
         let vc = TagListViewController()
         vc.thoughtIdentifier = thought.date
         vc.modalPresentationStyle = .popover
         vc.popoverPresentationController.map {
             $0.delegate = vc
             $0.sourceView = sourceView
-            $0.sourceRect = sourceView.bounds
+            $0.sourceRect = sourceRect
         }
         vc.preferredContentSize = .init(width: 240, height: 360)
         return vc
@@ -101,18 +101,24 @@ class TagListViewController: UITableViewController {
     
     func contextMenuConfiguration(for row: TagListView.Row) -> UIContextMenuConfiguration? {
         guard case .tag(let tag) = row else { return nil }
-        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
+        let deleteAction = UIAction(title: NSLocalizedString("Delete...", comment: ""), attributes: .destructive) { _ in
             
-            TagList.shared.modifyValue {
-                $0.remove(tag)
-            }
-            let value: [Thought] = ThoughtList.shared.value.map { thought in
-                var thought = thought
-                thought.tags?.remove(tag)
-                return thought
-            }
-            ThoughtList.shared.modifyValue {
-                $0 = Set(value)
+            [UIAlertController(title: "Delete Tag", message: "This will remove the tag from all thoughts.", preferredStyle: .alert)].forEach {
+                $0.addAction(.init(title: "Confirm", style: .destructive, handler: { _ in
+                    TagList.shared.modifyValue {
+                        $0.remove(tag)
+                    }
+                    let value: [Thought] = ThoughtList.shared.value.map { thought in
+                        var thought = thought
+                        thought.tags?.remove(tag)
+                        return thought
+                    }
+                    ThoughtList.shared.modifyValue {
+                        $0 = Set(value)
+                    }
+                }))
+                $0.addAction(.init(title: "Cancel", style: .cancel))
+                self.present($0, animated: true)
             }
             
         }

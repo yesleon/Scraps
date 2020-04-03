@@ -40,7 +40,6 @@ class DraftView: UITextView {
             .store(in: &subscriptions)
         
         becomeFirstResponder()
-        selectedTextRange = textRange(from: beginningOfDocument, to: beginningOfDocument)
     }
     
     override func layoutMarginsDidChange() {

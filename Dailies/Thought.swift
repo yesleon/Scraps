@@ -11,11 +11,6 @@ import Foundation
 
 /// Basic data structure.
 public struct Thought: Codable, Hashable {
-    public init(content: String, date: Date) {
-        self.content = content
-        self.date = date
-        self.tags = []
-    }
     
     public var content: String
     public var date: Date

@@ -60,13 +60,13 @@ class ThoughtListViewController: UITableViewController {
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
-    func contextMenuConfiguration(for thought: Thought, sourceView: UIView) -> UIContextMenuConfiguration? {
+    func thoughtListView(_ thoughtListView: ThoughtListView, contextMenuConfigurationFor thought: Thought, for indexPath: IndexPath) -> UIContextMenuConfiguration? {
         let shareAction = UIAction(title: "Share") { _ in
             [UIActivityViewController(activityItems: [thought.content], applicationActivities: nil)]
                 .forEach { self.present($0, animated: true) }
         }
         let tagsAction = UIAction(title: "Tags") { _ in
-            self.present(.makeTagListViewController(thought: thought, sourceView: sourceView), animated: true)
+            self.present(.makeTagListViewController(thought: thought, sourceView: thoughtListView, sourceRect: thoughtListView.rectForRow(at: indexPath)), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             ThoughtList.shared.modifyValue {

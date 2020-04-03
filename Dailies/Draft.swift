@@ -14,8 +14,12 @@ class Draft {
     @Published var value = ""
     
     func publish() {
+        var tags: Set<Tag>?
+        if case let .hasTags(selectedTags) = ThoughtListFilter.shared.tagFilter {
+            tags = selectedTags
+        }
         ThoughtList.shared.modifyValue {
-            $0.insert(.init(content: value, date: .init()))
+            $0.insert(.init(content: value, date: .init(), tags: tags))
         }
         value.removeAll()
     }

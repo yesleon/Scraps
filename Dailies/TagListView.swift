@@ -48,6 +48,7 @@ class TagListView: UITableView {
         
         self.allowsMultipleSelection = true
         self.alwaysBounceVertical = false
+        self.separatorStyle = .none
         
         register(UITableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
         self.dataSource = diffableDataSource
