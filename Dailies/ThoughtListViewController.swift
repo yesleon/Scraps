@@ -83,15 +83,18 @@ class ThoughtListViewController: UITableViewController {
         actions = [tagsAction, shareAction, deleteAction]
         if let url = url {
             let previewAction = UIAction(title: "Preview") { _ in
-                LPMetadataProvider().startFetchingMetadata(for: url) { (metadata, error) in
-                    DispatchQueue.main.async {
-                        metadata.map(LPLinkView.init(metadata:)).map({
-                            let vc = UIViewController()
-                            vc.view = $0
-                            self.present(vc, animated: true)
-                        })
-                    }
-                }
+                let vc = UIViewController()
+                let view = LPLinkView(url: url)
+                vc.view = view
+                var subscription: AnyCancellable?
+                subscription = LinkMetadataList.shared.metadataPublisher(for: url)
+                    .assertNoFailure()
+                    .receive(on: RunLoop.main)
+                    .sink(receiveValue: {
+                        view.metadata = $0
+                        subscription?.cancel()
+                    })
+                self.present(vc, animated: true)
             }
             actions.insert(previewAction, at: 0)
         }

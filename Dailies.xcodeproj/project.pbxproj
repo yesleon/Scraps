@@ -23,6 +23,7 @@
 		715F63CC2435C61A00E12D26 /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ThoughtListView.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71D4259D24372E2000159911 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D4259C24372E2000159911 /* Window.swift */; };
+		71D4259F24377CA800159911 /* LinkMetadataList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D4259E24377CA800159911 /* LinkMetadataList.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 		715F63CB2435C61A00E12D26 /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71D4259C24372E2000159911 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		71D4259E24377CA800159911 /* LinkMetadataList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMetadataList.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Dailies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dailies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				715F63C52435B26800E12D26 /* ThoughtList.swift */,
 				715F63CB2435C61A00E12D26 /* ThoughtListView.swift */,
 				715F63BB2435B22000E12D26 /* ThoughtListViewController.swift */,
+				71D4259E24377CA800159911 /* LinkMetadataList.swift */,
 				7144AA402435E84400B72934 /* Draft.swift */,
 				715F63B52435B22000E12D26 /* DraftView.swift */,
 				715F63B92435B22000E12D26 /* DraftViewController.swift */,
@@ -203,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71D4259F24377CA800159911 /* LinkMetadataList.swift in Sources */,
 				7144AA4924365B2F00B72934 /* TagListViewController.swift in Sources */,
 				715F63C82435B52500E12D26 /* TagList.swift in Sources */,
 				715F63BF2435B22100E12D26 /* ThoughtListViewController.swift in Sources */,
