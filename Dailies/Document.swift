@@ -8,9 +8,8 @@
 
 import UIKit
 import Combine
-
-private struct DocumentData: Codable {
-    var thoughts: Set<Thought>, tags: Set<Tag>
+struct DocumentData: Codable {
+    var thoughts: [Thought.Identifier: Thought], tags: [Tag.Identifier: Tag]
 }
 
 /// The Model. Holds data and publishes data changes. I/O to disk.
@@ -20,7 +19,7 @@ class Document: UIDocument {
     var subscriptions = Set<AnyCancellable>()
     
     func load() {
-        var thoughts = Set<Thought>()
+        var thoughts = [Thought.Identifier: Thought]()
         ThoughtList.shared.$value
             .filter({ $0 != thoughts })
             .sink(receiveValue: { newThoughts in
@@ -34,7 +33,7 @@ class Document: UIDocument {
             })
             .store(in: &self.subscriptions)
         
-        var tags = Set<Tag>()
+        var tags = [Tag.Identifier: Tag]()
         TagList.shared.$value
             .filter({ $0 != tags })
             .sink(receiveValue: { newTags in
@@ -54,13 +53,18 @@ class Document: UIDocument {
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
         let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
+        TagList.shared.modifyValue {
+            $0 = documentData.tags
+        }
         ThoughtList.shared.modifyValue {
             $0 = documentData.thoughts
         }
-        TagList.shared.modifyValue {
-            $0 = documentData.tags            
-        }
         undoManager.removeAllActions()
+    }
+    
+    override func handleError(_ error: Error, userInteractionPermitted: Bool) {
+        super.handleError(error, userInteractionPermitted: userInteractionPermitted)
+        print(error)
     }
 
     override func contents(forType typeName: String) throws -> Any {

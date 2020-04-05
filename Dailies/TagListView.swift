@@ -16,22 +16,28 @@ class TagListView: UITableView {
     }
     
     enum Row: Hashable {
-        case newTag, tag(Tag)
+        case newTag, tag(Tag.Identifier)
     }
 
     var subscriptions = Set<AnyCancellable>()
+    var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
     lazy var diffableDataSource = UITableViewDiffableDataSource<Section, Row>(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
-        case .tag(let tag):
-            cell.textLabel?.text = "#" + tag.title
-            if let thought = ThoughtList.shared.value.first(where: { $0.date == self.thoughtIdentifier }),
-                (thought.tags ?? []).contains(tag) {
-                cell.setSelected(true, animated: false)
-            } else {
-                cell.setSelected(false, animated: false)
-            }
+        case .tag(let tagID):
+            self.cellSubscriptions[cell] = TagList.shared.$value
+                .compactMap({ $0[tagID] })
+                .sink(receiveValue: { tag in
+                    cell.textLabel?.text = "#" + tag.title
+                    if let thoughtID = self.thoughtID, let thought = ThoughtList.shared.value[thoughtID],
+                        thought.tagIDs.contains(tagID) {
+                        cell.setSelected(true, animated: false)
+                    } else {
+                        cell.setSelected(false, animated: false)
+                    }
+                })
+            
         case .newTag:
             cell.textLabel?.text = "New Tag..."
             cell.setSelected(false, animated: false)
@@ -39,7 +45,7 @@ class TagListView: UITableView {
         return cell
     }
     
-    var thoughtIdentifier: Date?
+    var thoughtID: Thought.Identifier?
     
     weak var controller: TagListViewController?
     
@@ -55,6 +61,7 @@ class TagListView: UITableView {
         self.delegate = self
         
         TagList.shared.$value
+            .map(\.keys)
             .map({
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])
@@ -69,8 +76,8 @@ class TagListView: UITableView {
         
         ThoughtList.shared.$value
             .compactMap({ thoughts -> [IndexPath]? in
-                guard let thought = thoughts.first(where: { $0.date == self.thoughtIdentifier }) else { return nil }
-                return (thought.tags ?? [])
+                guard let thoughtID = self.thoughtID, let thought = thoughts[thoughtID] else { return nil }
+                return thought.tagIDs
                     .map(Row.tag)
                     .compactMap(self.diffableDataSource.indexPath(for:))
             })

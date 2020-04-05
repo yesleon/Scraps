@@ -11,19 +11,25 @@ import Combine
 
 class ThoughtListView: UITableView {
     
-    typealias DataSource =  UITableViewDiffableDataSource<DateComponents, Thought>
+    typealias DataSource =  UITableViewDiffableDataSource<DateComponents, Thought.Identifier>
 
     var subscriptions = Set<AnyCancellable>()
+    var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
     var headerViewSubscriptions = [UIView: AnyCancellable]()
     
     @IBOutlet weak var controller: ThoughtListViewController?
     
-    lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thought -> UITableViewCell? in
+    lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID -> UITableViewCell? in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        cell.textLabel?.text = thought.content
-        
-        cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + (thought.tags ?? []).map(\.title).map({ "#" + $0 }).joined(separator: " ")
+        self.cellSubscriptions[cell] = ThoughtList.shared.$value
+            .compactMap({ $0[thoughtID] })
+            .sink(receiveValue: { thought in
+                cell.textLabel?.text = thought.content
+                
+                cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + thought.tagIDs.compactMap({ TagList.shared.value[$0] }).map(\.title).map({ "#" + $0 }).joined(separator: " ")
+            })
+            
         return cell
     }
     
@@ -36,34 +42,35 @@ class ThoughtListView: UITableView {
         
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
         
-        ThoughtList.shared.$value.combineLatest(ThoughtListFilter.shared.$tagFilter)
+        ThoughtList.shared.$value
+            .combineLatest(ThoughtListFilter.shared.$tagFilter)
             .map({ thoughts, tagFilter in
-                thoughts.sorted(by: { $0.date > $1.date })
+                thoughts.sorted(by: { $0.value.date > $1.value.date })
                     .filter({
                         switch tagFilter {
-                        case .hasTags(let tags):
-                            return tags.isEmpty || ($0.tags ?? []).isSuperset(of: tags)
+                        case .hasTags(let tagIDs):
+                            return tagIDs.isEmpty || $0.value.tagIDs.isSuperset(of: tagIDs)
                         case .noTags:
-                            return ($0.tags ?? []).isEmpty
+                            return $0.value.tagIDs.isEmpty
                         }
                     })
-                    .reduce([(dateComponents: DateComponents, thoughts: [Thought])](), { list, thought in
-                        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: thought.date)
+                    .reduce([(dateComponents: DateComponents, thoughtIDs: [Thought.Identifier])](), { list, pair in
+                        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: pair.value.date)
                         var list = list
                         if list.last?.dateComponents == dateComponents, var last = list.popLast() {
-                            last.thoughts.append(thought)
+                            last.thoughtIDs.append(pair.key)
                             list.append(last)
                         } else {
-                            list.append((dateComponents: dateComponents, thoughts: [thought]))
+                            list.append((dateComponents: dateComponents, thoughtIDs: [pair.key]))
                         }
                         return list
                     })
             })
             .map({ thoughtsByDates in
-                var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Thought>()
+                var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Thought.Identifier>()
                 thoughtsByDates.forEach {
                     snapshot.appendSections([$0.dateComponents])
-                    snapshot.appendItems($0.thoughts, toSection: $0.dateComponents)
+                    snapshot.appendItems($0.thoughtIDs, toSection: $0.dateComponents)
                 }
                 return snapshot
             })
@@ -102,8 +109,8 @@ extension ThoughtListView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let thought = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
-        return controller?.thoughtListView(self, contextMenuConfigurationFor: thought, for: indexPath)
+        guard let thoughtID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
+        return controller?.thoughtListView(self, contextMenuConfigurationForThought: thoughtID, for: indexPath)
     }
     
 }

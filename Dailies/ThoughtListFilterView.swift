@@ -19,7 +19,7 @@ class ThoughtListFilterView: UITableView {
     }
 
     enum Row: Hashable {
-        case noTags, tag(Tag)
+        case noTags, tag(Tag.Identifier)
     }
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
@@ -27,7 +27,8 @@ class ThoughtListFilterView: UITableView {
         switch row {
         case .noTags:
             cell.textLabel?.text = "No Tags"
-        case .tag(let tag):
+        case .tag(let tagID):
+            guard let tag = TagList.shared.value[tagID] else { break }
             cell.textLabel?.text = "#" + tag.title
         }
         if case .hasTags(let tags) = ThoughtListFilter.shared.tagFilter, case let .tag(tag) = row {
@@ -44,7 +45,7 @@ class ThoughtListFilterView: UITableView {
         self.dataSource = diffableDataSource
         
         TagList.shared.$value
-            .map { $0.map(Row.tag) }
+            .map { $0.keys.map(Row.tag) }
             .sink(receiveValue: { tags in
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])

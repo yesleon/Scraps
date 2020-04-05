@@ -8,7 +8,6 @@
 
 import UIKit
 import Combine
-import LinkPresentation
 
 /// Handles user input in `ThoughtListView`.
 @available(iOS 13.0, *)
@@ -38,9 +37,13 @@ class ThoughtListViewController: UITableViewController {
         ThoughtListFilter.shared.$tagFilter
             .map({
                 switch $0 {
-                case .hasTags(let tags):
-                    if !tags.isEmpty {
-                        return tags.map(\.title).map({ "#" + $0 }).joined(separator: ", ")
+                case .hasTags(let tagIDs):
+                    if !tagIDs.isEmpty {
+                        return tagIDs.lazy
+                            .compactMap { TagList.shared.value[$0] }
+                            .map(\.title)
+                            .map({ "#" + $0 })
+                            .joined(separator: ", ")
                     } else {
                         return "Thoughts"
                     }
@@ -60,8 +63,9 @@ class ThoughtListViewController: UITableViewController {
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
-    func thoughtListView(_ thoughtListView: ThoughtListView, contextMenuConfigurationFor thought: Thought, for indexPath: IndexPath) -> UIContextMenuConfiguration? {
+    func thoughtListView(_ thoughtListView: ThoughtListView, contextMenuConfigurationForThought thoughtID: Thought.Identifier, for indexPath: IndexPath) -> UIContextMenuConfiguration? {
         var actions = [UIAction]()
+        guard let thought = ThoughtList.shared.value[thoughtID] else { return nil }
         let url = URL(string: thought.content.trimmingCharacters(in: .whitespacesAndNewlines))
         let shareAction = UIAction(title: "Share") { _ in
             if let url = url {
@@ -73,31 +77,14 @@ class ThoughtListViewController: UITableViewController {
             }
         }
         let tagsAction = UIAction(title: "Tags") { _ in
-            self.present(.makeTagListViewController(thought: thought, sourceView: thoughtListView, sourceRect: thoughtListView.rectForRow(at: indexPath)), animated: true)
+            self.present(.makeTagListViewController(thoughtID: thoughtID, sourceView: thoughtListView, sourceRect: thoughtListView.rectForRow(at: indexPath)), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             ThoughtList.shared.modifyValue {
-                $0.remove(thought)
+                $0.removeValue(forKey: thoughtID)
             }
         }
         actions = [tagsAction, shareAction, deleteAction]
-        if let url = url {
-            let previewAction = UIAction(title: "Preview") { _ in
-                let vc = UIViewController()
-                let view = LPLinkView(url: url)
-                vc.view = view
-                var subscription: AnyCancellable?
-                subscription = LinkMetadataList.shared.metadataPublisher(for: url)
-                    .assertNoFailure()
-                    .receive(on: RunLoop.main)
-                    .sink(receiveValue: {
-                        view.metadata = $0
-                        subscription?.cancel()
-                    })
-                self.present(vc, animated: true)
-            }
-            actions.insert(previewAction, at: 0)
-        }
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in
             UIMenu(title: "", children: actions)
         })

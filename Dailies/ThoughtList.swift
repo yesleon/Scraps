@@ -12,9 +12,9 @@ class ThoughtList {
     
     static let shared = ThoughtList()
     
-    @Published private(set) var value = Set<Thought>()
+    @Published private(set) var value = [Thought.Identifier: Thought]()
     
-    func modifyValue(handler: (inout Set<Thought>) -> Void) {
+    func modifyValue(handler: (inout [Thought.Identifier: Thought]) -> Void) {
         var value = self.value
         handler(&value)
         self.value = value
