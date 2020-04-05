@@ -23,29 +23,47 @@ class ThoughtListFilterViewController: UITableViewController {
         
         switch row {
         case .noTags:
-            ThoughtListFilter.shared.tagFilter = .noTags
-            
+            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+                $0 = .noTags
+            }
         case .tag(let tag):
-            if case .hasTags(var tags) = ThoughtListFilter.shared.tagFilter {
-                tags.insert(tag)
-                ThoughtListFilter.shared.tagFilter = .hasTags(tags)
-            } else {
-                ThoughtListFilter.shared.tagFilter = .hasTags([tag])
+            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+                if case .hasTags(var tags) = $0 {
+                    tags.insert(tag)
+                    $0 = .hasTags(tags)
+                } else {
+                    $0 = .hasTags([tag])
+                }
+            }
+        case .today:
+            ThoughtFilter.shared.modifyValue(ofType: TodayFilter.self) {
+                $0 = .init()
             }
         }
+        
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let dataSource = tableView.dataSource as? ThoughtListFilterView.DataSource else { return }
         guard let row = dataSource.itemIdentifier(for: indexPath) else { return }
+        
         switch row {
         case .noTags:
-            ThoughtListFilter.shared.tagFilter = .hasTags([])
-        case .tag(let tag):
-            if case .hasTags(var tags) = ThoughtListFilter.shared.tagFilter {
-                tags.remove(tag)
-                ThoughtListFilter.shared.tagFilter = .hasTags(tags)
+            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+                $0 = .hasTags([])
             }
+        case .tag(let tag):
+            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+                if case .hasTags(var tags) = $0 {
+                    tags.remove(tag)
+                    $0 = .hasTags(tags)
+                }
+            }
+        case .today:
+            ThoughtFilter.shared.modifyValue(ofType: TodayFilter.self) {
+                $0 = nil
+            }
+            
         }
     }
 }

@@ -43,17 +43,10 @@ class ThoughtListView: UITableView {
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
         
         ThoughtList.shared.$value
-            .combineLatest(ThoughtListFilter.shared.$tagFilter)
-            .map({ thoughts, tagFilter in
+            .combineLatest(ThoughtFilter.shared.$value)
+            .map({ thoughts, filters in
                 thoughts.sorted(by: { $0.value.date > $1.value.date })
-                    .filter({
-                        switch tagFilter {
-                        case .hasTags(let tagIDs):
-                            return tagIDs.isEmpty || $0.value.tagIDs.isSuperset(of: tagIDs)
-                        case .noTags:
-                            return $0.value.tagIDs.isEmpty
-                        }
-                    })
+                    .filter { filters.shouldInclude($0.value) }
                     .reduce([(dateComponents: DateComponents, thoughtIDs: [Thought.Identifier])](), { list, pair in
                         let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: pair.value.date)
                         var list = list
@@ -84,6 +77,7 @@ class ThoughtListView: UITableView {
         super.removeFromSuperview()
         
         subscriptions.removeAll()
+        cellSubscriptions.removeAll()
     }
 
 }

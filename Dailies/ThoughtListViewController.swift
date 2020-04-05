@@ -22,35 +22,14 @@ class ThoughtListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ThoughtListFilter.shared.$tagFilter
-            .map({ tagFilter in
-                if case let .hasTags(tags) = tagFilter {
-                    return !tags.isEmpty
-                } else {
-                    return true
-                }
-            })
-            .compactMap({ $0 ? UIImage(systemName: "book.fill") : UIImage(systemName: "book") })
+        ThoughtFilter.shared.$value
+            .map({ $0.isEnabled ? UIImage(systemName: "book.fill") : UIImage(systemName: "book") })
             .assign(to: \.image, on: tagListButton)
             .store(in: &subscriptions)
 
-        ThoughtListFilter.shared.$tagFilter
-            .map({
-                switch $0 {
-                case .hasTags(let tagIDs):
-                    if !tagIDs.isEmpty {
-                        return tagIDs.lazy
-                            .compactMap { TagList.shared.value[$0] }
-                            .map(\.title)
-                            .map({ "#" + $0 })
-                            .joined(separator: ", ")
-                    } else {
-                        return "Thoughts"
-                    }
-                case .noTags:
-                    return "No Tags"
-                }
-            })
+        ThoughtFilter.shared.$value
+            .map(\.stringRepresentation)
+            .map { $0 ?? "Thoughts" }
             .assign(to: \.title, on: self)
             .store(in: &subscriptions)
         

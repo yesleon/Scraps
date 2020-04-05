@@ -99,6 +99,7 @@ class TagListView: UITableView {
         super.removeFromSuperview()
         
         subscriptions.removeAll()
+        cellSubscriptions.removeAll()
     }
 
 }
