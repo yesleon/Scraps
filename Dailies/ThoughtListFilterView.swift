@@ -31,6 +31,7 @@ class ThoughtListFilterView: UITableView {
                 switch row {
                 case .noTags:
                     cell.textLabel?.text = "No Tags"
+                    cell.imageView?.image = nil
                     
                     if case .noTags = filters.firstElement(ofType: TagFilter.self) {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
@@ -39,21 +40,27 @@ class ThoughtListFilterView: UITableView {
                     }
                 case .tag(let tagID):
                     guard let tag = TagList.shared.value[tagID] else { break }
-                    cell.textLabel?.text = "#" + tag.title
+                    cell.textLabel?.text = tag.title
+                    
                     
                     if case .hasTags(let tagIDs) = filters.firstElement(ofType: TagFilter.self), tagIDs.contains(tagID) {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                        cell.imageView?.image = UIImage(systemName: "tag.fill")
                     } else {
                         tableView.deselectRow(at: indexPath, animated: false)
+                        cell.imageView?.image = UIImage(systemName: "tag")
                     }
                     
                 case .today:
                     cell.textLabel?.text = "Today"
                     
+                    
                     if filters.firstElement(ofType: TodayFilter.self)?.isEnabled == true {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                        cell.imageView?.image = UIImage(systemName: "star.fill")
                     } else {
                         tableView.deselectRow(at: indexPath, animated: false)
+                        cell.imageView?.image = UIImage(systemName: "star")
                     }
                 }
             })

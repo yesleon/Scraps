@@ -87,17 +87,19 @@ extension ThoughtListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") else { return nil }
-        guard let date = Calendar.current.date(from: dateComponents) else { return nil }
-        let formatter = DateFormatter()
-        formatter.doesRelativeDateFormatting = true
-        formatter.dateStyle = .full
-        formatter.timeStyle = .none
+        
         headerViewSubscriptions[view] = NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)
-            .sink(receiveValue: { _ in
+            .map { _ in dateComponents }
+            .prepend(Just(dateComponents))
+            .compactMap(Calendar.current.date(from:))
+            .sink(receiveValue: { date in
+                let formatter = DateFormatter()
+                formatter.doesRelativeDateFormatting = true
+                formatter.dateStyle = .full
+                formatter.timeStyle = .none
                 view.textLabel?.text = formatter.string(from: date)
                 view.textLabel?.sizeToFit()
             })
-        view.textLabel?.text = formatter.string(from: date)
         
         return view
     }

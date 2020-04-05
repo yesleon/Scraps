@@ -22,7 +22,6 @@ class DraftView: UITextView {
             .publisher(for: UIResponder.keyboardWillShowNotification)
             .map(\.userInfo)
             .compactMap { $0?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
-            .print()
             .sink(receiveValue: { [weak self] keyboardFrame in
                 guard let self = self, let window = self.window, let superview = self.superview else { return }
                 superview.layoutIfNeeded()
@@ -33,7 +32,6 @@ class DraftView: UITextView {
         
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillHideNotification)
-            .print()
             .sink { [weak self] _ in
                 self?.contentInset.bottom = 0 }
             .store(in: &subscriptions)

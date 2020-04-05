@@ -26,21 +26,23 @@ class TagListView: UITableView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
         case .tag(let tagID):
-            self.cellSubscriptions[cell] = TagList.shared.$value
-                .compactMap({ $0[tagID] })
-                .sink(receiveValue: { tag in
-                    cell.textLabel?.text = "#" + tag.title
-                    if let thoughtID = self.thoughtID, let thought = ThoughtList.shared.value[thoughtID],
+            self.cellSubscriptions[cell] = TagList.shared.$value.combineLatest(ThoughtList.shared.$value)
+                .sink(receiveValue: { tags, thoughts in
+                    guard let tag = tags[tagID] else { return }
+                    cell.textLabel?.text = tag.title
+                    if let thoughtID = self.thoughtID, let thought = thoughts[thoughtID],
                         thought.tagIDs.contains(tagID) {
-                        cell.setSelected(true, animated: false)
+                        cell.imageView?.image = UIImage(systemName: "tag.fill")
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                     } else {
-                        cell.setSelected(false, animated: false)
+                        cell.imageView?.image = UIImage(systemName: "tag")
+                        tableView.deselectRow(at: indexPath, animated: false)
                     }
                 })
             
         case .newTag:
             cell.textLabel?.text = "New Tag..."
-            cell.setSelected(false, animated: false)
+            tableView.deselectRow(at: indexPath, animated: false)
         }
         return cell
     }
@@ -71,25 +73,6 @@ class TagListView: UITableView {
             })
             .sink(receiveValue: { [diffableDataSource] in
                 diffableDataSource.apply($0)
-            })
-            .store(in: &subscriptions)
-        
-        ThoughtList.shared.$value
-            .compactMap({ thoughts -> [IndexPath]? in
-                guard let thoughtID = self.thoughtID, let thought = thoughts[thoughtID] else { return nil }
-                return thought.tagIDs
-                    .map(Row.tag)
-                    .compactMap(self.diffableDataSource.indexPath(for:))
-            })
-            .map(Set.init)
-            .sink(receiveValue: { indexPathsToSelect in
-                let indexPathsForSelectedRows = Set(self.indexPathsForSelectedRows ?? [])
-                indexPathsToSelect.subtracting(indexPathsForSelectedRows).forEach {
-                    self.selectRow(at: $0, animated: false, scrollPosition: .none)
-                }
-                indexPathsForSelectedRows.subtracting(indexPathsToSelect).forEach {
-                    self.deselectRow(at: $0, animated: false)
-                }
             })
             .store(in: &subscriptions)
         

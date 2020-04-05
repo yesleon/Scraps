@@ -23,7 +23,7 @@ class ThoughtListViewController: UITableViewController {
         super.viewDidLoad()
         
         ThoughtFilter.shared.$value
-            .map({ $0.isEnabled ? UIImage(systemName: "book.fill") : UIImage(systemName: "book") })
+            .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
             .assign(to: \.image, on: tagListButton)
             .store(in: &subscriptions)
 

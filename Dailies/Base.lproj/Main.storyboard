@@ -142,7 +142,7 @@
                                     <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="book" catalog="system" id="pMY-ms-0KF">
+                            <barButtonItem image="line.horizontal.3.decrease.circle" catalog="system" id="pMY-ms-0KF">
                                 <connections>
                                     <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Dailies" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="N6H-Hx-Yhh">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -246,6 +246,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="book" catalog="system" width="128" height="101"/>
+        <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
     </resources>
 </document>

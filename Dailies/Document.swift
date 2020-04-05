@@ -19,29 +19,31 @@ class Document: UIDocument {
     var subscriptions = Set<AnyCancellable>()
     
     func load() {
-        var thoughts = [Thought.Identifier: Thought]()
+        
         ThoughtList.shared.$value
-            .filter({ $0 != thoughts })
-            .sink(receiveValue: { newThoughts in
-                let oldThoughts = thoughts
-                thoughts = newThoughts
+            .removeDuplicates()
+            .scan((oldValue: [Thought.Identifier: Thought](), newValue: [Thought.Identifier: Thought]()), { tuple, newValue in
+                return (oldValue: tuple.newValue, newValue: newValue)
+            })
+            .sink(receiveValue: { tuple in
                 self.undoManager.registerUndo(withTarget: ThoughtList.shared) {
                     $0.modifyValue {
-                        $0 = oldThoughts
+                        $0 = tuple.oldValue
                     }
                 }
             })
             .store(in: &self.subscriptions)
         
-        var tags = [Tag.Identifier: Tag]()
+        
         TagList.shared.$value
-            .filter({ $0 != tags })
-            .sink(receiveValue: { newTags in
-                let oldTags = tags
-                tags = newTags
+            .removeDuplicates()
+            .scan((oldValue: [Tag.Identifier: Tag](), newValue: [Tag.Identifier: Tag]()), { tuple, newValue in
+                return (oldValue: tuple.newValue, newValue: newValue)
+            })
+            .sink(receiveValue: { tuple in
                 self.undoManager.registerUndo(withTarget: TagList.shared) {
                     $0.modifyValue {
-                        $0 = oldTags
+                        $0 = tuple.oldValue
                     }
                 }
             })
