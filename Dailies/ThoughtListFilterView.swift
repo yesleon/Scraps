@@ -30,7 +30,7 @@ class ThoughtListFilterView: UITableView {
             .sink(receiveValue: { filters in
                 switch row {
                 case .noTags:
-                    cell.textLabel?.text = "No Tags"
+                    cell.textLabel?.text = NSLocalizedString("No Tags", comment: "")
                     cell.imageView?.image = nil
                     
                     if case .noTags = filters.firstElement(ofType: TagFilter.self) {
@@ -52,7 +52,7 @@ class ThoughtListFilterView: UITableView {
                     }
                     
                 case .today:
-                    cell.textLabel?.text = "Today"
+                    cell.textLabel?.text = NSLocalizedString("Today", comment: "")
                     
                     
                     if filters.firstElement(ofType: TodayFilter.self)?.isEnabled == true {

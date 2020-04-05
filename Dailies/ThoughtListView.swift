@@ -12,7 +12,7 @@ import Combine
 class ThoughtListView: UITableView {
     
     typealias DataSource =  UITableViewDiffableDataSource<DateComponents, Thought.Identifier>
-
+    
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
@@ -29,7 +29,7 @@ class ThoughtListView: UITableView {
                 
                 cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + thought.tagIDs.compactMap({ TagList.shared.value[$0] }).map(\.title).map({ "#" + $0 }).joined(separator: " ")
             })
-            
+        
         return cell
     }
     
@@ -43,8 +43,8 @@ class ThoughtListView: UITableView {
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
         
         ThoughtList.shared.$value
-            .combineLatest(ThoughtFilter.shared.$value)
-            .map({ thoughts, filters in
+            .combineLatest(ThoughtFilter.shared.$value, NotificationCenter.default.significantTimeChangeNotificationPublisher())
+            .map({ thoughts, filters, _ in
                 thoughts.sorted(by: { $0.value.date > $1.value.date })
                     .filter { filters.shouldInclude($0.value) }
                     .reduce([(dateComponents: DateComponents, thoughtIDs: [Thought.Identifier])](), { list, pair in
@@ -68,7 +68,7 @@ class ThoughtListView: UITableView {
                 return snapshot
             })
             .sink(receiveValue: { [dataSource = diffableDataSource] snapshot in
-                dataSource.apply(snapshot, animatingDifferences: dataSource.snapshot().numberOfSections != 0)
+                dataSource.apply(snapshot, animatingDifferences: snapshot.numberOfSections != 0)
             })
             .store(in: &subscriptions)
     }
@@ -79,18 +79,26 @@ class ThoughtListView: UITableView {
         subscriptions.removeAll()
         cellSubscriptions.removeAll()
     }
-
+    
 }
 
 extension ThoughtListView: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
+        if tableView.numberOfSections == 1, let date = Calendar.current.date(from: dateComponents), Calendar.current.isDateInToday(date) {
+            return 0
+        } else {
+            return tableView.sectionHeaderHeight
+        }
+    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") else { return nil }
         
-        headerViewSubscriptions[view] = NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)
-            .map { _ in dateComponents }
-            .prepend(Just(dateComponents))
+        headerViewSubscriptions[view] = NotificationCenter.default.significantTimeChangeNotificationPublisher()
+            .map { dateComponents }
             .compactMap(Calendar.current.date(from:))
             .sink(receiveValue: { date in
                 let formatter = DateFormatter()

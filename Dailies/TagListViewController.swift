@@ -25,10 +25,10 @@ extension UIViewController {
     }
     
     static func makeTagNamingAlert(tagID: Tag.Identifier?) -> UIViewController {
-        let vc = UIAlertController(title: "Name the Tag", message: nil, preferredStyle: .alert)
+        let vc = UIAlertController(title: NSLocalizedString("Name the Tag", comment: ""), message: nil, preferredStyle: .alert)
         var subscriptions = Set<AnyCancellable>()
         var text = ""
-        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { _ in
+        let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default, handler: { _ in
             TagList.shared.modifyValue {
                 $0.updateValue(.init(title: text), forKey: tagID ?? .init())
             }
@@ -61,7 +61,7 @@ extension UIViewController {
                 .store(in: &subscriptions)
         }
         
-        [doneAction, .init(title: "Cancel", style: .cancel)].forEach(vc.addAction(_:))
+        [doneAction, .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)].forEach(vc.addAction(_:))
         return vc
     }
     
@@ -106,13 +106,13 @@ class TagListViewController: UITableViewController {
     
     func contextMenuConfiguration(for row: TagListView.Row) -> UIContextMenuConfiguration? {
         guard case .tag(let tagID) = row else { return nil }
-        let renameAction = UIAction(title: "Rename...") { _ in
+        let renameAction = UIAction(title: NSLocalizedString("Rename...", comment: "")) { _ in
             self.present(.makeTagNamingAlert(tagID: tagID), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete...", comment: ""), attributes: .destructive) { _ in
             
-            [UIAlertController(title: "Delete Tag", message: "This will remove the tag from all thoughts.", preferredStyle: .alert)].forEach {
-                $0.addAction(.init(title: "Confirm", style: .destructive, handler: { _ in
+            [UIAlertController(title: NSLocalizedString("Delete Tag", comment: ""), message: NSLocalizedString("This will remove the tag from all thoughts.", comment: ""), preferredStyle: .alert)].forEach {
+                $0.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: { _ in
                     TagList.shared.modifyValue {
                         $0.removeValue(forKey: tagID)
                     }
@@ -122,7 +122,7 @@ class TagListViewController: UITableViewController {
                         }
                     }
                 }))
-                $0.addAction(.init(title: "Cancel", style: .cancel))
+                $0.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
                 self.present($0, animated: true)
             }
             

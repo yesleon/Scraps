@@ -20,6 +20,7 @@
 		715F63C62435B26800E12D26 /* ThoughtList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63C52435B26800E12D26 /* ThoughtList.swift */; };
 		715F63C82435B52500E12D26 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63C72435B52400E12D26 /* TagList.swift */; };
 		715F63CC2435C61A00E12D26 /* ThoughtListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ThoughtListView.swift */; };
+		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Thought.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
@@ -47,6 +48,7 @@
 		715F63C52435B26800E12D26 /* ThoughtList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtList.swift; sourceTree = "<group>"; };
 		715F63C72435B52400E12D26 /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
 		715F63CB2435C61A00E12D26 /* ThoughtListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListView.swift; sourceTree = "<group>"; };
+		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				71D9D96F24261FB60062505B /* AppDelegate.swift */,
 				71D9D97124261FB60062505B /* SceneDelegate.swift */,
 				71FC15BC242E158C0092DD24 /* NavigationController.swift */,
+				717B5009243A100A0080F263 /* NotificationCenter+.swift */,
 				715F63B12435B20F00E12D26 /* Document.swift */,
 				71D4259C24372E2000159911 /* Window.swift */,
 				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
@@ -216,6 +219,7 @@
 				7144AA47243658AE00B72934 /* TagListView.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
 				715F63C22435B22100E12D26 /* DraftViewController.swift in Sources */,
+				717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */,
 				7144AA412435E84400B72934 /* Draft.swift in Sources */,
 				719579472439CCE8007DC6BA /* Thought.swift in Sources */,
 				719579452439CCD3007DC6BA /* Tag.swift in Sources */,

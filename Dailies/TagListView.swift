@@ -41,7 +41,7 @@ class TagListView: UITableView {
                 })
             
         case .newTag:
-            cell.textLabel?.text = "New Tag..."
+            cell.textLabel?.text = NSLocalizedString("New Tag...", comment: "")
             tableView.deselectRow(at: indexPath, animated: false)
         }
         return cell

@@ -29,7 +29,7 @@ class ThoughtListViewController: UITableViewController {
 
         ThoughtFilter.shared.$value
             .map(\.stringRepresentation)
-            .map { $0 ?? "Thoughts" }
+            .map { $0 ?? NSLocalizedString("All", comment: "") }
             .assign(to: \.title, on: self)
             .store(in: &subscriptions)
         
@@ -46,7 +46,7 @@ class ThoughtListViewController: UITableViewController {
         var actions = [UIAction]()
         guard let thought = ThoughtList.shared.value[thoughtID] else { return nil }
         let url = URL(string: thought.content.trimmingCharacters(in: .whitespacesAndNewlines))
-        let shareAction = UIAction(title: "Share") { _ in
+        let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in
             if let url = url {
                 [UIActivityViewController(activityItems: [url], applicationActivities: nil)]
                     .forEach { self.present($0, animated: true) }
@@ -55,7 +55,7 @@ class ThoughtListViewController: UITableViewController {
                     .forEach { self.present($0, animated: true) }
             }
         }
-        let tagsAction = UIAction(title: "Tags") { _ in
+        let tagsAction = UIAction(title: NSLocalizedString("Tags", comment: "")) { _ in
             self.present(.makeTagListViewController(thoughtID: thoughtID, sourceView: thoughtListView, sourceRect: thoughtListView.rectForRow(at: indexPath)), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in

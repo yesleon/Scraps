@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Thought-->
+        <!--Draft-->
         <scene sceneID="r19-rZ-MY4">
             <objects>
                 <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
@@ -35,7 +35,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nqS-JH-wcy"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Thought" id="ueq-sf-8FG">
+                    <navigationItem key="navigationItem" title="Draft" id="ueq-sf-8FG">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="UeF-G7-8DG">
                             <connections>
                                 <segue destination="19L-Gb-UHW" kind="unwind" unwindAction="dismissWithSegue:" id="745-Z6-8vS"/>
@@ -89,7 +89,7 @@
             </objects>
             <point key="canvasLocation" x="13" y="-1674"/>
         </scene>
-        <!--Thoughts-->
+        <!--All-->
         <scene sceneID="dLr-46-qTM">
             <objects>
                 <tableViewController id="1fT-Lp-UQ9" customClass="ThoughtListViewController" customModule="Dailies" customModuleProvider="target" sceneMemberID="viewController">
@@ -135,9 +135,9 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Thoughts" id="EFZ-Oz-kza">
+                    <navigationItem key="navigationItem" title="All" id="EFZ-Oz-kza">
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="3Pe-zY-JwH">
+                            <barButtonItem systemItem="compose" id="3Pe-zY-JwH">
                                 <connections>
                                     <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
                                 </connections>

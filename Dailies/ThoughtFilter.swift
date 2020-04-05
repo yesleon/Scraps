@@ -60,7 +60,7 @@ enum TagFilter: ThoughtFiltering {
                 return nil
             }
         case .noTags:
-            return "No Tags"
+            return NSLocalizedString("No Tags", comment: "")
         }
     }
     
@@ -86,7 +86,7 @@ enum TagFilter: ThoughtFiltering {
 
 struct TodayFilter: ThoughtFiltering {
     var stringRepresentation: String? {
-        "Today"
+        NSLocalizedString("Today", comment: "")
     }
     
     let isEnabled = true
