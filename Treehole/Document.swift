@@ -8,6 +8,8 @@
 
 import UIKit
 import Combine
+
+
 struct DocumentData: Codable {
     var thoughts: [Thought.Identifier: Thought], tags: [Tag.Identifier: Tag]
 }
@@ -55,11 +57,11 @@ class Document: UIDocument {
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let data = contents as? Data else { fatalError() }
         let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
-        TagList.shared.modifyValue {
-            $0 = documentData.tags
+        TagList.shared.modifyValue { tags in
+            tags = documentData.tags
         }
-        ThoughtList.shared.modifyValue {
-            $0 = documentData.thoughts
+        ThoughtList.shared.modifyValue { thoughts in
+            thoughts = documentData.thoughts
         }
         undoManager.removeAllActions()
     }

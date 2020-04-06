@@ -10,7 +10,7 @@ import Foundation
 
 struct Thought: Codable, Hashable {
     struct Identifier: Codable, Hashable {
-        let uuid = UUID()
+        let uuid: UUID
     }
     var content: String
     var date: Date

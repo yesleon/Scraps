@@ -82,8 +82,10 @@ class ThoughtListFilterView: UITableView {
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])
                 snapshot.appendItems([.today])
-                snapshot.appendItems(tags)
-                snapshot.appendItems([.noTags])
+                if !tags.isEmpty {
+                    snapshot.appendItems(tags)
+                    snapshot.appendItems([.noTags])
+                }
                 self.diffableDataSource.apply(snapshot, animatingDifferences: false)
             })
             .store(in: &subscriptions)
