@@ -11,10 +11,7 @@ import Foundation
 
 struct Tag: Codable, Hashable {
     struct Identifier: Codable, Hashable {
-        let uuid: UUID
-        init() {
-            uuid = .init()
-        }
+        let uuid = UUID()
     }
     var title: String
 }

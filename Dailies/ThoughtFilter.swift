@@ -36,8 +36,6 @@ class ThoughtFilter {
         self.value = value
     }
     
-//    @Published var tagFilter = TagFilter.hasTags([])
-//    @Published var todayFilter = TodayFilter(isEnabled: false)
 }
 
 protocol ThoughtFiltering {
