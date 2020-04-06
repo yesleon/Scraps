@@ -110,7 +110,7 @@ extension Array: ThoughtFiltering where Element == ThoughtFiltering {
 
 extension Array {
     
-    func firstElement<T>(ofType: T.Type) -> T? {
+    func first<T>(ofType: T.Type = T.self) -> T? {
         return first(where: { $0 is T }) as? T
     }
     

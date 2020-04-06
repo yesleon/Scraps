@@ -15,7 +15,7 @@ class Draft {
     
     func publish() {
         var tagIDs = Set<Tag.Identifier>()
-        if case let .hasTags(selectedTagIDs) = ThoughtFilter.shared.value.firstElement(ofType: TagFilter.self) {
+        if case let .hasTags(selectedTagIDs) = ThoughtFilter.shared.value.first(ofType: TagFilter.self) {
             tagIDs = selectedTagIDs
         }
         ThoughtList.shared.modifyValue {

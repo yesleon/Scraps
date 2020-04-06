@@ -85,8 +85,7 @@ class ThoughtListView: UITableView {
 extension ThoughtListView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
-        if tableView.numberOfSections == 1, let date = Calendar.current.date(from: dateComponents), Calendar.current.isDateInToday(date) {
+        if ThoughtFilter.shared.value.first(ofType: TodayFilter.self) != nil {
             return 0
         } else {
             return tableView.sectionHeaderHeight

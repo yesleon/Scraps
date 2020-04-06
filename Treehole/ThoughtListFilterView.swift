@@ -33,7 +33,7 @@ class ThoughtListFilterView: UITableView {
                     cell.textLabel?.text = NSLocalizedString("No Tags", comment: "")
                     cell.imageView?.image = nil
                     
-                    if case .noTags = filters.firstElement(ofType: TagFilter.self) {
+                    if case .noTags = filters.first(ofType: TagFilter.self) {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                     } else {
                         tableView.deselectRow(at: indexPath, animated: false)
@@ -43,7 +43,7 @@ class ThoughtListFilterView: UITableView {
                     cell.textLabel?.text = tag.title
                     
                     
-                    if case .hasTags(let tagIDs) = filters.firstElement(ofType: TagFilter.self), tagIDs.contains(tagID) {
+                    if case .hasTags(let tagIDs) = filters.first(ofType: TagFilter.self), tagIDs.contains(tagID) {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                         cell.imageView?.image = UIImage(systemName: "tag.fill")
                     } else {
@@ -55,7 +55,7 @@ class ThoughtListFilterView: UITableView {
                     cell.textLabel?.text = NSLocalizedString("Today", comment: "")
                     
                     
-                    if filters.firstElement(ofType: TodayFilter.self)?.isEnabled == true {
+                    if filters.first(ofType: TodayFilter.self)?.isEnabled == true {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                         cell.imageView?.image = UIImage(systemName: "star.fill")
                     } else {
