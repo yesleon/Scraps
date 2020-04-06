@@ -11,14 +11,18 @@ import Combine
 
 extension UIViewController {
     
-    static func makeTagListViewController(thoughtID: Thought.Identifier, sourceView: UIView, sourceRect: CGRect) -> UIViewController {
+    static func makeTagListViewController(thoughtIDs: Set<Thought.Identifier>, sourceView: UIView?, sourceRect: CGRect, barButtonItem: UIBarButtonItem?) -> UIViewController {
         let vc = TagListViewController()
-        vc.thoughtID = thoughtID
+        let view = TagListView()
+        view.thoughtIDs = thoughtIDs
+        view.delegate = vc
+        vc.view = view
         vc.modalPresentationStyle = .popover
         vc.popoverPresentationController.map {
             $0.delegate = vc
             $0.sourceView = sourceView
             $0.sourceRect = sourceRect
+            $0.barButtonItem = barButtonItem
         }
         vc.preferredContentSize = .init(width: 240, height: 360)
         return vc
@@ -69,43 +73,14 @@ extension UIViewController {
 
 class TagListViewController: UITableViewController {
     
-    var thoughtID: Thought.Identifier?
-
-    override func loadView() {
-        let view = TagListView()
-        view.controller = self
-        view.thoughtID = thoughtID
-        self.view = view
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         preferredContentSize = tableView.contentSize
     }
     
-    func didSelectRow(_ row: TagListView.Row) {
-        switch row {
-        case .newTag:
-            present(.makeTagNamingAlert(tagID: nil), animated: true)
-            
-        case .tag(let tagID):
-            guard let thoughtID = thoughtID else { break }
-            ThoughtList.shared.modifyValue {
-                $0[thoughtID]?.tagIDs.insert(tagID)
-            }
-        }
-    }
-    
-    func didDeselectRow(_ row: TagListView.Row) {
-        guard case let .tag(tagID) = row else { return }
-        guard let thoughtID = thoughtID else { return }
-        ThoughtList.shared.modifyValue {
-            $0[thoughtID]?.tagIDs.remove(tagID)
-        }
-    }
-    
-    func contextMenuConfiguration(for row: TagListView.Row) -> UIContextMenuConfiguration? {
-        guard case .tag(let tagID) = row else { return nil }
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let dataSource = tableView.dataSource as? TagListView.DataSource else { return nil }
+        guard case .tag(let tagID) = dataSource.itemIdentifier(for: indexPath) else { return nil }
         let renameAction = UIAction(title: NSLocalizedString("Rename...", comment: "")) { _ in
             self.present(.makeTagNamingAlert(tagID: tagID), animated: true)
         }
@@ -129,6 +104,39 @@ class TagListViewController: UITableViewController {
         }
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(title: "", children: [renameAction, deleteAction])
+        }
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let tableView = tableView as? TagListView else { return }
+        
+        guard let row = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
+        
+        switch row {
+        case .newTag:
+            present(.makeTagNamingAlert(tagID: nil), animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+        case .tag(let tagID):
+            
+            ThoughtList.shared.modifyValue { thoughts in
+                tableView.thoughtIDs.forEach {
+                    thoughts[$0]?.tagIDs.insert(tagID)
+                }
+            }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let tableView = tableView as? TagListView else { return }
+        
+        guard case let .tag(tagID) = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
+        
+        ThoughtList.shared.modifyValue { thoughts in
+            tableView.thoughtIDs.forEach {
+                thoughts[$0]?.tagIDs.remove(tagID)
+            }
         }
     }
 

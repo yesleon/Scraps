@@ -23,14 +23,11 @@ class Document: UIDocument {
     func load() {
         
         ThoughtList.shared.$value
-            .removeDuplicates()
-            .scan((oldValue: [Thought.Identifier: Thought](), newValue: [Thought.Identifier: Thought]()), { tuple, newValue in
-                return (oldValue: tuple.newValue, newValue: newValue)
-            })
-            .sink(receiveValue: { tuple in
+            .sink(receiveValue: { _ in
+                let oldValue = ThoughtList.shared.value
                 self.undoManager.registerUndo(withTarget: ThoughtList.shared) {
                     $0.modifyValue {
-                        $0 = tuple.oldValue
+                        $0 = oldValue
                     }
                 }
             })
@@ -38,14 +35,11 @@ class Document: UIDocument {
         
         
         TagList.shared.$value
-            .removeDuplicates()
-            .scan((oldValue: [Tag.Identifier: Tag](), newValue: [Tag.Identifier: Tag]()), { tuple, newValue in
-                return (oldValue: tuple.newValue, newValue: newValue)
-            })
-            .sink(receiveValue: { tuple in
+            .sink(receiveValue: { _ in
+                let oldValue = TagList.shared.value
                 self.undoManager.registerUndo(withTarget: TagList.shared) {
                     $0.modifyValue {
-                        $0 = tuple.oldValue
+                        $0 = oldValue
                     }
                 }
             })

@@ -11,6 +11,8 @@ import Combine
 
 class TagListView: UITableView {
     
+    typealias DataSource = UITableViewDiffableDataSource<Section, Row>
+    
     enum Section: Hashable {
         case main
     }
@@ -22,16 +24,17 @@ class TagListView: UITableView {
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
-    lazy var diffableDataSource = UITableViewDiffableDataSource<Section, Row>(tableView: self) { tableView, indexPath, row in
+    lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
         case .tag(let tagID):
             self.cellSubscriptions[cell] = TagList.shared.$value.combineLatest(ThoughtList.shared.$value)
+                .receive(on: DispatchQueue.main)
                 .sink(receiveValue: { tags, thoughts in
                     guard let tag = tags[tagID] else { return }
                     cell.textLabel?.text = tag.title
-                    if let thoughtID = self.thoughtID, let thought = thoughts[thoughtID],
-                        thought.tagIDs.contains(tagID) {
+                    if self.thoughtIDs.compactMap({ ThoughtList.shared.value[$0] })
+                        .allSatisfy({ $0.tagIDs.contains(tagID) }) {
                         cell.imageView?.image = UIImage(systemName: "tag.fill")
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                     } else {
@@ -47,9 +50,7 @@ class TagListView: UITableView {
         return cell
     }
     
-    var thoughtID: Thought.Identifier?
-    
-    weak var controller: TagListViewController?
+    var thoughtIDs = Set<Thought.Identifier>()
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -60,7 +61,6 @@ class TagListView: UITableView {
         
         register(UITableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
         self.dataSource = diffableDataSource
-        self.delegate = self
         
         TagList.shared.$value
             .map(\.keys)
@@ -85,28 +85,4 @@ class TagListView: UITableView {
         cellSubscriptions.removeAll()
     }
 
-}
-
-extension TagListView: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let dataSource = tableView.dataSource as? UITableViewDiffableDataSource<Section, Row> else { return nil }
-        guard let row = dataSource.itemIdentifier(for: indexPath) else { return nil }
-        return controller?.contextMenuConfiguration(for: row)
-        
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let row = diffableDataSource.itemIdentifier(for: indexPath) else { return }
-        controller?.didSelectRow(row)
-        if row == .newTag {
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let row = diffableDataSource.itemIdentifier(for: indexPath) else { return }
-        controller?.didDeselectRow(row)
-    }
-    
 }

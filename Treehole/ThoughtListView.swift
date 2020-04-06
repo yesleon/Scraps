@@ -11,14 +11,14 @@ import Combine
 
 class ThoughtListView: UITableView {
     
-    typealias DataSource =  UITableViewDiffableDataSource<DateComponents, Thought.Identifier>
+    class DataSource: UITableViewDiffableDataSource<DateComponents, Thought.Identifier> {
+        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+            true
+        }
+    }
     
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
-    
-    var headerViewSubscriptions = [UIView: AnyCancellable]()
-    
-    @IBOutlet weak var controller: ThoughtListViewController?
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID -> UITableViewCell? in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -36,7 +36,6 @@ class ThoughtListView: UITableView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
-        delegate = self
         dataSource = diffableDataSource
         diffableDataSource.defaultRowAnimation = .fade
         
@@ -67,6 +66,7 @@ class ThoughtListView: UITableView {
                 }
                 return snapshot
             })
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [dataSource = diffableDataSource] snapshot in
                 dataSource.apply(snapshot, animatingDifferences: snapshot.numberOfSections != 0)
             })
@@ -78,42 +78,6 @@ class ThoughtListView: UITableView {
         
         subscriptions.removeAll()
         cellSubscriptions.removeAll()
-    }
-    
-}
-
-extension ThoughtListView: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if ThoughtFilter.shared.value.first(ofType: TodayFilter.self) != nil {
-            return 0
-        } else {
-            return tableView.sectionHeaderHeight
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") else { return nil }
-        
-        headerViewSubscriptions[view] = NotificationCenter.default.significantTimeChangeNotificationPublisher()
-            .map { dateComponents }
-            .compactMap(Calendar.current.date(from:))
-            .sink(receiveValue: { date in
-                let formatter = DateFormatter()
-                formatter.doesRelativeDateFormatting = true
-                formatter.dateStyle = .full
-                formatter.timeStyle = .none
-                view.textLabel?.text = formatter.string(from: date)
-                view.textLabel?.sizeToFit()
-            })
-        
-        return view
-    }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let thoughtID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
-        return controller?.thoughtListView(self, contextMenuConfigurationForThought: thoughtID, for: indexPath)
     }
     
 }

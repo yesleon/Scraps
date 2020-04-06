@@ -93,7 +93,7 @@
         <scene sceneID="dLr-46-qTM">
             <objects>
                 <tableViewController id="1fT-Lp-UQ9" customClass="ThoughtListViewController" customModule="Treehole" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN" customClass="ThoughtListView" customModule="Treehole" customModuleProvider="target">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN" customClass="ThoughtListView" customModule="Treehole" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -129,7 +129,6 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="controller" destination="1fT-Lp-UQ9" id="VIz-wr-KMS"/>
                             <outlet property="dataSource" destination="1fT-Lp-UQ9" id="Gqh-oz-Ka4"/>
                             <outlet property="delegate" destination="1fT-Lp-UQ9" id="AAP-3c-xWb"/>
                         </connections>
@@ -153,13 +152,20 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="composeButton" destination="3Pe-zY-JwH" id="vin-eY-DlZ"/>
                         <outlet property="tagListButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
+                        <outlet property="tagsButton" destination="uMj-RT-mnN" id="t7q-Ag-URa"/>
                         <segue destination="kbz-Aa-WEk" kind="popoverPresentation" identifier="a" customClass="PresentTagListSegue" customModule="Treehole" customModuleProvider="target" popoverAnchorView="Olw-UH-DAN" id="PAq-2C-952">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Tags" id="uMj-RT-mnN">
+                    <connections>
+                        <action selector="showTagList:" destination="1fT-Lp-UQ9" id="aBG-0U-Ya4"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-136.23188405797103" y="-908.70535714285711"/>
         </scene>

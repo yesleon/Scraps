@@ -13,14 +13,20 @@ import Combine
 @available(iOS 13.0, *)
 class ThoughtListViewController: UITableViewController {
     
-    @IBOutlet weak var tagListButton: UIBarButtonItem!
+    @IBOutlet var composeButton: UIBarButtonItem!
+    @IBOutlet var tagListButton: UIBarButtonItem!
+    @IBOutlet var tagsButton: UIBarButtonItem!
     
     override var canBecomeFirstResponder: Bool { true }
     
     var subscriptions = Set<AnyCancellable>()
     
+    var headerViewSubscriptions = [UIView: AnyCancellable]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.allowsMultipleSelectionDuringEditing = true
         
         ThoughtFilter.shared.$value
             .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
@@ -40,9 +46,76 @@ class ThoughtListViewController: UITableViewController {
             .store(in: &subscriptions)
     }
     
+    
+    
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
-    func thoughtListView(_ thoughtListView: ThoughtListView, contextMenuConfigurationForThought thoughtID: Thought.Identifier, for indexPath: IndexPath) -> UIContextMenuConfiguration? {
+    @IBAction func showTagList(_ button: UIBarButtonItem) {
+        guard let tableView = tableView as? ThoughtListView else { return }
+        
+        tableView.indexPathsForSelectedRows
+            .map { $0.compactMap { tableView.diffableDataSource.itemIdentifier(for: $0) } }
+            .map(Set.init)
+            .map({
+                present(.makeTagListViewController(thoughtIDs: $0, sourceView: nil, sourceRect: .null, barButtonItem: button), animated: true)
+            })
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        if editing {
+            navigationItem.setLeftBarButtonItems([editButtonItem], animated: true)
+            navigationItem.setRightBarButtonItems([tagsButton], animated: true)
+        } else {
+            navigationItem.setLeftBarButtonItems(nil, animated: true)
+            navigationItem.setRightBarButtonItems([composeButton, tagListButton], animated: true)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .none
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+        self.setEditing(true, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if ThoughtFilter.shared.value.first(ofType: TodayFilter.self) != nil {
+            return 0
+        } else {
+            return tableView.sectionHeaderHeight
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let diffableDataSource = tableView.dataSource as? ThoughtListView.DataSource else { return nil }
+        let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") else { return nil }
+        
+        headerViewSubscriptions[view] = NotificationCenter.default.significantTimeChangeNotificationPublisher()
+            .map { dateComponents }
+            .compactMap(Calendar.current.date(from:))
+            .sink(receiveValue: { date in
+                let formatter = DateFormatter()
+                formatter.doesRelativeDateFormatting = true
+                formatter.dateStyle = .full
+                formatter.timeStyle = .none
+                view.textLabel?.text = formatter.string(from: date)
+                view.textLabel?.sizeToFit()
+            })
+        
+        return view
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let diffableDataSource = tableView.dataSource as? ThoughtListView.DataSource else { return nil }
+        guard let thoughtID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
         var actions = [UIAction]()
         guard let thought = ThoughtList.shared.value[thoughtID] else { return nil }
         let url = URL(string: thought.content.trimmingCharacters(in: .whitespacesAndNewlines))
@@ -56,7 +129,7 @@ class ThoughtListViewController: UITableViewController {
             }
         }
         let tagsAction = UIAction(title: NSLocalizedString("Tags", comment: "")) { _ in
-            self.present(.makeTagListViewController(thoughtID: thoughtID, sourceView: thoughtListView, sourceRect: thoughtListView.rectForRow(at: indexPath)), animated: true)
+            self.present(.makeTagListViewController(thoughtIDs: [thoughtID], sourceView: tableView, sourceRect: tableView.rectForRow(at: indexPath), barButtonItem: nil), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             ThoughtList.shared.modifyValue {
