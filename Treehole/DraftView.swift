@@ -21,30 +21,10 @@ class DraftView: UITextView {
         
         inputAccessoryView = toolbar
         
-        NotificationCenter.default
-            .publisher(for: UIResponder.keyboardWillShowNotification)
-            .map(\.userInfo)
-            .compactMap { $0?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
-            .sink(receiveValue: { [weak self] keyboardFrame in
-                guard let self = self, let window = self.window, let superview = self.superview else { return }
-                superview.layoutIfNeeded()
-                let delta = window.bounds.maxY - superview.convert(self.frame, to: window).maxY
-                self.contentInset.bottom = keyboardFrame.height - delta
-            })
-            .store(in: &subscriptions)
-        
-        NotificationCenter.default
-            .publisher(for: UIResponder.keyboardWillHideNotification)
-            .sink { [weak self] _ in
-                self?.contentInset.bottom = 0 }
-            .store(in: &subscriptions)
-        
         Draft.shared.$value
             .filter { $0 != self.text }
             .assign(to: \.text, on: self)
             .store(in: &subscriptions)
-        
-        becomeFirstResponder()
     }
     
     override func layoutMarginsDidChange() {

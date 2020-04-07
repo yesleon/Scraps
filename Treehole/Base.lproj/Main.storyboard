@@ -15,23 +15,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S" customClass="DraftView" customModule="Treehole" customModuleProvider="target">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="CSe-FT-TiN">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <connections>
-                                    <outlet property="delegate" destination="8rr-SM-NiG" id="wft-wq-IvR"/>
-                                </connections>
-                            </textView>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="752"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="TpM-cP-ys9" secondAttribute="height" multiplier="4:3" id="R65-vi-LSP"/>
+                                                </constraints>
+                                            </view>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S" customClass="DraftView" customModule="Treehole" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="310.5" width="414" height="441.5"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="8rr-SM-NiG" id="wft-wq-IvR"/>
+                                                </connections>
+                                            </textView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="4TW-Cm-s3Y" firstAttribute="width" secondItem="L3C-Ll-C3a" secondAttribute="width" id="5XI-Er-gat"/>
+                                    <constraint firstItem="4TW-Cm-s3Y" firstAttribute="leading" secondItem="fsT-OZ-Fol" secondAttribute="leading" id="PUd-rU-smt"/>
+                                    <constraint firstItem="4TW-Cm-s3Y" firstAttribute="bottom" secondItem="fsT-OZ-Fol" secondAttribute="bottom" id="Vyg-dG-Pfp"/>
+                                    <constraint firstItem="4TW-Cm-s3Y" firstAttribute="top" secondItem="fsT-OZ-Fol" secondAttribute="top" id="fh2-1n-1DL"/>
+                                    <constraint firstItem="4TW-Cm-s3Y" firstAttribute="trailing" secondItem="fsT-OZ-Fol" secondAttribute="trailing" id="vVf-Tm-7Bg"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="fsT-OZ-Fol"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="L3C-Ll-C3a"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="q5K-Dc-f5S" firstAttribute="leading" secondItem="1z5-Dg-7zY" secondAttribute="leading" id="50j-rW-lZo"/>
-                            <constraint firstItem="q5K-Dc-f5S" firstAttribute="top" secondItem="1z5-Dg-7zY" secondAttribute="top" id="8ln-bj-ZF2"/>
-                            <constraint firstAttribute="bottom" secondItem="q5K-Dc-f5S" secondAttribute="bottom" id="QeG-Wz-7H4"/>
-                            <constraint firstAttribute="trailing" secondItem="q5K-Dc-f5S" secondAttribute="trailing" id="UwX-hV-HoB"/>
+                            <constraint firstAttribute="bottom" secondItem="CSe-FT-TiN" secondAttribute="bottom" id="1IA-pR-xd3"/>
+                            <constraint firstItem="CSe-FT-TiN" firstAttribute="top" secondItem="1z5-Dg-7zY" secondAttribute="top" id="VJ8-WN-lyn"/>
+                            <constraint firstItem="4TW-Cm-s3Y" firstAttribute="height" relation="greaterThanOrEqual" secondItem="nqS-JH-wcy" secondAttribute="height" id="lBg-aW-gZc"/>
+                            <constraint firstAttribute="trailing" secondItem="CSe-FT-TiN" secondAttribute="trailing" id="q7S-CL-guC"/>
+                            <constraint firstItem="CSe-FT-TiN" firstAttribute="leading" secondItem="1z5-Dg-7zY" secondAttribute="leading" id="vlZ-BJ-USR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nqS-JH-wcy"/>
                     </view>
@@ -50,6 +77,7 @@
                     <connections>
                         <outlet property="draftView" destination="q5K-Dc-f5S" id="Smb-da-d9F"/>
                         <outlet property="saveButton" destination="QlW-hQ-Gnb" id="AFk-Y4-f5V"/>
+                        <outlet property="scrollView" destination="CSe-FT-TiN" id="G6D-xJ-892"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32e-Xh-SdS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

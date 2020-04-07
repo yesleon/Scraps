@@ -18,4 +18,5 @@ struct Thought: Codable {
     var content: String
     var date: Date
     var tagIDs: Set<Tag.Identifier>
+    var attachmentID: Attachment.Identifier?
 }
