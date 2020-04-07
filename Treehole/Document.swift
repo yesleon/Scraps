@@ -18,6 +18,10 @@ struct DocumentData: Codable {
 /// Converts between disk data structure and data structure in app.
 class Document: UIDocument {
     
+    enum Error: Swift.Error {
+        case readingError(Any)
+    }
+    
     var subscriptions = Set<AnyCancellable>()
     
     func load() {
@@ -49,7 +53,8 @@ class Document: UIDocument {
     }
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
-        guard let data = contents as? Data else { fatalError() }
+        guard let rootFolder = contents as? FileWrapper else { throw Error.readingError(contents) }
+        guard let data = rootFolder.fileWrappers?["data.json"]?.regularFileContents else { throw Error.readingError(contents) }
         let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
         TagList.shared.modifyValue { tags in
             tags = documentData.tags
@@ -59,14 +64,15 @@ class Document: UIDocument {
         }
         undoManager.removeAllActions()
     }
-    
-    override func handleError(_ error: Error, userInteractionPermitted: Bool) {
-        super.handleError(error, userInteractionPermitted: userInteractionPermitted)
-        print(error)
-    }
 
     override func contents(forType typeName: String) throws -> Any {
-        try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value))
+        let data = try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value))
+        return FileWrapper(directoryWithFileWrappers: ["data.json": FileWrapper(regularFileWithContents: data)])
+    }
+    
+    override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {
+        super.handleError(error, userInteractionPermitted: userInteractionPermitted)
+        print(error)
     }
     
     func openOrCreateIfFileNotExists(completionHandler: ((Bool) -> Void)? = nil) {

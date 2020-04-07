@@ -14,7 +14,9 @@ import Combine
 @available(iOS 13.0, *)
 class DraftViewController: UIViewController {
     
+    @IBOutlet weak var draftView: DraftView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    lazy var cameraButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(presentCamera(_:)))
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -25,6 +27,15 @@ class DraftViewController: UIViewController {
             .map { !$0.isEmpty }
             .assign(to: \.isEnabled, on: saveButton)
             .store(in: &subscriptions)
+        
+        draftView.toolbar.setItems([
+            .init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            cameraButton
+        ], animated: false)
+    }
+    
+    @objc func presentCamera(_ button: UIBarButtonItem) {
+        
     }
 
     @IBAction func save(_ sender: Any) {

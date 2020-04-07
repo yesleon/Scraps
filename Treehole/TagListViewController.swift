@@ -34,7 +34,7 @@ extension UIViewController {
         var text = ""
         let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default, handler: { _ in
             TagList.shared.modifyValue {
-                $0.updateValue(.init(title: text), forKey: tagID ?? .init(uuid: .init()))
+                $0.updateValue(.init(title: text), forKey: tagID ?? .init())
             }
             subscriptions.removeAll()
         })

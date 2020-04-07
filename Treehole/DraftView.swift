@@ -14,9 +14,12 @@ import Combine
 class DraftView: UITextView {
     
     var subscriptions = Set<AnyCancellable>()
+    lazy private(set) var toolbar = UIToolbar(frame: .init(x: 0, y: 0, width: 0, height: 44))
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        
+        inputAccessoryView = toolbar
         
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillShowNotification)

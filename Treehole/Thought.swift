@@ -8,9 +8,12 @@
 
 import Foundation
 
-struct Thought: Codable, Hashable {
+struct Thought: Codable {
     struct Identifier: Codable, Hashable {
-        let uuid: UUID
+        private let uuid: UUID
+        init() {
+            uuid = UUID()
+        }
     }
     var content: String
     var date: Date

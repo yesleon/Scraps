@@ -20,7 +20,7 @@ class Draft {
         }
         ThoughtList.shared.modifyValue {
             
-            $0[.init(uuid: .init())] = .init(content: value, date: .init(), tagIDs: tagIDs)
+            $0[.init()] = .init(content: value, date: .init(), tagIDs: tagIDs)
         }
         value.removeAll()
     }
