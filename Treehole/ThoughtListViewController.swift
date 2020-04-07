@@ -118,15 +118,11 @@ class ThoughtListViewController: UITableViewController {
         guard let thoughtID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
         var actions = [UIAction]()
         guard let thought = ThoughtList.shared.value[thoughtID] else { return nil }
-        let url = URL(string: thought.content.trimmingCharacters(in: .whitespacesAndNewlines))
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in
-            if let url = url {
-                [UIActivityViewController(activityItems: [url], applicationActivities: nil)]
+            
+            [UIActivityViewController(activityItems: [thought.content], applicationActivities: nil)]
                     .forEach { self.present($0, animated: true) }
-            } else {
-                [UIActivityViewController(activityItems: [thought.content], applicationActivities: nil)]
-                    .forEach { self.present($0, animated: true) }
-            }
+            
         }
         let tagsAction = UIAction(title: NSLocalizedString("Tags", comment: "")) { _ in
             self.present(.makeTagListViewController(thoughtIDs: [thoughtID], sourceView: tableView, sourceRect: tableView.rectForRow(at: indexPath), barButtonItem: nil), animated: true)
@@ -134,6 +130,9 @@ class ThoughtListViewController: UITableViewController {
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             ThoughtList.shared.modifyValue {
                 $0.removeValue(forKey: thoughtID)
+            }
+            thought.attachmentID.map {
+                AttachmentList.shared.subject.send(.delete($0))
             }
         }
         actions = [tagsAction, shareAction, deleteAction]

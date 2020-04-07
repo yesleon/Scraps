@@ -8,6 +8,7 @@
 
 import UIKit
 import Combine
+import func AVFoundation.AVMakeRect
 
 class ThoughtListView: UITableView {
     
@@ -18,17 +19,15 @@ class ThoughtListView: UITableView {
     }
     
     var subscriptions = Set<AnyCancellable>()
-    var cellSubscriptions = [UITableViewCell: AnyCancellable]()
+    
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID -> UITableViewCell? in
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        self.cellSubscriptions[cell] = ThoughtList.shared.$value
-            .compactMap({ $0[thoughtID] })
-            .sink(receiveValue: { thought in
-                cell.textLabel?.text = thought.content
-                
-                cell.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + thought.tagIDs.compactMap({ TagList.shared.value[$0] }).map(\.title).map({ "#" + $0 }).joined(separator: " ")
-            })
+        tableView.layoutIfNeeded()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ThoughtListViewCell
+        
+        cell?.setThoughtID(thoughtID)
+            
+        
         
         return cell
     }
@@ -77,7 +76,6 @@ class ThoughtListView: UITableView {
         super.removeFromSuperview()
         
         subscriptions.removeAll()
-        cellSubscriptions.removeAll()
     }
     
 }

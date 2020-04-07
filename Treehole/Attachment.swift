@@ -13,7 +13,10 @@ import LinkPresentation
 
 struct Attachment {
     struct Identifier: Codable, Hashable {
-        private let url: URL
+        let url: URL
+        init(url: URL) {
+            self.url = url
+        }
         init(newAttachment: NewAttachment) {
             switch newAttachment {
             case .image(_):
@@ -27,12 +30,8 @@ struct Attachment {
             }
         }
     }
-    enum LoadedContent {
-        case image(Image), linkMetadata(LPLinkMetadata)
+    enum Content {
+        case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata?)
     }
-    var loadedContent: LoadedContent?
-}
-
-struct Image {
-    var value: [Int: UIImage]
+    var loadedContent: Content
 }

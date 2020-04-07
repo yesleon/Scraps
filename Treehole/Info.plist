@@ -75,5 +75,7 @@
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>For taking photos.</string>
 </dict>
 </plist>

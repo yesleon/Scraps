@@ -68,6 +68,7 @@ class DraftViewController: UIViewController {
         draftView.resignFirstResponder()
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        imagePicker.sourceType = .camera
         present(imagePicker, animated: true)
     }
 
