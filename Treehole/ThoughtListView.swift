@@ -26,7 +26,10 @@ class ThoughtListView: UITableView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ThoughtListViewCell
         
         cell?.setThoughtID(thoughtID)
-            
+        cell?.updateCellHeight = { [weak tableView] in
+            tableView?.beginUpdates()
+            tableView?.endUpdates()
+        }
         
         
         return cell
@@ -70,6 +73,14 @@ class ThoughtListView: UITableView {
                 dataSource.apply(snapshot, animatingDifferences: snapshot.numberOfSections != 0)
             })
             .store(in: &subscriptions)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        DispatchQueue.main.async {
+            self.beginUpdates()
+            self.endUpdates()
+        }
     }
     
     override func removeFromSuperview() {

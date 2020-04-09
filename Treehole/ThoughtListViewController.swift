@@ -62,8 +62,9 @@ class ThoughtListViewController: UITableViewController {
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
+        tableView.beginUpdates()
         super.setEditing(editing, animated: animated)
-        
+        tableView.endUpdates()
         if editing {
             navigationItem.setLeftBarButtonItems([editButtonItem], animated: true)
             navigationItem.setRightBarButtonItems([tagsButton], animated: true)

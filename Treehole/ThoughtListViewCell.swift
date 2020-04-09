@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LinkPresentation
 import Combine
 
 class ThoughtListViewCell: UITableViewCell {
@@ -17,9 +18,10 @@ class ThoughtListViewCell: UITableViewCell {
     override var imageView: UIImageView? { myImageView }
     override var textLabel: UILabel? { myTextLabel }
     override var detailTextLabel: UILabel? { myDetailLabel }
+    @IBOutlet weak var linkView: UIView!
     
     var subscriptions = Set<AnyCancellable>()
-    var layoutPublisher = PassthroughSubject<CGFloat, Never>()
+    var updateCellHeight = { }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,7 +39,7 @@ class ThoughtListViewCell: UITableViewCell {
             })
             .store(in: &subscriptions)
         
-        let width: CGFloat = 300
+        let width: CGFloat = 200
         
         ThoughtList.shared.$value
             .map({ $0[thoughtID]?.attachmentID })
@@ -51,6 +53,7 @@ class ThoughtListViewCell: UITableViewCell {
                     return Just(nil).eraseToAnyPublisher()
                 }
             })
+            .removeDuplicates()
             .sink(receiveValue: { attachment in
                 if let attachment = attachment {
 
@@ -59,12 +62,25 @@ class ThoughtListViewCell: UITableViewCell {
                     case .image(let image):
                         self.imageView?.isHidden = false
                         self.imageView?.image = image[width]
-                    case .linkMetadata(_):
+                        self.linkView.isHidden = true
+                    case .linkMetadata(let metadata):
+                        self.linkView.subviews.forEach { $0.removeFromSuperview() }
+                        if let metadata = metadata {
+                            let view = LPLinkView(metadata: metadata)
+                            view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                            view.frame = self.linkView.bounds
+                            self.linkView.addSubview(view)
+                            self.linkView.isHidden = false
+                        } else {
+                            self.linkView.isHidden = true
+                        }
                         self.imageView?.isHidden = true
                     }
                 } else {
                     self.imageView?.isHidden = true
+                    self.linkView.isHidden = true
                 }
+                self.updateCellHeight()
             })
             .store(in: &subscriptions)
     }

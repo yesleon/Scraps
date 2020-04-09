@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 import UIKit
+import LinkPresentation
 import func AVFoundation.AVMakeRect
 
 extension URL {
@@ -77,27 +78,54 @@ class AttachmentStore {
                     }
                 case let .load(id, targetDimension: targetDimension):
                     
-                    AttachmentList.shared.modifyValue { attachments in
-                        guard var attachment = attachments[id] else { return }
-                        if case var .image(image) = attachment.loadedContent, image[targetDimension] == nil {
-                            do {
-                                let data = try Data(contentsOf: .imageURL(id: id, targetDimension: .maxDimension))
-                                let originalImage = UIImage(data: data)!
-                                let width = max(targetDimension, targetDimension * originalImage.size.height / originalImage.size.width)
-                                
-                                
-                                let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: width, height: width))
-                                let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
-                                    originalImage.draw(in: rect)
+                    if var attachment = AttachmentList.shared.value[id] {
+                        switch attachment.loadedContent {
+                        case var .image(image):
+                            if image[targetDimension] == nil {
+                                do {
+                                    let data = try Data(contentsOf: .imageURL(id: id, targetDimension: .maxDimension))
+                                    let originalImage = UIImage(data: data)!
+                                    let width = targetDimension
+                                    
+                                    
+                                    let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: width, height: width))
+                                    let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
+                                        originalImage.draw(in: rect)
+                                    }
+                                    try targetImage.jpegData(compressionQuality: 0.95)?.write(to: .imageURL(id: id, targetDimension: width))
+                                    
+                                    image[targetDimension] = targetImage
+                                    attachment.loadedContent = .image(image)
+                                    
+                                    AttachmentList.shared.modifyValue { attachments in
+                                        attachments[id] = attachment
+                                    }
+                                    
+                                } catch {
+                                    print(error)
                                 }
-                                try targetImage.jpegData(compressionQuality: 0.95)?.write(to: .imageURL(id: id, targetDimension: width))
-                                
-                                image[targetDimension] = targetImage
-                                attachment.loadedContent = .image(image)
-                                attachments[id] = attachment
-                                
-                            } catch {
-                                print(error)
+                            }
+                        case .linkMetadata(let metadata):
+                            if metadata == nil {
+                                LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
+                                    if let metadata = metadata {
+                                        DispatchQueue.main.async {
+                                            AttachmentList.shared.modifyValue {
+                                                $0[id] = .init(loadedContent: .linkMetadata(metadata))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
+                            if let metadata = metadata {
+                                DispatchQueue.main.async {
+                                    AttachmentList.shared.modifyValue {
+                                        $0[id] = .init(loadedContent: .linkMetadata(metadata))
+                                    }
+                                }
                             }
                         }
                     }

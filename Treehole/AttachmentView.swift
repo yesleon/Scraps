@@ -8,6 +8,7 @@
 
 import UIKit
 import Combine
+import LinkPresentation
 
 class AttachmentView: UIView {
     
@@ -20,6 +21,7 @@ class AttachmentView: UIView {
         Draft.shared.$attachment
             .sink(receiveValue: {
                 if let attachment = $0 {
+                    self.subviews.forEach { $0.removeFromSuperview() }
                     switch attachment {
                     case .image(let image):
                         let imageView = UIImageView(image: image)
@@ -27,8 +29,18 @@ class AttachmentView: UIView {
                         imageView.contentMode = .scaleAspectFill
                         imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
                         self.addSubview(imageView)
-                    case .link(_):
-                        break
+                    case .link(let url):
+                        LPMetadataProvider().startFetchingMetadata(for: url) { metadata, error in
+                            DispatchQueue.main.async {
+                                guard let metadata = metadata else { return }
+                                let view = LPLinkView(metadata: metadata)
+                                view.frame = self.bounds
+                                view.contentMode = .scaleAspectFill
+                                view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                                self.addSubview(view)
+                            }
+                            
+                        }
                     }
                     self.isHidden = false
                 } else {

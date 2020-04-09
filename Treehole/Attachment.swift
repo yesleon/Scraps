@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import LinkPresentation
 
-struct Attachment {
+struct Attachment: Equatable {
     struct Identifier: Codable, Hashable {
         let url: URL
         init(url: URL) {
@@ -30,7 +30,7 @@ struct Attachment {
             }
         }
     }
-    enum Content {
+    enum Content: Equatable {
         case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata?)
     }
     var loadedContent: Content
