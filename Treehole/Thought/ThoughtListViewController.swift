@@ -21,12 +21,8 @@ class ThoughtListViewController: UITableViewController {
     
     var subscriptions = Set<AnyCancellable>()
     
-    var headerViewSubscriptions = [UIView: AnyCancellable]()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.allowsMultipleSelectionDuringEditing = true
+    func subscribe() {
+        subscriptions.removeAll()
         
         ThoughtFilter.shared.$value
             .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
@@ -46,7 +42,15 @@ class ThoughtListViewController: UITableViewController {
             .store(in: &subscriptions)
     }
     
+    // MARK: - Events
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.allowsMultipleSelectionDuringEditing = true
+        
+        subscribe()
+    }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
@@ -96,21 +100,11 @@ class ThoughtListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let diffableDataSource = tableView.dataSource as? ThoughtListView.DataSource else { return nil }
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") as? ThoughtListHeaderView else { return nil }
+        
         let dateComponents = diffableDataSource.snapshot().sectionIdentifiers[section]
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") else { return nil }
         
-        headerViewSubscriptions[view] = NotificationCenter.default.significantTimeChangeNotificationPublisher()
-            .map { dateComponents }
-            .compactMap(Calendar.current.date(from:))
-            .sink(receiveValue: { date in
-                let formatter = DateFormatter()
-                formatter.doesRelativeDateFormatting = true
-                formatter.dateStyle = .full
-                formatter.timeStyle = .none
-                view.textLabel?.text = formatter.string(from: date)
-                view.textLabel?.sizeToFit()
-            })
-        
+        view.subscribe(to: dateComponents)
         return view
     }
     

@@ -29,6 +29,7 @@
 		719579472439CCE8007DC6BA /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Thought.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC1243FA13600610A3B /* Combine+.swift */; };
+		71C2CAC4243FA81F00610A3B /* ThoughtListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC3243FA81F00610A3B /* ThoughtListHeaderView.swift */; };
 		71D4259D24372E2000159911 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D4259C24372E2000159911 /* Window.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
@@ -63,6 +64,7 @@
 		719579462439CCE8007DC6BA /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71C2CAC1243FA13600610A3B /* Combine+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+.swift"; sourceTree = "<group>"; };
+		71C2CAC3243FA81F00610A3B /* ThoughtListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListHeaderView.swift; sourceTree = "<group>"; };
 		71D4259C24372E2000159911 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Treehole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Treehole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -153,8 +155,9 @@
 			children = (
 				719579462439CCE8007DC6BA /* Thought.swift */,
 				715F63C52435B26800E12D26 /* ThoughtList.swift */,
-				711DE1C3243C83540003A1C2 /* ThoughtListViewCell.swift */,
 				715F63CB2435C61A00E12D26 /* ThoughtListView.swift */,
+				711DE1C3243C83540003A1C2 /* ThoughtListViewCell.swift */,
+				71C2CAC3243FA81F00610A3B /* ThoughtListHeaderView.swift */,
 				715F63BB2435B22000E12D26 /* ThoughtListViewController.swift */,
 			);
 			path = Thought;
@@ -288,6 +291,7 @@
 				715F63C62435B26800E12D26 /* ThoughtList.swift in Sources */,
 				71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */,
 				715F63CC2435C61A00E12D26 /* ThoughtListView.swift in Sources */,
+				71C2CAC4243FA81F00610A3B /* ThoughtListHeaderView.swift in Sources */,
 				711DE1BE243C455B0003A1C2 /* AttachmentList.swift in Sources */,
 				71FC15BD242E158C0092DD24 /* NavigationController.swift in Sources */,
 				715F63C02435B22100E12D26 /* ThoughtListFilterViewController.swift in Sources */,

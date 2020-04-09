@@ -18,23 +18,17 @@ class ThoughtListView: UITableView {
         }
     }
     
-    var subscriptions = Set<AnyCancellable>()
-    
-    
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID in
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ThoughtListViewCell else { return nil }
         
-        cell.setThoughtID(thoughtID)
+        cell.subscribe(to: ThoughtList.shared.publisher(for: thoughtID))
         return cell
     }
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        
-        dataSource = diffableDataSource
-        diffableDataSource.defaultRowAnimation = .fade
-        
-        register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
+    var subscriptions = Set<AnyCancellable>()
+    
+    func subscribe() {
+        subscriptions.removeAll()
         
         ThoughtList.shared.$value
             .combineLatest(ThoughtFilter.shared.$value,
@@ -67,6 +61,17 @@ class ThoughtListView: UITableView {
                 dataSource.apply(snapshot, animatingDifferences: snapshot.numberOfSections != 0)
             })
             .store(in: &subscriptions)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        dataSource = diffableDataSource
+        diffableDataSource.defaultRowAnimation = .fade
+        
+        register(ThoughtListHeaderView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
+        
+        subscribe()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

@@ -61,6 +61,8 @@ class AttachmentView: UIView {
             .store(in: &subscriptions)
     }
     
+    // MARK: - Events
+    
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         

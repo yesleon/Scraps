@@ -19,12 +19,7 @@ class ThoughtListViewCell: UITableViewCell {
     
     var subscriptions = Set<AnyCancellable>()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        myImageView.layer.cornerRadius = 10
-    }
-    
-    func setThoughtID(_ thoughtID: Thought.Identifier) {
+    func subscribe<T: Publisher>(to publisher: T) where T.Output == Thought, T.Failure == Never {
         
         // Clean up
         subscriptions.removeAll()
@@ -33,23 +28,21 @@ class ThoughtListViewCell: UITableViewCell {
         myImageView.isHidden = true
         myTextLabel.isHidden = true
         
-        let thoughtPublisher = ThoughtList.shared.publisher(for: thoughtID)
-        
         // Content
-        thoughtPublisher
+        publisher
             .map(\.content)
             .map(Optional.init)
             .assign(to: \.text, on: myTextLabel)
             .store(in: &subscriptions)
         
-        thoughtPublisher
+        publisher
             .map(\.content)
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
             .assign(to: \.isHidden, on: myTextLabel)
             .store(in: &subscriptions)
         
         // Metadata
-        thoughtPublisher
+        publisher
             .combineLatest(TagList.shared.$value)
             .map({ thought, tags -> String? in
                 DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
@@ -66,7 +59,7 @@ class ThoughtListViewCell: UITableViewCell {
 
         // Attachment
         
-        thoughtPublisher
+        publisher
             .compactMap(\.attachmentID)
             .flatMap { AttachmentList.shared.publisher(for: $0, targetDimension: .itemWidth) }
             .removeDuplicates()
@@ -87,9 +80,15 @@ class ThoughtListViewCell: UITableViewCell {
             })
             .store(in: &subscriptions)
     }
-
-}
-
-func asdf(block: (Int) -> Void) {
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        myImageView.layer.cornerRadius = 10
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        subscriptions.removeAll()
+    }
+
 }
