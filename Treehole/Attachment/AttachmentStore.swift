@@ -24,6 +24,7 @@ extension URL {
 
 extension CGFloat {
     static let maxDimension: CGFloat = 1080
+    static let itemWidth: CGFloat = 200
 }
 
 class AttachmentStore {
@@ -119,6 +120,9 @@ class AttachmentStore {
                             }
                         }
                     } else {
+                        AttachmentList.shared.modifyValue {
+                            $0[id] = .init(loadedContent: .linkMetadata(nil))
+                        }
                         LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
                             if let metadata = metadata {
                                 DispatchQueue.main.async {

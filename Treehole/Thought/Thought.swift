@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Thought: Codable {
+struct Thought: Codable, Equatable {
     struct Identifier: Codable, Hashable {
         private let uuid: UUID
         init() {

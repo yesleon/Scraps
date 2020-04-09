@@ -26,17 +26,16 @@ class Document: UIDocument {
     
     func load() {
         
-        ThoughtList.shared.$value
-            .sink(receiveValue: { _ in
-                let oldValue = ThoughtList.shared.value
+        ThoughtList.shared.publisher()
+            .scan([Thought.Identifier: Thought](), { oldValue, newValue in oldValue })
+            .sink(receiveValue: { oldValue in
                 self.undoManager.registerUndo(withTarget: ThoughtList.shared) {
                     $0.modifyValue {
                         $0 = oldValue
                     }
                 }
             })
-            .store(in: &self.subscriptions)
-        
+            .store(in: &subscriptions)
         
         TagList.shared.$value
             .sink(receiveValue: { _ in

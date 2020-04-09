@@ -7,17 +7,33 @@
 //
 
 import Foundation
+import Combine
 
 class ThoughtList {
     
     static let shared = ThoughtList()
     
-    @Published private(set) var value = [Thought.Identifier: Thought]()
+    private var currentValuePublisher = CurrentValueSubject<[Thought.Identifier: Thought], Never>([Thought.Identifier: Thought]())
+    
+    var value: [Thought.Identifier: Thought] {
+        currentValuePublisher.value
+    }
     
     func modifyValue(handler: (inout [Thought.Identifier: Thought]) -> Void) {
-        var value = self.value
+        var value = currentValuePublisher.value
         handler(&value)
-        self.value = value
+        currentValuePublisher.value = value
+    }
+    
+    func publisher() -> AnyPublisher<[Thought.Identifier: Thought], Never> {
+        currentValuePublisher.eraseToAnyPublisher()
+    }
+    
+    func publisher(for id: Thought.Identifier) -> AnyPublisher<Thought, Never> {
+        return currentValuePublisher
+            .compactMap { $0[id] }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
     }
     
 }

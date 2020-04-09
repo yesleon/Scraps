@@ -15,13 +15,9 @@ class ThoughtListViewCell: UITableViewCell {
     @IBOutlet weak var myImageView: UIImageView!
     @IBOutlet weak var myTextLabel: UILabel!
     @IBOutlet weak var myDetailLabel: UILabel!
-    override var imageView: UIImageView? { myImageView }
-    override var textLabel: UILabel? { myTextLabel }
-    override var detailTextLabel: UILabel? { myDetailLabel }
     @IBOutlet weak var linkView: UIView!
     
     var subscriptions = Set<AnyCancellable>()
-    var updateCellHeight = { }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,58 +25,70 @@ class ThoughtListViewCell: UITableViewCell {
     }
     
     func setThoughtID(_ thoughtID: Thought.Identifier) {
+        
+        // Clean up
         subscriptions.removeAll()
-        ThoughtList.shared.$value
-            .compactMap({ $0[thoughtID] })
-            .sink(receiveValue: { thought in
-                self.textLabel?.text = thought.content
-                
-                self.detailTextLabel?.text = DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short) + " " + thought.tagIDs.compactMap({ TagList.shared.value[$0] }).map(\.title).map({ "#" + $0 }).joined(separator: " ")
-            })
+        linkView.subviews.forEach { $0.removeFromSuperview() }
+        linkView.isHidden = true
+        myImageView.isHidden = true
+        
+        let thoughtPublisher = ThoughtList.shared.publisher(for: thoughtID)
+        
+        // Content
+        thoughtPublisher
+            .map(\.content)
+            .map(Optional.init)
+            .assign(to: \.text, on: myTextLabel)
             .store(in: &subscriptions)
         
-        let width: CGFloat = 200
-        
-        ThoughtList.shared.$value
-            .map({ $0[thoughtID]?.attachmentID })
-            .flatMap({ attachmentID -> AnyPublisher<Attachment?, Never> in
-                if let attachmentID = attachmentID {
-                    AttachmentList.shared.subject.send(.load(attachmentID, targetDimension: width))
-                    return AttachmentList.shared.$value
-                        .compactMap({ $0[attachmentID] })
-                        .eraseToAnyPublisher()
-                } else {
-                    return Just(nil).eraseToAnyPublisher()
-                }
+        // Metadata
+        thoughtPublisher
+            .combineLatest(TagList.shared.$value)
+            .map({ thought, tags -> String? in
+                DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
+                    + " "
+                    + thought.tagIDs
+                        .compactMap { tags[$0] }
+                        .map(\.title)
+                        .map({ "#" + $0 })
+                        .joined(separator: " ")
             })
-            .removeDuplicates()
-            .sink(receiveValue: { attachment in
-                if let attachment = attachment {
+            .assign(to: \.text, on: myDetailLabel)
+            .store(in: &subscriptions)
+        
 
-                    switch attachment.loadedContent {
+        // Attachment
+        
+        thoughtPublisher
+            .compactMap(\.attachmentID)
+            .map { AttachmentList.Message.load($0, targetDimension: .itemWidth) }
+            .sink(receiveValue: AttachmentList.shared.subject.send)
+            .store(in: &subscriptions)
+        
+        thoughtPublisher
+            .compactMap(\.attachmentID)
+            .combineLatest(AttachmentList.shared.$value)
+            .compactMap({ attachmentID, attachments in
+                attachments[attachmentID]
+            })
+            .map(\.loadedContent)
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] content in
+                guard let self = self else { return }
+                switch content {
+                case .image(let image):
+                    self.myImageView?.isHidden = false
+                    guard let image = image[.itemWidth] else { break }
+                    self.myImageView?.image = image
                     
-                    case .image(let image):
-                        self.imageView?.isHidden = false
-                        self.imageView?.image = image[width]
-                        self.linkView.isHidden = true
-                    case .linkMetadata(let metadata):
-                        self.linkView.subviews.forEach { $0.removeFromSuperview() }
-                        if let metadata = metadata {
-                            let view = LPLinkView(metadata: metadata)
-                            view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                            view.frame = self.linkView.bounds
-                            self.linkView.addSubview(view)
-                            self.linkView.isHidden = false
-                        } else {
-                            self.linkView.isHidden = true
-                        }
-                        self.imageView?.isHidden = true
-                    }
-                } else {
-                    self.imageView?.isHidden = true
-                    self.linkView.isHidden = true
+                case .linkMetadata(let metadata):
+                    self.linkView.isHidden = false
+                    guard let metadata = metadata else { break }
+                    let view = LPLinkView(metadata: metadata)
+                    view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                    view.frame = self.linkView.bounds
+                    self.linkView.addSubview(view)
                 }
-                self.updateCellHeight()
             })
             .store(in: &subscriptions)
     }

@@ -28,12 +28,11 @@ class TagListView: UITableView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
         case .tag(let tagID):
-            self.cellSubscriptions[cell] = TagList.shared.$value.combineLatest(ThoughtList.shared.$value)
-                .receive(on: DispatchQueue.main)
+            self.cellSubscriptions[cell] = TagList.shared.$value.combineLatest(ThoughtList.shared.publisher())
                 .sink(receiveValue: { tags, thoughts in
                     guard let tag = tags[tagID] else { return }
                     cell.textLabel?.text = tag.title
-                    if self.thoughtIDs.compactMap({ ThoughtList.shared.value[$0] })
+                    if self.thoughtIDs.compactMap({ thoughts[$0] })
                         .allSatisfy({ $0.tagIDs.contains(tagID) }) {
                         cell.imageView?.image = UIImage(systemName: "tag.fill")
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)

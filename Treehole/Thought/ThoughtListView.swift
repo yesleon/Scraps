@@ -21,39 +21,36 @@ class ThoughtListView: UITableView {
     var subscriptions = Set<AnyCancellable>()
     
     
-    lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID -> UITableViewCell? in
-        tableView.layoutIfNeeded()
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ThoughtListViewCell
-        
-        cell?.setThoughtID(thoughtID)
-        cell?.updateCellHeight = { [weak tableView] in
-            tableView?.beginUpdates()
-            tableView?.endUpdates()
-        }
-        
-        
-        return cell
+    lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID in
+        return Optional(tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath))
+            .flatMap { $0 as? ThoughtListViewCell }
+            .map({
+                $0.setThoughtID(thoughtID)
+                return $0
+            })
     }
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
         dataSource = diffableDataSource
+//        prefetchDataSource = self
         diffableDataSource.defaultRowAnimation = .fade
         
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
         
-        ThoughtList.shared.$value
-            .combineLatest(ThoughtFilter.shared.$value, NotificationCenter.default.significantTimeChangeNotificationPublisher())
+        ThoughtList.shared.publisher()
+            .combineLatest(ThoughtFilter.shared.$value,
+                           NotificationCenter.default.significantTimeChangeNotificationPublisher())
             .map({ thoughts, filters, _ in
-                thoughts.sorted(by: { $0.value.date > $1.value.date })
+                thoughts
+                    .sorted(by: { $0.value.date > $1.value.date })
                     .filter { filters.shouldInclude($0.value) }
                     .reduce([(dateComponents: DateComponents, thoughtIDs: [Thought.Identifier])](), { list, pair in
                         let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: pair.value.date)
                         var list = list
-                        if list.last?.dateComponents == dateComponents, var last = list.popLast() {
-                            last.thoughtIDs.append(pair.key)
-                            list.append(last)
+                        if list.last?.dateComponents == dateComponents {
+                            list[list.index(before: list.endIndex)].thoughtIDs.append(pair.key)
                         } else {
                             list.append((dateComponents: dateComponents, thoughtIDs: [pair.key]))
                         }
@@ -87,6 +84,19 @@ class ThoughtListView: UITableView {
         super.removeFromSuperview()
         
         subscriptions.removeAll()
+    }
+    
+}
+
+extension ThoughtListView: UITableViewDataSourcePrefetching {
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        indexPaths.lazy
+            .compactMap(diffableDataSource.itemIdentifier(for:))
+            .compactMap { ThoughtList.shared.value[$0] }
+            .compactMap(\.attachmentID)
+            .map { AttachmentList.Message.load($0, targetDimension: .itemWidth) }
+            .forEach(AttachmentList.shared.subject.send)
     }
     
 }
