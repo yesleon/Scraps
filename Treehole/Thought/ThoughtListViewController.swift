@@ -132,9 +132,6 @@ class ThoughtListViewController: UITableViewController {
             ThoughtList.shared.modifyValue {
                 $0.removeValue(forKey: thoughtID)
             }
-            thought.attachmentID.map {
-                AttachmentList.shared.subject.send(.delete($0))
-            }
         }
         actions = [tagsAction, shareAction, deleteAction]
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in

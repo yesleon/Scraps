@@ -8,10 +8,19 @@
 
 import UIKit
 import Combine
+import LinkPresentation
+import AVFoundation
 
+private struct DocumentData: Codable {
+    var thoughts: [Thought.Identifier: Thought]
+    var tags: [Tag.Identifier: Tag]
+    var linkIDs: Set<Attachment.Identifier>?
+    var imageIDs: Set<Attachment.Identifier>?
+}
 
-struct DocumentData: Codable {
-    var thoughts: [Thought.Identifier: Thought], tags: [Tag.Identifier: Tag]
+extension CGFloat {
+    static let maxDimension: CGFloat = 1024
+    static let itemWidth: CGFloat = 200
 }
 
 /// The Model. Holds data and publishes data changes. I/O to disk.
@@ -24,7 +33,57 @@ class Document: UIDocument {
     
     var subscriptions = Set<AnyCancellable>()
     
+    var assetFolders = [String: FileWrapper]()
+    
     func load() {
+        
+        AttachmentList.shared.loadMessageSubject
+            .flatMap({ id, targetDimension in
+                AttachmentList.shared.publisher()
+                    .compactMap { $0[id] }
+                    .map { (id, $0, targetDimension) }
+            })
+            .sink(receiveValue: { id, attachment, targetDimension in
+                switch attachment {
+                case var .image(images):
+                    guard images[targetDimension] == nil else { break }
+                    let originalImage: UIImage
+                    
+                    if let image = images[.maxDimension] {
+                        originalImage = image
+                    } else {
+                        let data = self.assetFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents
+                        originalImage = UIImage(data: data!)!
+                    }
+                    
+                    
+                    let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: targetDimension, height: targetDimension))
+                    let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
+                        originalImage.draw(in: rect)
+                    }
+                    
+                    images[targetDimension] = targetImage
+                    
+                    AttachmentList.shared.modifyValue { attachments in
+                        attachments[id] = .image(images)
+                    }
+                        
+                    
+                case .linkMetadata(let metadata):
+                    guard metadata.title == nil else { break }
+                    LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
+                        if let metadata = metadata {
+                            DispatchQueue.main.async {
+                                AttachmentList.shared.modifyValue {
+                                    $0[id] = .linkMetadata(metadata)
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            })
+            .store(in: &subscriptions)
         
         ThoughtList.shared.publisher()
             .scan([Thought.Identifier: Thought](), { oldValue, newValue in oldValue })
@@ -53,20 +112,48 @@ class Document: UIDocument {
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let rootFolder = contents as? FileWrapper else { throw Error.readingError(contents) }
-        guard let data = rootFolder.fileWrappers?["data.json"]?.regularFileContents else { throw Error.readingError(contents) }
-        let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
-        TagList.shared.modifyValue { tags in
-            tags = documentData.tags
+        assetFolders = rootFolder.fileWrappers?["assets"]?.fileWrappers ?? [:]
+        if let data = rootFolder.fileWrappers?["data.json"]?.regularFileContents {
+            let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
+            TagList.shared.modifyValue { tags in
+                tags = documentData.tags
+            }
+            ThoughtList.shared.modifyValue { thoughts in
+                thoughts = documentData.thoughts
+            }
+            AttachmentList.shared.modifyValue { attachments in
+                documentData.imageIDs?.forEach {
+                    if attachments[$0] == nil {
+                        attachments[$0] = .image([:])
+                    }
+                }
+                documentData.linkIDs?.forEach {
+                    if attachments[$0] == nil {
+                        attachments[$0] = .linkMetadata(.init(originalURL: $0.url))
+                    }
+                }
+            }
         }
-        ThoughtList.shared.modifyValue { thoughts in
-            thoughts = documentData.thoughts
-        }
+        
         undoManager.removeAllActions()
     }
 
     override func contents(forType typeName: String) throws -> Any {
-        let data = try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value))
-        return FileWrapper(directoryWithFileWrappers: ["data.json": FileWrapper(regularFileWithContents: data)])
+        var links = Set<Attachment.Identifier>()
+        var imageIDs = Set<Attachment.Identifier>()
+        AttachmentList.shared.value.forEach { id, attachment in
+            switch attachment {
+            case .image(_):
+                imageIDs.insert(id)
+            case .linkMetadata(_):
+                links.insert(id)
+            }
+        }
+        let data = try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs))
+        return FileWrapper(directoryWithFileWrappers: [
+            "data.json": FileWrapper(regularFileWithContents: data),
+            "assets": FileWrapper(directoryWithFileWrappers: assetFolders)
+        ])
     }
     
     override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {
@@ -82,3 +169,5 @@ class Document: UIDocument {
         }
     }
 }
+
+

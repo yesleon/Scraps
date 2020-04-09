@@ -34,7 +34,6 @@ class ThoughtListView: UITableView {
         super.didMoveToSuperview()
         
         dataSource = diffableDataSource
-//        prefetchDataSource = self
         diffableDataSource.defaultRowAnimation = .fade
         
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
@@ -84,19 +83,6 @@ class ThoughtListView: UITableView {
         super.removeFromSuperview()
         
         subscriptions.removeAll()
-    }
-    
-}
-
-extension ThoughtListView: UITableViewDataSourcePrefetching {
-    
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        indexPaths.lazy
-            .compactMap(diffableDataSource.itemIdentifier(for:))
-            .compactMap { ThoughtList.shared.value[$0] }
-            .compactMap(\.attachmentID)
-            .map { AttachmentList.Message.load($0, targetDimension: .itemWidth) }
-            .forEach(AttachmentList.shared.subject.send)
     }
     
 }

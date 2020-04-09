@@ -11,27 +11,10 @@ import Foundation
 import UIKit
 import LinkPresentation
 
-struct Attachment: Equatable {
+enum Attachment: Equatable {
     struct Identifier: Codable, Hashable {
         let url: URL
-        init(url: URL) {
-            self.url = url
-        }
-        init(newAttachment: NewAttachment) {
-            switch newAttachment {
-            case .image(_):
-                var components = URLComponents()
-                components.scheme = "treehole"
-                components.host = "assets"
-                components.path = "/" + UUID().uuidString
-                self.url = components.url!
-            case .link(let url):
-                self.url = url
-            }
-        }
     }
-    enum Content: Equatable {
-        case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata?)
-    }
-    var loadedContent: Content
+    case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata)
+    
 }

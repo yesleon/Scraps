@@ -12,19 +12,29 @@ import CoreGraphics
 
 
 class AttachmentList {
-    enum Message {
-        case save(NewAttachment, with: Attachment.Identifier)
-        case load(Attachment.Identifier, targetDimension: CGFloat)
-        case delete(Attachment.Identifier)
-    }
     static let shared = AttachmentList()
-    @Published private(set) var value = [Attachment.Identifier: Attachment]()
-    var subject = PassthroughSubject<Message, Never>()
+    
+    private let currentValuePublisher = CurrentValueSubject<[Attachment.Identifier: Attachment], Never>([Attachment.Identifier: Attachment]())
+    
+    var value: [Attachment.Identifier: Attachment] {
+        currentValuePublisher.value
+    }
+    
+    let loadMessageSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
     
     
     func modifyValue(handler: (inout [Attachment.Identifier: Attachment]) -> Void) {
         var value = self.value
         handler(&value)
-        self.value = value
+        self.currentValuePublisher.value = value
+    }
+    
+    func publisher() -> AnyPublisher<[Attachment.Identifier: Attachment], Never> {
+        currentValuePublisher.eraseToAnyPublisher()
+    }
+    
+    func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment, Never> {
+        loadMessageSubject.send((id: id, targetDimension: targetDimension))
+        return publisher().compactMap { $0[id] }.eraseToAnyPublisher()
     }
 }

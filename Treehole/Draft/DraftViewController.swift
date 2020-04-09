@@ -79,7 +79,7 @@ class DraftViewController: UIViewController {
         var delegate: NSObject?
         let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
             guard let url = URL(string: textField?.text ?? "") else { return }
-            Draft.shared.attachment = .link(url)
+            Draft.shared.saveURL(url)
             delegate = nil
         }
         doneAction.isEnabled = false
@@ -147,7 +147,7 @@ extension DraftViewController: UIImagePickerControllerDelegate, UINavigationCont
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.presentingViewController?.dismiss(animated: true)
         guard let image = info[.originalImage] as? UIImage else { return }
-        Draft.shared.attachment = .image(image)
+        Draft.shared.saveImage(image)
     }
 }
 

@@ -13,7 +13,7 @@ class ThoughtList {
     
     static let shared = ThoughtList()
     
-    private var currentValuePublisher = CurrentValueSubject<[Thought.Identifier: Thought], Never>([Thought.Identifier: Thought]())
+    private let currentValuePublisher = CurrentValueSubject<[Thought.Identifier: Thought], Never>([Thought.Identifier: Thought]())
     
     var value: [Thought.Identifier: Thought] {
         currentValuePublisher.value

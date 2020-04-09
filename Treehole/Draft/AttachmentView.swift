@@ -17,34 +17,37 @@ class AttachmentView: UIView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
+        Draft.shared.$attachment
+            .map { $0 == nil }
+            .assign(to: \.isHidden, on: self)
+            .store(in: &subscriptions)
         
         Draft.shared.$attachment
-            .sink(receiveValue: {
-                if let attachment = $0 {
-                    self.subviews.forEach { $0.removeFromSuperview() }
-                    switch attachment {
-                    case .image(let image):
-                        let imageView = UIImageView(image: image)
-                        imageView.frame = self.bounds
-                        imageView.contentMode = .scaleAspectFill
-                        imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                        self.addSubview(imageView)
-                    case .link(let url):
+            .compactMap { $0 }
+            .sink(receiveValue: { attachment in
+                self.subviews.forEach { $0.removeFromSuperview() }
+                switch attachment {
+                case .image(let image):
+                    guard let image = image[.maxDimension] else { break }
+                    let imageView = UIImageView(image: image)
+                    imageView.frame = self.bounds
+                    imageView.contentMode = .scaleAspectFill
+                    imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                    self.addSubview(imageView)
+                case .linkMetadata(let metadata):
+                    let view = LPLinkView(metadata: metadata)
+                    view.frame = self.bounds
+                    view.contentMode = .scaleAspectFill
+                    view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                    self.addSubview(view)
+                    if metadata.title == nil, let url = metadata.originalURL {
                         LPMetadataProvider().startFetchingMetadata(for: url) { metadata, error in
                             DispatchQueue.main.async {
                                 guard let metadata = metadata else { return }
-                                let view = LPLinkView(metadata: metadata)
-                                view.frame = self.bounds
-                                view.contentMode = .scaleAspectFill
-                                view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                                self.addSubview(view)
+                                view.metadata = metadata
                             }
-                            
                         }
                     }
-                    self.isHidden = false
-                } else {
-                    self.isHidden = true
                 }
             })
             .store(in: &subscriptions)

@@ -61,29 +61,17 @@ class ThoughtListViewCell: UITableViewCell {
         
         thoughtPublisher
             .compactMap(\.attachmentID)
-            .map { AttachmentList.Message.load($0, targetDimension: .itemWidth) }
-            .sink(receiveValue: AttachmentList.shared.subject.send)
-            .store(in: &subscriptions)
-        
-        thoughtPublisher
-            .compactMap(\.attachmentID)
-            .combineLatest(AttachmentList.shared.$value)
-            .compactMap({ attachmentID, attachments in
-                attachments[attachmentID]
-            })
-            .map(\.loadedContent)
+            .flatMap { AttachmentList.shared.publisher(for: $0, targetDimension: .itemWidth) }
             .removeDuplicates()
-            .sink(receiveValue: { [weak self] content in
+            .sink(receiveValue: { [weak self] attachment in
                 guard let self = self else { return }
-                switch content {
+                switch attachment {
                 case .image(let image):
                     self.myImageView?.isHidden = false
-                    guard let image = image[.itemWidth] else { break }
-                    self.myImageView?.image = image
+                    self.myImageView?.image = image[.itemWidth]
                     
                 case .linkMetadata(let metadata):
                     self.linkView.isHidden = false
-                    guard let metadata = metadata else { break }
                     let view = LPLinkView(metadata: metadata)
                     view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
                     view.frame = self.linkView.bounds
