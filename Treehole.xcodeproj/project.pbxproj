@@ -121,25 +121,11 @@
 				715F63B12435B20F00E12D26 /* Document.swift */,
 				71D4259C24372E2000159911 /* Window.swift */,
 				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
-				711DE1B9243C349E0003A1C2 /* Attachment.swift */,
-				711DE1BD243C455B0003A1C2 /* AttachmentList.swift */,
-				711DE1C1243C5BDA0003A1C2 /* AttachmentStore.swift */,
-				719579462439CCE8007DC6BA /* Thought.swift */,
-				715F63C52435B26800E12D26 /* ThoughtList.swift */,
-				711DE1C3243C83540003A1C2 /* ThoughtListViewCell.swift */,
-				715F63CB2435C61A00E12D26 /* ThoughtListView.swift */,
-				715F63BB2435B22000E12D26 /* ThoughtListViewController.swift */,
-				719579442439CCD3007DC6BA /* Tag.swift */,
-				715F63C72435B52400E12D26 /* TagList.swift */,
-				7144AA46243658AE00B72934 /* TagListView.swift */,
-				7144AA4824365B2F00B72934 /* TagListViewController.swift */,
-				7144AA442436241600B72934 /* ThoughtFilter.swift */,
-				715F63B82435B22000E12D26 /* ThoughtListFilterView.swift */,
-				715F63B72435B22000E12D26 /* ThoughtListFilterViewController.swift */,
-				7144AA402435E84400B72934 /* Draft.swift */,
-				715F63B52435B22000E12D26 /* DraftView.swift */,
-				711DE1BF243C55E70003A1C2 /* AttachmentView.swift */,
-				715F63B92435B22000E12D26 /* DraftViewController.swift */,
+				71EA538B243EE45900CD64CA /* Thought */,
+				71EA538C243EE46000CD64CA /* Tag */,
+				71EA538A243EE44700CD64CA /* Attachment */,
+				71EA538D243EE47100CD64CA /* ThoughtFilter */,
+				71EA538E243EE47800CD64CA /* Draft */,
 				71D9D97524261FB60062505B /* Main.storyboard */,
 				71D9D97824261FB90062505B /* Assets.xcassets */,
 				71D9D97A24261FB90062505B /* LaunchScreen.storyboard */,
@@ -147,6 +133,60 @@
 				71F623B12428BCCE00A46048 /* Localizable.strings */,
 			);
 			path = Treehole;
+			sourceTree = "<group>";
+		};
+		71EA538A243EE44700CD64CA /* Attachment */ = {
+			isa = PBXGroup;
+			children = (
+				711DE1B9243C349E0003A1C2 /* Attachment.swift */,
+				711DE1BD243C455B0003A1C2 /* AttachmentList.swift */,
+				711DE1C1243C5BDA0003A1C2 /* AttachmentStore.swift */,
+			);
+			path = Attachment;
+			sourceTree = "<group>";
+		};
+		71EA538B243EE45900CD64CA /* Thought */ = {
+			isa = PBXGroup;
+			children = (
+				719579462439CCE8007DC6BA /* Thought.swift */,
+				715F63C52435B26800E12D26 /* ThoughtList.swift */,
+				711DE1C3243C83540003A1C2 /* ThoughtListViewCell.swift */,
+				715F63CB2435C61A00E12D26 /* ThoughtListView.swift */,
+				715F63BB2435B22000E12D26 /* ThoughtListViewController.swift */,
+			);
+			path = Thought;
+			sourceTree = "<group>";
+		};
+		71EA538C243EE46000CD64CA /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				719579442439CCD3007DC6BA /* Tag.swift */,
+				715F63C72435B52400E12D26 /* TagList.swift */,
+				7144AA46243658AE00B72934 /* TagListView.swift */,
+				7144AA4824365B2F00B72934 /* TagListViewController.swift */,
+			);
+			path = Tag;
+			sourceTree = "<group>";
+		};
+		71EA538D243EE47100CD64CA /* ThoughtFilter */ = {
+			isa = PBXGroup;
+			children = (
+				7144AA442436241600B72934 /* ThoughtFilter.swift */,
+				715F63B82435B22000E12D26 /* ThoughtListFilterView.swift */,
+				715F63B72435B22000E12D26 /* ThoughtListFilterViewController.swift */,
+			);
+			path = ThoughtFilter;
+			sourceTree = "<group>";
+		};
+		71EA538E243EE47800CD64CA /* Draft */ = {
+			isa = PBXGroup;
+			children = (
+				7144AA402435E84400B72934 /* Draft.swift */,
+				715F63B52435B22000E12D26 /* DraftView.swift */,
+				711DE1BF243C55E70003A1C2 /* AttachmentView.swift */,
+				715F63B92435B22000E12D26 /* DraftViewController.swift */,
+			);
+			path = Draft;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
