@@ -14,27 +14,30 @@ import CoreGraphics
 class AttachmentList {
     static let shared = AttachmentList()
     
-    private let currentValuePublisher = CurrentValueSubject<[Attachment.Identifier: Attachment], Never>([Attachment.Identifier: Attachment]())
+    private let currentValueSubject = CurrentValueSubject<[Attachment.Identifier: Attachment], Never>([Attachment.Identifier: Attachment]())
+    
+    private let loadingSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
     
     var value: [Attachment.Identifier: Attachment] {
-        currentValuePublisher.value
+        currentValueSubject.value
     }
     
-    let loadMessageSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
-    
+    func loadingPublisher() -> AnyPublisher<(id: Attachment.Identifier, targetDimension: CGFloat), Never> {
+        loadingSubject.eraseToAnyPublisher()
+    }
     
     func modifyValue(handler: (inout [Attachment.Identifier: Attachment]) -> Void) {
         var value = self.value
         handler(&value)
-        self.currentValuePublisher.value = value
+        self.currentValueSubject.value = value
     }
     
     func publisher() -> AnyPublisher<[Attachment.Identifier: Attachment], Never> {
-        currentValuePublisher.eraseToAnyPublisher()
+        currentValueSubject.eraseToAnyPublisher()
     }
     
     func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment, Never> {
-        loadMessageSubject.send((id: id, targetDimension: targetDimension))
+        loadingSubject.send((id: id, targetDimension: targetDimension))
         return publisher().compactMap { $0[id] }.eraseToAnyPublisher()
     }
 }

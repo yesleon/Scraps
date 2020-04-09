@@ -24,12 +24,12 @@ class DraftViewController: UIViewController {
         super.viewDidLoad()
         
         Draft.shared.$value
-            .map { !$0.isEmpty }
+            .combineLatest(Draft.shared.$attachment)
+            .map { !$0.isEmpty || $1 != nil }
             .assign(to: \.isEnabled, on: saveButton)
             .store(in: &subscriptions)
         
-        
-        draftView.inputAccessoryView = {
+        let toolbar: UIToolbar = {
             let toolbar = UIToolbar()
             toolbar.items = [
                 .flexibleSpace(),
@@ -42,6 +42,15 @@ class DraftViewController: UIViewController {
             toolbar.sizeToFit()
             return toolbar
         }()
+        
+        draftView.inputAccessoryView = toolbar
+        
+        Draft.shared.$attachment
+            .map { $0 != nil }
+            .sink(receiveValue: { hasAttachment in
+                toolbar.items?.forEach { $0.isEnabled = !hasAttachment }
+            })
+            .store(in: &subscriptions)
         
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillShowNotification)
@@ -70,6 +79,10 @@ class DraftViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         draftView.becomeFirstResponder()
+    }
+    
+    @IBAction func deleteAttachment(_ sender: UIButton) {
+        Draft.shared.deleteAttachment()
     }
     
     @objc func presentLinkAlert(_ button: UIBarButtonItem) {

@@ -31,6 +31,7 @@ class ThoughtListViewCell: UITableViewCell {
         linkView.subviews.forEach { $0.removeFromSuperview() }
         linkView.isHidden = true
         myImageView.isHidden = true
+        myTextLabel.isHidden = true
         
         let thoughtPublisher = ThoughtList.shared.publisher(for: thoughtID)
         
@@ -39,6 +40,12 @@ class ThoughtListViewCell: UITableViewCell {
             .map(\.content)
             .map(Optional.init)
             .assign(to: \.text, on: myTextLabel)
+            .store(in: &subscriptions)
+        
+        thoughtPublisher
+            .map(\.content)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            .assign(to: \.isHidden, on: myTextLabel)
             .store(in: &subscriptions)
         
         // Metadata

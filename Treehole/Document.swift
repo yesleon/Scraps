@@ -37,7 +37,7 @@ class Document: UIDocument {
     
     func load() {
         
-        AttachmentList.shared.loadMessageSubject
+        AttachmentList.shared.loadingPublisher()
             .flatMap({ id, targetDimension in
                 AttachmentList.shared.publisher()
                     .compactMap { $0[id] }

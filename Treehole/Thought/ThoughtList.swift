@@ -13,24 +13,24 @@ class ThoughtList {
     
     static let shared = ThoughtList()
     
-    private let currentValuePublisher = CurrentValueSubject<[Thought.Identifier: Thought], Never>([Thought.Identifier: Thought]())
+    private let currentValueSubject = CurrentValueSubject<[Thought.Identifier: Thought], Never>([Thought.Identifier: Thought]())
     
     var value: [Thought.Identifier: Thought] {
-        currentValuePublisher.value
+        currentValueSubject.value
     }
     
     func modifyValue(handler: (inout [Thought.Identifier: Thought]) -> Void) {
-        var value = currentValuePublisher.value
+        var value = currentValueSubject.value
         handler(&value)
-        currentValuePublisher.value = value
+        currentValueSubject.value = value
     }
     
     func publisher() -> AnyPublisher<[Thought.Identifier: Thought], Never> {
-        currentValuePublisher.eraseToAnyPublisher()
+        currentValueSubject.eraseToAnyPublisher()
     }
     
     func publisher(for id: Thought.Identifier) -> AnyPublisher<Thought, Never> {
-        return currentValuePublisher
+        return currentValueSubject
             .compactMap { $0[id] }
             .removeDuplicates()
             .eraseToAnyPublisher()

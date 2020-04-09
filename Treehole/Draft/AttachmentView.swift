@@ -13,6 +13,8 @@ import LinkPresentation
 class AttachmentView: UIView {
     
     var subscriptions = Set<AnyCancellable>()
+    weak var imageView: UIView?
+    weak var linkView: UIView?
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -25,21 +27,26 @@ class AttachmentView: UIView {
         Draft.shared.$attachment
             .compactMap { $0 }
             .sink(receiveValue: { attachment in
-                self.subviews.forEach { $0.removeFromSuperview() }
+                self.imageView?.removeFromSuperview()
+                self.linkView?.removeFromSuperview()
                 switch attachment {
                 case .image(let image):
                     guard let image = image[.maxDimension] else { break }
                     let imageView = UIImageView(image: image)
-                    imageView.frame = self.bounds
+                    imageView.frame = CGRect(x: 20, y: 8, width: 200 * image.size.width / image.size.height, height: 200)
+                    imageView.layer.cornerRadius = 10
+                    imageView.layer.masksToBounds = true
                     imageView.contentMode = .scaleAspectFill
-                    imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                    self.addSubview(imageView)
+                    imageView.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
+                    self.insertSubview(imageView, at: 0)
+                    self.imageView = imageView
                 case .linkMetadata(let metadata):
                     let view = LPLinkView(metadata: metadata)
-                    view.frame = self.bounds
+                    view.frame = CGRect(x: 20, y: 8, width: 200, height: 200)
                     view.contentMode = .scaleAspectFill
-                    view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                    self.addSubview(view)
+                    view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
+                    self.insertSubview(view, at: 0)
+                    self.linkView = view
                     if metadata.title == nil, let url = metadata.originalURL {
                         LPMetadataProvider().startFetchingMetadata(for: url) { metadata, error in
                             DispatchQueue.main.async {

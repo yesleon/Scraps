@@ -16,21 +16,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="CSe-FT-TiN">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="CSe-FT-TiN">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
+                                    <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="752"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-Cl-Ent">
+                                                        <rect key="frame" x="30" y="18" width="25" height="24"/>
+                                                        <state key="normal" image="xmark.circle.fill" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="deleteAttachment:" destination="8rr-SM-NiG" eventType="touchUpInside" id="8dX-Kk-6Z9"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="TpM-cP-ys9" secondAttribute="height" multiplier="4:3" id="R65-vi-LSP"/>
+                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="top" secondItem="TpM-cP-ys9" secondAttribute="top" constant="18" id="2ux-If-fEp"/>
+                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="leading" secondItem="TpM-cP-ys9" secondAttribute="leading" constant="30" id="XOk-ZG-1jP"/>
+                                                    <constraint firstAttribute="height" constant="216" id="m3X-fS-GdF"/>
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S" customClass="DraftView" customModule="Treehole" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="310.5" width="414" height="441.5"/>
+                                                <rect key="frame" x="0.0" y="216" width="414" height="536"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -308,6 +319,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="line.horizontal.3.decrease.circle" catalog="system" width="32" height="32"/>
+        <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
     </resources>
 </document>

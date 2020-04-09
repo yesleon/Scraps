@@ -40,6 +40,10 @@ class Draft {
         }
     }
     
+    func deleteAttachment() {
+        attachment = nil
+    }
+    
     func publish() {
         
         let attachmentID: Attachment.Identifier? = {
