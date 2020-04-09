@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Combine
+
 
 class TagListView: UITableView {
     
@@ -28,9 +28,9 @@ class TagListView: UITableView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
         case .tag(let tagID):
-            self.cellSubscriptions[cell] = TagList.shared.$value.combineLatest(ThoughtList.shared.publisher())
-                .sink(receiveValue: { tags, thoughts in
-                    guard let tag = tags[tagID] else { return }
+            self.cellSubscriptions[cell] = TagList.shared.publisher(for: tagID)
+                .combineLatest(ThoughtList.shared.$value)
+                .sink(receiveValue: { tag, thoughts in
                     cell.textLabel?.text = tag.title
                     if self.thoughtIDs.compactMap({ thoughts[$0] })
                         .allSatisfy({ $0.tagIDs.contains(tagID) }) {

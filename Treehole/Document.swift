@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Combine
+
 import LinkPresentation
 import AVFoundation
 
@@ -39,7 +39,7 @@ class Document: UIDocument {
         
         AttachmentList.shared.loadingPublisher()
             .flatMap({ id, targetDimension in
-                AttachmentList.shared.publisher()
+                AttachmentList.shared.$value
                     .compactMap { $0[id] }
                     .map { (id, $0, targetDimension) }
             })
@@ -78,7 +78,7 @@ class Document: UIDocument {
             })
             .store(in: &subscriptions)
         
-        AttachmentList.shared.publisher()
+        AttachmentList.shared.$value
             .map({ attachments in
                 var newAssetFolders = [String: FileWrapper]()
                 attachments.forEach { id, attachment in
@@ -98,7 +98,7 @@ class Document: UIDocument {
             .assign(to: \.assetFolders, on: self)
             .store(in: &subscriptions)
         
-        AttachmentList.shared.publisher()
+        AttachmentList.shared.$value
             .scan([Attachment.Identifier: Attachment](), { oldValue, newValue in oldValue })
             .sink(receiveValue: { oldValue in
                 self.undoManager.registerUndo(withTarget: AttachmentList.shared) {
@@ -110,7 +110,7 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         
-        ThoughtList.shared.publisher()
+        ThoughtList.shared.$value
             .scan([Thought.Identifier: Thought](), { oldValue, newValue in oldValue })
             .sink(receiveValue: { oldValue in
                 self.undoManager.registerUndo(withTarget: ThoughtList.shared) {

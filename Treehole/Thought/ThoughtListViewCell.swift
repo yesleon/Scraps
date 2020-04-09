@@ -8,7 +8,7 @@
 
 import UIKit
 import LinkPresentation
-import Combine
+
 
 class ThoughtListViewCell: UITableViewCell {
 

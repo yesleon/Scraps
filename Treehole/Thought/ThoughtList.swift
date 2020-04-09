@@ -9,28 +9,22 @@
 import Foundation
 import Combine
 
+typealias AnyCancellable = Combine.AnyCancellable
+
 class ThoughtList {
     
     static let shared = ThoughtList()
     
-    private let currentValueSubject = CurrentValueSubject<[Thought.Identifier: Thought], Never>([Thought.Identifier: Thought]())
-    
-    var value: [Thought.Identifier: Thought] {
-        currentValueSubject.value
-    }
+    @Published private(set) var value = [Thought.Identifier: Thought]()
     
     func modifyValue(handler: (inout [Thought.Identifier: Thought]) -> Void) {
-        var value = currentValueSubject.value
+        var value = self.value
         handler(&value)
-        currentValueSubject.value = value
-    }
-    
-    func publisher() -> AnyPublisher<[Thought.Identifier: Thought], Never> {
-        currentValueSubject.eraseToAnyPublisher()
+        self.value = value
     }
     
     func publisher(for id: Thought.Identifier) -> AnyPublisher<Thought, Never> {
-        return currentValueSubject
+        return $value
             .compactMap { $0[id] }
             .removeDuplicates()
             .eraseToAnyPublisher()

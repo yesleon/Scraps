@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 class TagList {
     
@@ -22,5 +23,12 @@ class TagList {
         var value = self.value
         handler(&value)
         self.value = value
+    }
+    
+    func publisher(for id: Tag.Identifier) -> AnyPublisher<Tag, Never> {
+        return $value
+            .compactMap { $0[id] }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
     }
 }

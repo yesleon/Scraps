@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Combine
+
 import func AVFoundation.AVMakeRect
 
 class ThoughtListView: UITableView {
@@ -38,7 +38,7 @@ class ThoughtListView: UITableView {
         
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
         
-        ThoughtList.shared.publisher()
+        ThoughtList.shared.$value
             .combineLatest(ThoughtFilter.shared.$value,
                            NotificationCenter.default.significantTimeChangeNotificationPublisher())
             .map({ thoughts, filters, _ in

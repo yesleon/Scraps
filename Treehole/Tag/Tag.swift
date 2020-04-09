@@ -9,7 +9,7 @@
 import Foundation
 
 
-struct Tag: Codable {
+struct Tag: Codable, Equatable {
     struct Identifier: Codable, Hashable {
         private let uuid: UUID
         init() {
