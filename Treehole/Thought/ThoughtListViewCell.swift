@@ -89,3 +89,7 @@ class ThoughtListViewCell: UITableViewCell {
     }
 
 }
+
+func asdf(block: (Int) -> Void) {
+    
+}

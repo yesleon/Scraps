@@ -22,12 +22,10 @@ class ThoughtListView: UITableView {
     
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, thoughtID in
-        return Optional(tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath))
-            .flatMap { $0 as? ThoughtListViewCell }
-            .map({
-                $0.setThoughtID(thoughtID)
-                return $0
-            })
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ThoughtListViewCell else { return nil }
+        
+        cell.setThoughtID(thoughtID)
+        return cell
     }
     
     override func didMoveToSuperview() {

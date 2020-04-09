@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import Combine
-
-typealias AnyCancellable = Combine.AnyCancellable
 
 class ThoughtList {
     

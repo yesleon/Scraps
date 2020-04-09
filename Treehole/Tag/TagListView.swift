@@ -24,6 +24,8 @@ class TagListView: UITableView {
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
+    var thoughtIDs = Set<Thought.Identifier>()
+    
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
@@ -48,8 +50,6 @@ class TagListView: UITableView {
         }
         return cell
     }
-    
-    var thoughtIDs = Set<Thought.Identifier>()
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
