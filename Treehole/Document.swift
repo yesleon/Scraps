@@ -47,15 +47,8 @@ class Document: UIDocument {
                 switch attachment {
                 case var .image(images):
                     guard images[targetDimension] == nil else { break }
-                    let originalImage: UIImage
-                    
-                    if let image = images[.maxDimension] {
-                        originalImage = image
-                    } else {
-                        let data = self.assetFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents
-                        originalImage = UIImage(data: data!)!
-                    }
-                    
+                    guard let data = self.assetFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents else { break }
+                    guard let originalImage  = UIImage(data: data) else { break }
                     
                     let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: targetDimension, height: targetDimension))
                     let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
@@ -84,6 +77,38 @@ class Document: UIDocument {
                 }
             })
             .store(in: &subscriptions)
+        
+        AttachmentList.shared.publisher()
+            .map({ attachments in
+                var newAssetFolders = [String: FileWrapper]()
+                attachments.forEach { id, attachment in
+                    guard case let .image(images) = attachment else { return }
+                    let imageID = id.url.lastPathComponent
+                    var imageFiles = self.assetFolders[imageID]?.fileWrappers ?? [:]
+                    images.forEach { dimension, image in
+                        if imageFiles["\(dimension)"] == nil, let data = image.jpegData(compressionQuality: 0.95) {
+                            imageFiles["\(dimension)"] = FileWrapper(regularFileWithContents: data)
+                        }
+                    }
+                    
+                    newAssetFolders[imageID] = FileWrapper(directoryWithFileWrappers: imageFiles)
+                }
+                return newAssetFolders
+            })
+            .assign(to: \.assetFolders, on: self)
+            .store(in: &subscriptions)
+        
+        AttachmentList.shared.publisher()
+            .scan([Attachment.Identifier: Attachment](), { oldValue, newValue in oldValue })
+            .sink(receiveValue: { oldValue in
+                self.undoManager.registerUndo(withTarget: AttachmentList.shared) {
+                    $0.modifyValue {
+                        $0 = oldValue
+                    }
+                }
+            })
+            .store(in: &subscriptions)
+        
         
         ThoughtList.shared.publisher()
             .scan([Thought.Identifier: Thought](), { oldValue, newValue in oldValue })
