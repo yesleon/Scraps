@@ -11,13 +11,15 @@ import LinkPresentation
 
 class AttachmentView: UIView {
     
+    override var intrinsicContentSize: CGSize {
+        bounds.size
+    }
+    
     var subscriptions = Set<AnyCancellable>()
     
-    func subscribe<T: Publisher>(to publisher: T) where T.Output == Attachment?, T.Failure == Never {
+    func subscribe<T: Publisher>(to publisher: T, dimension: CGFloat) where T.Output == Attachment?, T.Failure == Never {
         subscriptions.removeAll()
         
-        weak var imageView: UIView?
-        weak var linkView: UIView?
         weak var `self` = self
         
         publisher
@@ -28,31 +30,36 @@ class AttachmentView: UIView {
         publisher
             .compactMap { $0 }
             .sink(receiveValue: { attachment in
-                imageView?.removeFromSuperview()
-                linkView?.removeFromSuperview()
+                guard let self = self else { return }
+                
+                self.subviews.forEach { $0.removeFromSuperview() }
                 switch attachment {
                 case .image(let image):
-                    guard let image = image[.maxDimension] else { break }
+                    guard let image = image[dimension] else { break }
                     let view = UIImageView(image: image)
-                    view.frame = CGRect(x: 20, y: 8, width: 200 * image.size.width / image.size.height, height: 200)
+                    self.addSubview(view)
+                    self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
+                    view.frame = self.bounds
                     view.layer.cornerRadius = 10
                     view.layer.masksToBounds = true
                     view.contentMode = .scaleAspectFill
                     view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-                    self?.insertSubview(view, at: 0)
-                    imageView = view
+                    self.invalidateIntrinsicContentSize()
+                    
                 case .linkMetadata(let metadata):
                     let view = LPLinkView(metadata: metadata)
-                    view.frame = CGRect(x: 20, y: 8, width: 200, height: 200)
-                    view.contentMode = .scaleAspectFill
+                    self.addSubview(view)
+                    self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
+                    view.frame = self.bounds
                     view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-                    self?.insertSubview(view, at: 0)
-                    linkView = view
+                    self.invalidateIntrinsicContentSize()
+                    
                     if metadata.title == nil, let url = metadata.originalURL {
                         LPMetadataProvider().startFetchingMetadata(for: url) { metadata, error in
                             DispatchQueue.main.async {
                                 guard let metadata = metadata else { return }
                                 view.metadata = metadata
+                                self.invalidateIntrinsicContentSize()
                             }
                         }
                     }
@@ -67,7 +74,7 @@ class AttachmentView: UIView {
         super.didMoveToSuperview()
         
         if subscriptions.isEmpty {
-            subscribe(to: Draft.shared.$attachment)
+            subscribe(to: Draft.shared.$attachment, dimension: .maxDimension)
         }
     }
     

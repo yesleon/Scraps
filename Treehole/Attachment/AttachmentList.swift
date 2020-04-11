@@ -28,8 +28,8 @@ class AttachmentList {
         self.value = value
     }
     
-    func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment, Never> {
+    func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment?, Never> {
         loadingSubject.send((id: id, targetDimension: targetDimension))
-        return $value.compactMap { $0[id] }.eraseToAnyPublisher()
+        return $value.map { $0[id] }.eraseToAnyPublisher()
     }
 }

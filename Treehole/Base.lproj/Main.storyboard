@@ -160,18 +160,11 @@
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cwX-Jm-2dn">
-                                                    <rect key="frame" x="0.0" y="37.5" width="200" height="200"/>
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="150" translatesAutoresizingMaskIntoConstraints="NO" id="kfS-R8-a0m" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="213.5" width="200" height="150"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="200" id="4T0-6p-gpt"/>
-                                                        <constraint firstAttribute="height" constant="200" id="pDq-gK-wgs"/>
-                                                    </constraints>
                                                 </view>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" placeholderIntrinsicWidth="374" placeholderIntrinsicHeight="280.5" translatesAutoresizingMaskIntoConstraints="NO" id="m0M-av-1yd">
-                                                    <rect key="frame" x="0.0" y="258.5" width="374" height="280.5"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJb-rk-TYL">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJb-rk-TYL">
                                                     <rect key="frame" x="0.0" y="560.5" width="42" height="20.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -188,9 +181,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="linkView" destination="cwX-Jm-2dn" id="Va8-1i-rho"/>
+                                    <outlet property="attachmentView" destination="kfS-R8-a0m" id="fOF-hf-bCu"/>
                                     <outlet property="myDetailLabel" destination="elm-m7-hgG" id="ind-hj-Hyx"/>
-                                    <outlet property="myImageView" destination="m0M-av-1yd" id="PCo-Lg-bQl"/>
                                     <outlet property="myTextLabel" destination="pJb-rk-TYL" id="k6Z-sC-B2l"/>
                                 </connections>
                             </tableViewCell>

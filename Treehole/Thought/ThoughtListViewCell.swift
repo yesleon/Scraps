@@ -8,25 +8,19 @@
 
 import UIKit
 import LinkPresentation
+import Combine
 
 
 class ThoughtListViewCell: UITableViewCell {
 
-    @IBOutlet weak var myImageView: UIImageView!
+    @IBOutlet weak var attachmentView: AttachmentView!
     @IBOutlet weak var myTextLabel: UILabel!
     @IBOutlet weak var myDetailLabel: UILabel!
-    @IBOutlet weak var linkView: UIView!
     
     var subscriptions = Set<AnyCancellable>()
     
     func subscribe<T: Publisher>(to publisher: T) where T.Output == Thought, T.Failure == Never {
-        
-        // Clean up
         subscriptions.removeAll()
-        linkView.subviews.forEach { $0.removeFromSuperview() }
-        linkView.isHidden = true
-        myImageView.isHidden = true
-        myTextLabel.isHidden = true
         
         // Content
         publisher
@@ -43,15 +37,13 @@ class ThoughtListViewCell: UITableViewCell {
         
         // Metadata
         publisher
-            .combineLatest(TagList.shared.$value)
-            .map({ thought, tags -> String? in
+            .combineLatest(TagList.shared.$value, { thought, tags in
+                (thought, thought.tagIDs.compactMap { tags[$0] })
+            })
+            .map({ (thought: Thought, tags: [Tag]) -> String? in
                 DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
                     + " "
-                    + thought.tagIDs
-                        .compactMap { tags[$0] }
-                        .map(\.title)
-                        .map({ "#" + $0 })
-                        .joined(separator: " ")
+                    + tags.map(\.title).map({ "#" + $0 }).joined(separator: " ")
             })
             .assign(to: \.text, on: myDetailLabel)
             .store(in: &subscriptions)
@@ -60,30 +52,17 @@ class ThoughtListViewCell: UITableViewCell {
         // Attachment
         
         publisher
-            .compactMap(\.attachmentID)
-            .flatMap { AttachmentList.shared.publisher(for: $0, targetDimension: .itemWidth) }
-            .removeDuplicates()
-            .sink(receiveValue: { [weak self] attachment in
-                guard let self = self else { return }
-                switch attachment {
-                case .image(let image):
-                    self.myImageView?.isHidden = false
-                    self.myImageView?.image = image[.itemWidth]
-                    
-                case .linkMetadata(let metadata):
-                    self.linkView.isHidden = false
-                    let view = LPLinkView(metadata: metadata)
-                    view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                    view.frame = self.linkView.bounds
-                    self.linkView.addSubview(view)
+            .map(\.attachmentID)
+            .map({ id -> AnyPublisher<Attachment?, Never> in
+                if let id = id {
+                    return AttachmentList.shared.publisher(for: id, targetDimension: .itemWidth).eraseToAnyPublisher()
+                } else {
+                    return Just(nil).eraseToAnyPublisher()
                 }
             })
+            .map({ ($0, 200) })
+            .sink(receiveValue: attachmentView.subscribe(to:dimension:))
             .store(in: &subscriptions)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        myImageView.layer.cornerRadius = 10
     }
     
     override func removeFromSuperview() {

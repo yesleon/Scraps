@@ -146,6 +146,7 @@
 			children = (
 				711DE1B9243C349E0003A1C2 /* Attachment.swift */,
 				711DE1BD243C455B0003A1C2 /* AttachmentList.swift */,
+				711DE1BF243C55E70003A1C2 /* AttachmentView.swift */,
 			);
 			path = Attachment;
 			sourceTree = "<group>";
@@ -189,7 +190,6 @@
 			children = (
 				7144AA402435E84400B72934 /* Draft.swift */,
 				715F63B52435B22000E12D26 /* DraftView.swift */,
-				711DE1BF243C55E70003A1C2 /* AttachmentView.swift */,
 				715F63B92435B22000E12D26 /* DraftViewController.swift */,
 			);
 			path = Draft;

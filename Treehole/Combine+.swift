@@ -19,15 +19,15 @@ extension Publisher where Failure == Never {
             object?[keyPath: keyPath] = $0
         })
     }
-    func withOldValue(initialOldValue: Output) -> AnyPublisher<(oldValue: Output, newValue: Output), Failure> {
-        scan((oldValue: initialOldValue, newValue: initialOldValue), { oldPair, newValue in
-            (oldValue: oldPair.newValue, newValue: newValue)
+    func withPreviousResult(initialResult: Output) -> AnyPublisher<(previousResult: Output, result: Output), Failure> {
+        scan((previousResult: initialResult, result: initialResult), { oldPair, result in
+            (previousResult: oldPair.result, result: result)
         })
             .eraseToAnyPublisher()
     }
     func previousResult(initialResult: Output) -> AnyPublisher<Output, Failure> {
-        withOldValue(initialOldValue: initialResult)
-            .map(\.oldValue)
+        withPreviousResult(initialResult: initialResult)
+            .map(\.previousResult)
         .eraseToAnyPublisher()
     }
 }
