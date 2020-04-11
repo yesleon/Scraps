@@ -15,6 +15,8 @@ class AttachmentView: UIView {
         bounds.size
     }
     
+    var sizeChangedHandler = { }
+    
     var subscriptions = Set<AnyCancellable>()
     
     func subscribe<T: Publisher>(to publisher: T, dimension: CGFloat) where T.Output == Attachment?, T.Failure == Never {
@@ -59,7 +61,9 @@ class AttachmentView: UIView {
                             DispatchQueue.main.async {
                                 guard let metadata = metadata else { return }
                                 view.metadata = metadata
+                                self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
                                 self.invalidateIntrinsicContentSize()
+                                self.sizeChangedHandler()
                             }
                         }
                     }
