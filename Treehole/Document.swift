@@ -35,7 +35,7 @@ class Document: UIDocument {
     
     var assetFolders = [String: FileWrapper]()
     
-    func load() {
+    func subscribe() {
         
         AttachmentList.shared.loadingPublisher()
             .flatMap({ id, targetDimension in
@@ -98,10 +98,12 @@ class Document: UIDocument {
             .assign(to: \.assetFolders, on: self)
             .store(in: &subscriptions)
         
+        weak var undoManager = self.undoManager
+        
         AttachmentList.shared.$value
-            .scan([Attachment.Identifier: Attachment](), { oldValue, newValue in oldValue })
+            .previousResult(initialResult: [Attachment.Identifier : Attachment]())
             .sink(receiveValue: { oldValue in
-                self.undoManager.registerUndo(withTarget: AttachmentList.shared) {
+                undoManager?.registerUndo(withTarget: AttachmentList.shared) {
                     $0.modifyValue {
                         $0 = oldValue
                     }
@@ -111,9 +113,9 @@ class Document: UIDocument {
         
         
         ThoughtList.shared.$value
-            .scan([Thought.Identifier: Thought](), { oldValue, newValue in oldValue })
+            .previousResult(initialResult: [Thought.Identifier : Thought]())
             .sink(receiveValue: { oldValue in
-                self.undoManager.registerUndo(withTarget: ThoughtList.shared) {
+                undoManager?.registerUndo(withTarget: ThoughtList.shared) {
                     $0.modifyValue {
                         $0 = oldValue
                     }
@@ -122,17 +124,23 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         TagList.shared.$value
-            .sink(receiveValue: { _ in
-                let oldValue = TagList.shared.value
-                self.undoManager.registerUndo(withTarget: TagList.shared) {
+            .previousResult(initialResult: [Tag.Identifier : Tag]())
+            .sink(receiveValue: { oldValue in
+                undoManager?.registerUndo(withTarget: TagList.shared) {
                     $0.modifyValue {
                         $0 = oldValue
                     }
                 }
             })
             .store(in: &self.subscriptions)
-        
-        openOrCreateIfFileNotExists()
+    }
+    
+    func openOrCreateIfFileNotExists(completionHandler: ((Bool) -> Void)? = nil) {
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            open(completionHandler: completionHandler)
+        } else {
+            save(to: fileURL, for: .forCreating, completionHandler: completionHandler)
+        }
     }
 
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
@@ -184,14 +192,6 @@ class Document: UIDocument {
     override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {
         super.handleError(error, userInteractionPermitted: userInteractionPermitted)
         print(error)
-    }
-    
-    func openOrCreateIfFileNotExists(completionHandler: ((Bool) -> Void)? = nil) {
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            open(completionHandler: completionHandler)
-        } else {
-            save(to: fileURL, for: .forCreating, completionHandler: completionHandler)
-        }
     }
 }
 

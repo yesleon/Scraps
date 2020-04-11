@@ -17,7 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var document = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("database"))
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        document.load()
+        document.openOrCreateIfFileNotExists { success in
+            guard success else { return }
+            self.document.subscribe()
+        }
         
         return true
     }
