@@ -11,23 +11,52 @@ import UIKit
 
 
 @available(iOS 13.0, *)
-class DraftView: UITextView {
+class DraftView: UIView {
+    
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var subscriptions = Set<AnyCancellable>()
+    
+    func subscribe() {
+        subscriptions.removeAll()
+        Draft.shared.$value
+            .filter { $0 != self.textView.text }
+            .assign(to: \.text, on: textView)
+            .store(in: &subscriptions)
+            
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillShowNotification)
+            .map(\.userInfo)
+            .compactMap { $0?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
+            .sink(receiveValue: { [weak scrollView] keyboardFrame in
+                guard let scrollView = scrollView, let window = scrollView.window, let superview = scrollView.superview else { return }
+                superview.layoutIfNeeded()
+                let delta = window.bounds.maxY - superview.convert(scrollView.frame, to: window).maxY
+                scrollView.contentInset.bottom = keyboardFrame.height - delta
+                scrollView.verticalScrollIndicatorInsets.bottom = keyboardFrame.height - delta
+            })
+            .store(in: &subscriptions)
+        
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillHideNotification)
+            .sink(receiveValue: { [weak scrollView] _ in
+                scrollView?.contentInset.bottom = 0
+                scrollView?.verticalScrollIndicatorInsets.bottom = 0
+            })
+            .store(in: &subscriptions)
+    }
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
-        Draft.shared.$value
-            .filter { $0 != self.text }
-            .assign(to: \.text, on: self)
-            .store(in: &subscriptions)
+        subscribe()
     }
     
     override func layoutMarginsDidChange() {
         super.layoutMarginsDidChange()
         
-        textContainerInset = .init(
+        textView.textContainerInset = .init(
             top: 8,
             left: layoutMargins.left,
             bottom: 8,

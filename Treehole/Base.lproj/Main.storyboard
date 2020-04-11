@@ -12,7 +12,7 @@
         <scene sceneID="r19-rZ-MY4">
             <objects>
                 <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Treehole" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="1z5-Dg-7zY">
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="1z5-Dg-7zY" customClass="DraftView" customModule="Treehole" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -40,7 +40,7 @@
                                                     <constraint firstAttribute="height" constant="216" id="m3X-fS-GdF"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S" customClass="DraftView" customModule="Treehole" customModuleProvider="target">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S">
                                                 <rect key="frame" x="0.0" y="216" width="414" height="536"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -73,6 +73,10 @@
                             <constraint firstItem="CSe-FT-TiN" firstAttribute="leading" secondItem="1z5-Dg-7zY" secondAttribute="leading" id="vlZ-BJ-USR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nqS-JH-wcy"/>
+                        <connections>
+                            <outlet property="scrollView" destination="CSe-FT-TiN" id="Ver-S0-Dfu"/>
+                            <outlet property="textView" destination="q5K-Dc-f5S" id="FKn-IL-uVT"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Draft" id="ueq-sf-8FG">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="UeF-G7-8DG">
@@ -87,9 +91,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="draftView" destination="q5K-Dc-f5S" id="Smb-da-d9F"/>
+                        <outlet property="draftView" destination="1z5-Dg-7zY" id="6fv-NI-DeG"/>
                         <outlet property="saveButton" destination="QlW-hQ-Gnb" id="AFk-Y4-f5V"/>
-                        <outlet property="scrollView" destination="CSe-FT-TiN" id="G6D-xJ-892"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32e-Xh-SdS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
