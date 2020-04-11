@@ -37,47 +37,6 @@ class Document: UIDocument {
     
     func subscribe() {
         
-        AttachmentList.shared.loadingPublisher()
-            .flatMap({ id, targetDimension in
-                AttachmentList.shared.$value
-                    .compactMap { $0[id] }
-                    .map { (id, $0, targetDimension) }
-            })
-            .sink(receiveValue: { id, attachment, targetDimension in
-                switch attachment {
-                case var .image(images):
-                    guard images[targetDimension] == nil else { break }
-                    guard let data = self.assetFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents else { break }
-                    guard let originalImage  = UIImage(data: data) else { break }
-                    
-                    let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: targetDimension, height: targetDimension))
-                    let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
-                        originalImage.draw(in: rect)
-                    }
-                    
-                    images[targetDimension] = targetImage
-                    
-                    AttachmentList.shared.modifyValue { attachments in
-                        attachments[id] = .image(images)
-                    }
-                        
-                    
-                case .linkMetadata(let metadata):
-                    guard metadata.title == nil else { break }
-                    LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
-                        if let metadata = metadata {
-                            DispatchQueue.main.async {
-                                AttachmentList.shared.modifyValue {
-                                    $0[id] = .linkMetadata(metadata)
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-            })
-            .store(in: &subscriptions)
-        
         AttachmentList.shared.$value
             .map({ attachments in
                 var newAssetFolders = [String: FileWrapper]()
@@ -96,6 +55,47 @@ class Document: UIDocument {
                 return newAssetFolders
             })
             .assign(to: \.assetFolders, on: self)
+            .store(in: &subscriptions)
+        
+        AttachmentList.shared.loadingPublisher()
+            .combineLatest(AttachmentList.shared.$value)
+            .compactMap({ (loadingMessage, attachments) -> (Attachment.Identifier, Attachment, CGFloat)? in
+                guard let attachment = attachments[loadingMessage.id] else { return nil }
+                return (loadingMessage.id, attachment, loadingMessage.targetDimension)
+            })
+            .sink(receiveValue: { id, attachment, targetDimension in
+                switch attachment {
+                case var .image(images):
+                    guard images[targetDimension] == nil else { break }
+                    guard let data = self.assetFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents else { break }
+                    guard let originalImage  = UIImage(data: data) else { break }
+                    
+                    let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: targetDimension, height: targetDimension))
+                    let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
+                        originalImage.draw(in: rect)
+                    }
+                    
+                    images[targetDimension] = targetImage
+                    
+                    AttachmentList.shared.modifyValue { attachments in
+                        attachments[id] = .image(images)
+                    }
+                    
+                    
+                case .linkMetadata(let metadata):
+                    guard metadata.title == nil else { break }
+                    LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
+                        if let metadata = metadata {
+                            DispatchQueue.main.async {
+                                AttachmentList.shared.modifyValue {
+                                    $0[id] = .linkMetadata(metadata)
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            })
             .store(in: &subscriptions)
         
         weak var undoManager = self.undoManager
@@ -142,7 +142,7 @@ class Document: UIDocument {
             save(to: fileURL, for: .forCreating, completionHandler: completionHandler)
         }
     }
-
+    
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let rootFolder = contents as? FileWrapper else { throw Error.readingError(contents) }
         assetFolders = rootFolder.fileWrappers?["assets"]?.fileWrappers ?? [:]
@@ -170,7 +170,7 @@ class Document: UIDocument {
         
         undoManager.removeAllActions()
     }
-
+    
     override func contents(forType typeName: String) throws -> Any {
         var links = Set<Attachment.Identifier>()
         var imageIDs = Set<Attachment.Identifier>()
