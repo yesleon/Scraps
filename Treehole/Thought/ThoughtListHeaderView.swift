@@ -29,9 +29,4 @@ class ThoughtListHeaderView: UITableViewHeaderFooterView {
             .store(in: &subscriptions)
     }
     
-    override func removeFromSuperview() {
-        super.removeFromSuperview()
-        subscriptions.removeAll()
-    }
-    
 }

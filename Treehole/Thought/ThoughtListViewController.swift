@@ -46,6 +46,7 @@ class ThoughtListViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.allowsMultipleSelectionDuringEditing = true
+        (tableView as? ThoughtListView)?.controller = self
         subscribe()
     }
     

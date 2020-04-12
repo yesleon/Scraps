@@ -8,6 +8,9 @@
 
 import UIKit
 
+private let headerIdentifier = "SectionHeader"
+private let footerIdentifier = "SectionFooter"
+
 class ThoughtListView: UITableView, UITableViewDelegate {
     
     lazy var diffableDataSource = ThoughtListViewDataSource.make(tableView: self)
@@ -17,7 +20,9 @@ class ThoughtListView: UITableView, UITableViewDelegate {
         super.didMoveToSuperview()
         
         delegate = self
-        register(ThoughtListHeaderView.self, forHeaderFooterViewReuseIdentifier: "reuseIdentifier")
+        register(ThoughtListHeaderView.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
+        register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: footerIdentifier)
+        sectionFooterHeight = 200
         
         diffableDataSource.defaultRowAnimation = .fade
         diffableDataSource.subscribe()
@@ -55,13 +60,19 @@ class ThoughtListView: UITableView, UITableViewDelegate {
         if ThoughtFilter.shared.value.first(ofType: TodayFilter.self) != nil {
             return 0
         } else {
-            return tableView.sectionHeaderHeight
+            return 44
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "reuseIdentifier") as? ThoughtListHeaderView else { return nil }
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier) as? ThoughtListHeaderView else { return nil }
         view.subscribe(to: diffableDataSource.snapshot().sectionIdentifiers[section])
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerIdentifier) else { return nil }
+        view.backgroundView = UIView()
         return view
     }
     

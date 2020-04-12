@@ -58,7 +58,8 @@ class AttachmentView: UIView {
                     
                     if metadata.title == nil, let url = metadata.originalURL {
                         LPMetadataProvider().startFetchingMetadata(for: url) { metadata, error in
-                            DispatchQueue.main.async {
+                            DispatchQueue.main.async { [weak self] in
+                                guard let self = self else { return }
                                 guard let metadata = metadata else { return }
                                 view.metadata = metadata
                                 self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
