@@ -10,7 +10,7 @@ import UIKit
 import PencilKit
 
 /// Handles user input in `ComposerView`.
-class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PKCanvasViewDelegate {
+class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var draftView: DraftView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -28,7 +28,7 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
                 guard let self = self else { return }
                 self.draftView.textView.resignFirstResponder()
                 let vc = CanvasViewController()
-                vc.canvasView.delegate = self
+                vc.saveHandler = Draft.shared.saveDrawing
                 self.present(UINavigationController(rootViewController: vc), animated: true)
             },
             .fixedSpace(width: 16),
@@ -57,13 +57,6 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
             .combineLatest(Draft.shared.$attachment)
             .map { !$0.isEmpty || $1 != nil }
             .assign(to: \.isEnabled, on: saveButton)
-            .store(in: &subscriptions)
-        
-        Draft.shared.$attachment
-            .map { $0 != nil }
-            .sink(receiveValue: { hasAttachment in
-                self.toolbar.items?.forEach { $0.isEnabled = !hasAttachment }
-            })
             .store(in: &subscriptions)
     }
     
@@ -96,10 +89,6 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
         picker.presentingViewController?.dismiss(animated: true)
         guard let image = info[.originalImage] as? UIImage else { return }
         Draft.shared.saveImage(image, dimensions: [.maxDimension, .itemWidth])
-    }
-    
-    func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        Draft.shared.saveDrawing(canvasView.drawing)
     }
     
 }

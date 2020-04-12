@@ -17,6 +17,10 @@ class ThoughtListViewController: UITableViewController {
     
     override var canBecomeFirstResponder: Bool { true }
     
+    override var undoManager: UndoManager? {
+        (UIApplication.shared.delegate as? UIResponder)?.undoManager
+    }
+    
     var subscriptions = Set<AnyCancellable>()
     
     func subscribe() {

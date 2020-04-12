@@ -9,37 +9,57 @@
 import UIKit
 import PencilKit
 
-class CanvasViewController: UIViewController, PKCanvasViewDelegate {
+class CanvasViewController: UIViewController {
 
     lazy var canvasView = PKCanvasView()
+    
+    var saveHandler: (PKDrawing) -> Void = { _ in }
+    
+    override func loadView() {
+        canvasView.contentSize = .init(width: .maxDimension, height: .maxDimension)
+        canvasView.backgroundColor = .systemBackground
+        view = canvasView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        canvasView.frame = view.bounds
-        canvasView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        canvasView.contentSize = .init(width: .maxDimension, height: .maxDimension)
-        view.addSubview(canvasView)
-        view.backgroundColor = .systemBackground
+        isModalInPresentation = true
+        
+        navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .save) { [weak self] _ in
+            guard let self = self else { return }
+            self.presentingViewController?.dismiss(animated: true)
+            self.saveHandler(self.canvasView.drawing)
+        }
+        navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel) { [weak self] _ in
+            guard let self = self else { return }
+            self.presentingViewController?.dismiss(animated: true)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let window = view.window {
+            let toolPicker = PKToolPicker.shared(for: window)
+            toolPicker?.addObserver(canvasView)
+            toolPicker?.setVisible(true, forFirstResponder: canvasView)
+            canvasView.becomeFirstResponder()
+        }
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         var zoomScale: CGFloat = 0
-            zoomScale = canvasView.zoomScale
-            canvasView.setZoomScale(1, animated: true)
-            
+        zoomScale = canvasView.zoomScale
+        canvasView.setZoomScale(1, animated: true)
+        
         if view.frame.width > view.frame.height {
             canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.width/canvasView.contentSize.width
-            } else {
-                canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.height/canvasView.contentSize.height
-            }
-            canvasView.setZoomScale(zoomScale, animated: true)
-        
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
+        } else {
+            canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.height/canvasView.contentSize.height
+        }
+        canvasView.setZoomScale(zoomScale, animated: true)
         
     }
     
