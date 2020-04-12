@@ -14,6 +14,7 @@ import UIKit
 class DraftView: UIView {
     
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var attachmentView: AttachmentView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     var subscriptions = Set<AnyCancellable>()
@@ -51,12 +52,21 @@ class DraftView: UIView {
         super.didMoveToSuperview()
         
         subscribe()
+        
+        attachmentView.subscribe(to: Draft.shared.$attachment, dimension: .itemWidth)
     }
     
     override func layoutMarginsDidChange() {
         super.layoutMarginsDidChange()
         
         textView.textContainerInset = .init(
+            top: 8,
+            left: layoutMargins.left,
+            bottom: 8,
+            right: layoutMargins.right
+        )
+        
+        attachmentView.contentInsets = .init(
             top: 8,
             left: layoutMargins.left,
             bottom: 8,

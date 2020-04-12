@@ -16,17 +16,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="CSe-FT-TiN">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="CSe-FT-TiN">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
+                                    <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="752"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="216" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-Cl-Ent">
-                                                        <rect key="frame" x="30" y="18" width="25" height="24"/>
+                                                        <rect key="frame" x="16" y="16" width="25" height="24"/>
                                                         <state key="normal" image="xmark.circle.fill" catalog="system"/>
                                                         <connections>
                                                             <action selector="deleteAttachment:" destination="8rr-SM-NiG" eventType="touchUpInside" id="8dX-Kk-6Z9"/>
@@ -35,12 +35,11 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="top" secondItem="TpM-cP-ys9" secondAttribute="top" constant="18" id="2ux-If-fEp"/>
-                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="leading" secondItem="TpM-cP-ys9" secondAttribute="leading" constant="30" id="XOk-ZG-1jP"/>
-                                                    <constraint firstAttribute="height" constant="216" id="m3X-fS-GdF"/>
+                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="leading" secondItem="TpM-cP-ys9" secondAttribute="leadingMargin" constant="8" id="eDl-bv-r7O"/>
+                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="top" secondItem="TpM-cP-ys9" secondAttribute="topMargin" constant="8" id="zKx-ep-ks0"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="536" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S">
                                                 <rect key="frame" x="0.0" y="216" width="414" height="536"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -51,6 +50,9 @@
                                                 </connections>
                                             </textView>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="q5K-Dc-f5S" firstAttribute="width" secondItem="4TW-Cm-s3Y" secondAttribute="width" id="f5H-hC-1h7"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -74,6 +76,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nqS-JH-wcy"/>
                         <connections>
+                            <outlet property="attachmentView" destination="TpM-cP-ys9" id="A0a-zu-FVB"/>
                             <outlet property="scrollView" destination="CSe-FT-TiN" id="Ver-S0-Dfu"/>
                             <outlet property="textView" destination="q5K-Dc-f5S" id="FKn-IL-uVT"/>
                         </connections>
@@ -98,7 +101,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="32e-Xh-SdS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="19L-Gb-UHW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1405.078125" y="-687.5"/>
+            <point key="canvasLocation" x="1404.3478260869567" y="-687.72321428571422"/>
         </scene>
         <!--Thought List Filter View Controller-->
         <scene sceneID="UwS-6h-Vt9">
@@ -315,6 +318,6 @@
     </scenes>
     <resources>
         <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
-        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle.fill" catalog="system" width="32" height="32"/>
     </resources>
 </document>

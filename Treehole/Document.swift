@@ -9,6 +9,7 @@
 import UIKit
 
 import LinkPresentation
+import PencilKit
 import AVFoundation
 
 private struct DocumentData: Codable {
@@ -16,6 +17,7 @@ private struct DocumentData: Codable {
     var tags: [Tag.Identifier: Tag]
     var linkIDs: Set<Attachment.Identifier>?
     var imageIDs: Set<Attachment.Identifier>?
+    var drawings: [Attachment.Identifier: PKDrawing]?
 }
 
 extension CGFloat {
@@ -94,6 +96,8 @@ class Document: UIDocument {
                         }
                     }
                     
+                case .drawing(_):
+                    break
                 }
             })
             .store(in: &subscriptions)
@@ -165,6 +169,11 @@ class Document: UIDocument {
                         attachments[$0] = .linkMetadata(.init(originalURL: $0.url))
                     }
                 }
+                documentData.drawings?.forEach { id, drawing in
+                    if attachments[id] == nil {
+                        attachments[id] = .drawing(drawing)
+                    }
+                }
             }
         }
         
@@ -174,15 +183,18 @@ class Document: UIDocument {
     override func contents(forType typeName: String) throws -> Any {
         var links = Set<Attachment.Identifier>()
         var imageIDs = Set<Attachment.Identifier>()
+        var drawings = [Attachment.Identifier: PKDrawing]()
         AttachmentList.shared.value.forEach { id, attachment in
             switch attachment {
             case .image(_):
                 imageIDs.insert(id)
             case .linkMetadata(_):
                 links.insert(id)
+            case .drawing(let drawing):
+                drawings[id] = drawing
             }
         }
-        let data = try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs))
+        let data = try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs, drawings: drawings))
         return FileWrapper(directoryWithFileWrappers: [
             "data.json": FileWrapper(regularFileWithContents: data),
             "assets": FileWrapper(directoryWithFileWrappers: assetFolders)

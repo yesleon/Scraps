@@ -10,11 +10,12 @@ import Foundation
 
 import UIKit
 import LinkPresentation
+import PencilKit
 
 enum Attachment: Equatable {
     struct Identifier: Codable, Hashable {
         let url: URL
     }
-    case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata)
+    case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata), drawing(PKDrawing)
     
 }

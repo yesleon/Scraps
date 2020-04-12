@@ -32,6 +32,7 @@
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Thought.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
+		71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AFE1B22443781700D0793B /* CanvasViewController.swift */; };
 		71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC1243FA13600610A3B /* Combine+.swift */; };
 		71C2CAC4243FA81F00610A3B /* ThoughtListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC3243FA81F00610A3B /* ThoughtListHeaderView.swift */; };
 		71D4259D24372E2000159911 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D4259C24372E2000159911 /* Window.swift */; };
@@ -71,6 +72,7 @@
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
+		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
 		71C2CAC1243FA13600610A3B /* Combine+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+.swift"; sourceTree = "<group>"; };
 		71C2CAC3243FA81F00610A3B /* ThoughtListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtListHeaderView.swift; sourceTree = "<group>"; };
 		71D4259C24372E2000159911 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				714E21C2244246E3005C953A /* UIControl+.swift */,
 				714E21C424425373005C953A /* UIViewController+.swift */,
 				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
+				71AFE1B22443781700D0793B /* CanvasViewController.swift */,
 				71EA538B243EE45900CD64CA /* Thought */,
 				71EA538C243EE46000CD64CA /* Tag */,
 				71EA538A243EE44700CD64CA /* Attachment */,
@@ -290,6 +293,7 @@
 				711DE1C4243C83540003A1C2 /* ThoughtListViewCell.swift in Sources */,
 				711DE1BA243C349E0003A1C2 /* Attachment.swift in Sources */,
 				7144AA452436241600B72934 /* ThoughtFilter.swift in Sources */,
+				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
 				71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				715F63B42435B20F00E12D26 /* Document.swift in Sources */,

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import PencilKit
 import LinkPresentation
 
 class Draft {
@@ -16,14 +17,21 @@ class Draft {
     @Published var value = ""
     @Published private(set) var attachment: Attachment?
     
-    func saveImage(_ image: UIImage) {
-        let rect = AVMakeRect(aspectRatio: image.size, insideRect: .init(x: 0, y: 0, width: .maxDimension, height: .maxDimension))
-        let format = UIGraphicsImageRendererFormat.default()
-        format.scale = 1
-        let image = UIGraphicsImageRenderer(bounds: rect, format: format).image { context in
-            image.draw(in: rect)
+    func saveDrawing(_ drawing: PKDrawing) {
+        attachment = .drawing(drawing)
+    }
+    
+    func saveImage(_ image: UIImage, dimensions: [CGFloat]) {
+        var images = [CGFloat: UIImage]()
+        dimensions.forEach {
+            let rect = AVMakeRect(aspectRatio: image.size, insideRect: .init(x: 0, y: 0, width: $0, height: $0))
+            let format = UIGraphicsImageRendererFormat.default()
+            format.scale = UIScreen.main.scale
+            images[$0] = UIGraphicsImageRenderer(bounds: rect, format: format).image { context in
+                image.draw(in: rect)
+            }
         }
-        attachment = .image([.maxDimension: image])
+        attachment = .image(images)
     }
     
     func saveURL(_ url: URL) {
@@ -58,6 +66,12 @@ class Draft {
                 return  metadata.originalURL.map(Attachment.Identifier.init(url:))
             case .none:
                 return nil
+            case .drawing(_):
+                var components = URLComponents()
+                components.scheme = "treehole"
+                components.host = "drawings"
+                components.path = "/" + UUID().uuidString
+                return components.url.map(Attachment.Identifier.init(url:))
             }
         }()
         

@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import PencilKit
 
 /// Handles user input in `ComposerView`.
-class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PKCanvasViewDelegate {
     
     @IBOutlet weak var draftView: DraftView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -21,6 +22,14 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
                 guard let self = self else { return }
                 self.draftView.textView.resignFirstResponder()
                 self.present(.saveURLAlert(), animated: true)
+            },
+            .fixedSpace(width: 16),
+            .init(image: UIImage(systemName: "pencil"), style: .plain) { [weak self] _ in
+                guard let self = self else { return }
+                self.draftView.textView.resignFirstResponder()
+                let vc = CanvasViewController()
+                vc.canvasView.delegate = self
+                self.present(UINavigationController(rootViewController: vc), animated: true)
             },
             .fixedSpace(width: 16),
             .init(image: UIImage(systemName: "photo.on.rectangle"), style: .plain) { [weak self] _ in
@@ -62,7 +71,6 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
         super.viewDidLoad()
         
         draftView.textView.inputAccessoryView = toolbar
-        
         subscribe()
     }
     
@@ -87,7 +95,11 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.presentingViewController?.dismiss(animated: true)
         guard let image = info[.originalImage] as? UIImage else { return }
-        Draft.shared.saveImage(image)
+        Draft.shared.saveImage(image, dimensions: [.maxDimension, .itemWidth])
+    }
+    
+    func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
+        Draft.shared.saveDrawing(canvasView.drawing)
     }
     
 }
