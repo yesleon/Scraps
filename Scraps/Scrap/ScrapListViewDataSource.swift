@@ -1,5 +1,5 @@
 //
-//  ThoughtListViewDataSource.swift
+//  ScrapListViewDataSource.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/4/12.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, Thought.Identifier> {
+class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scrap.Identifier> {
     
-    static func make(tableView: UITableView) -> ThoughtListViewDataSource {
-        ThoughtListViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, thoughtID in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ThoughtListViewCell else { return nil }
-            cell.subscribe(to: ThoughtList.shared.publisher(for: thoughtID))
+    static func make(tableView: UITableView) -> ScrapListViewDataSource {
+        ScrapListViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, thoughtID in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ScrapListViewCell else { return nil }
+            cell.subscribe(to: ScrapList.shared.publisher(for: thoughtID))
             cell.attachmentView.sizeChangedHandler = { [weak tableView] in
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
@@ -27,12 +27,12 @@ class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, T
     func subscribe() {
         subscriptions.removeAll()
         
-        ThoughtList.shared.$value
-            .combineLatest(ThoughtFilter.shared.$value, NotificationCenter.default.significantTimeChangeNotificationPublisher())
+        ScrapList.shared.$value
+            .combineLatest(ScrapFilterList.shared.$value, NotificationCenter.default.significantTimeChangeNotificationPublisher())
             .map({ thoughts, filters, _ in
                 thoughts.sorted(by: { $0.value.date > $1.value.date })
                     .filter { filters.shouldInclude($0.value) }
-                    .reduce([(dateComponents: DateComponents, thoughtIDs: [Thought.Identifier])](), { list, pair in
+                    .reduce([(dateComponents: DateComponents, thoughtIDs: [Scrap.Identifier])](), { list, pair in
                         let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: pair.value.date)
                         var list = list
                         if list.last?.dateComponents == dateComponents {
@@ -44,7 +44,7 @@ class ThoughtListViewDataSource: UITableViewDiffableDataSource<DateComponents, T
                     })
             })
             .map({ thoughtsByDates in
-                var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Thought.Identifier>()
+                var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Scrap.Identifier>()
                 thoughtsByDates.forEach {
                     snapshot.appendSections([$0.dateComponents])
                     snapshot.appendItems($0.thoughtIDs, toSection: $0.dateComponents)

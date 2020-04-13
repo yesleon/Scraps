@@ -29,7 +29,7 @@ class TagListViewController: UITableViewController {
                     TagList.shared.modifyValue {
                         $0.removeValue(forKey: tagID)
                     }
-                    ThoughtList.shared.modifyValue { thoughts in
+                    ScrapList.shared.modifyValue { thoughts in
                         thoughts.keys.forEach { key in
                             thoughts[key]?.tagIDs.remove(tagID)
                         }
@@ -58,7 +58,7 @@ class TagListViewController: UITableViewController {
             
         case .tag(let tagID):
             
-            ThoughtList.shared.modifyValue { thoughts in
+            ScrapList.shared.modifyValue { thoughts in
                 tableView.thoughtIDs.forEach {
                     thoughts[$0]?.tagIDs.insert(tagID)
                 }
@@ -71,7 +71,7 @@ class TagListViewController: UITableViewController {
         
         guard case let .tag(tagID) = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
         
-        ThoughtList.shared.modifyValue { thoughts in
+        ScrapList.shared.modifyValue { thoughts in
             tableView.thoughtIDs.forEach {
                 thoughts[$0]?.tagIDs.remove(tagID)
             }

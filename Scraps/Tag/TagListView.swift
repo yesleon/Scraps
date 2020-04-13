@@ -24,14 +24,14 @@ class TagListView: UITableView {
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
-    var thoughtIDs = Set<Thought.Identifier>()
+    var thoughtIDs = Set<Scrap.Identifier>()
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         switch row {
         case .tag(let tagID):
             self.cellSubscriptions[cell] = TagList.shared.publisher(for: tagID)
-                .combineLatest(ThoughtList.shared.$value)
+                .combineLatest(ScrapList.shared.$value)
                 .sink(receiveValue: { tag, thoughts in
                     cell.textLabel?.text = tag.title
                     if self.thoughtIDs.compactMap({ thoughts[$0] })

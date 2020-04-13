@@ -1,5 +1,5 @@
 //
-//  ThoughtListFilterViewController.swift
+//  ScrapFilterListViewController.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/3/30.
@@ -10,7 +10,7 @@ import UIKit
 
 
 @available(iOS 13.0, *)
-class ThoughtListFilterViewController: UITableViewController {
+class ScrapFilterListViewController: UITableViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -18,16 +18,16 @@ class ThoughtListFilterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let dataSource = tableView.dataSource as? ThoughtListFilterView.DataSource else { return }
+        guard let dataSource = tableView.dataSource as? ScrapFilterListView.DataSource else { return }
         guard let row = dataSource.itemIdentifier(for: indexPath) else { return }
         
         switch row {
         case .noTags:
-            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 $0 = .noTags
             }
         case .tag(let tag):
-            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 if case .hasTags(var tags) = $0 {
                     tags.insert(tag)
                     $0 = .hasTags(tags)
@@ -36,7 +36,7 @@ class ThoughtListFilterViewController: UITableViewController {
                 }
             }
         case .today:
-            ThoughtFilter.shared.modifyValue(ofType: TodayFilter.self) {
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
                 $0 = .init()
             }
         }
@@ -44,23 +44,23 @@ class ThoughtListFilterViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let dataSource = tableView.dataSource as? ThoughtListFilterView.DataSource else { return }
+        guard let dataSource = tableView.dataSource as? ScrapFilterListView.DataSource else { return }
         guard let row = dataSource.itemIdentifier(for: indexPath) else { return }
         
         switch row {
         case .noTags:
-            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 $0 = .hasTags([])
             }
         case .tag(let tag):
-            ThoughtFilter.shared.modifyValue(ofType: TagFilter.self) {
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 if case .hasTags(var tags) = $0 {
                     tags.remove(tag)
                     $0 = .hasTags(tags)
                 }
             }
         case .today:
-            ThoughtFilter.shared.modifyValue(ofType: TodayFilter.self) {
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
                 $0 = nil
             }
             

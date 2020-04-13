@@ -11,8 +11,8 @@
         <!--Draft-->
         <scene sceneID="r19-rZ-MY4">
             <objects>
-                <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Treehole" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="1z5-Dg-7zY" customClass="DraftView" customModule="Treehole" customModuleProvider="target">
+                <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="1z5-Dg-7zY" customClass="DraftView" customModule="Scraps" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -22,7 +22,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="752"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="216" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="216" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Scraps" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-Cl-Ent">
@@ -103,11 +103,11 @@
             </objects>
             <point key="canvasLocation" x="1404.3478260869567" y="-687.72321428571422"/>
         </scene>
-        <!--Thought List Filter View Controller-->
+        <!--Scrap Filter List View Controller-->
         <scene sceneID="UwS-6h-Vt9">
             <objects>
-                <tableViewController storyboardIdentifier="TagsVC" id="kbz-Aa-WEk" customClass="ThoughtListFilterViewController" customModule="TagList" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZEQ-cr-Mwp" customClass="ThoughtListFilterView" customModule="TagList">
+                <tableViewController storyboardIdentifier="TagsVC" id="kbz-Aa-WEk" customClass="ScrapFilterListViewController" customModule="TagList" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZEQ-cr-Mwp" customClass="ScrapFilterListView" customModule="TagList">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -139,8 +139,8 @@
         <!--All-->
         <scene sceneID="dLr-46-qTM">
             <objects>
-                <tableViewController id="1fT-Lp-UQ9" customClass="ThoughtListViewController" customModule="Treehole" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN" customClass="ThoughtListView" customModule="Treehole" customModuleProvider="target">
+                <tableViewController id="1fT-Lp-UQ9" customClass="ScrapListViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN" customClass="ScrapListView" customModule="Scraps" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -150,7 +150,7 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="619" id="MqX-N4-eff" customClass="ThoughtListViewCell" customModule="Treehole" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="619" id="MqX-N4-eff" customClass="ScrapListViewCell" customModule="Scraps" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="619"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MqX-N4-eff" id="6Sf-Nz-EKE">
@@ -166,7 +166,7 @@
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="150" translatesAutoresizingMaskIntoConstraints="NO" id="kfS-R8-a0m" customClass="AttachmentView" customModule="Treehole" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="150" translatesAutoresizingMaskIntoConstraints="NO" id="kfS-R8-a0m" customClass="AttachmentView" customModule="Scraps" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="213.5" width="200" height="150"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 </view>
@@ -203,12 +203,12 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="compose" id="3Pe-zY-JwH">
                                 <connections>
-                                    <segue destination="eje-5e-k4h" kind="presentation" identifier="NewThought" id="qOc-1I-8CX"/>
+                                    <segue destination="eje-5e-k4h" kind="presentation" identifier="NewScrap" id="qOc-1I-8CX"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="line.horizontal.3.decrease.circle" catalog="system" id="pMY-ms-0KF">
                                 <connections>
-                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Treehole" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="N6H-Hx-Yhh">
+                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Scraps" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="N6H-Hx-Yhh">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -220,7 +220,7 @@
                         <outlet property="composeButton" destination="3Pe-zY-JwH" id="vin-eY-DlZ"/>
                         <outlet property="tagListButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
                         <outlet property="tagsButton" destination="uMj-RT-mnN" id="t7q-Ag-URa"/>
-                        <segue destination="kbz-Aa-WEk" kind="popoverPresentation" identifier="a" customClass="PresentTagListSegue" customModule="Treehole" customModuleProvider="target" popoverAnchorView="Olw-UH-DAN" id="PAq-2C-952">
+                        <segue destination="kbz-Aa-WEk" kind="popoverPresentation" identifier="a" customClass="PresentTagListSegue" customModule="Scraps" customModuleProvider="target" popoverAnchorView="Olw-UH-DAN" id="PAq-2C-952">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
                     </connections>
@@ -234,11 +234,11 @@
             </objects>
             <point key="canvasLocation" x="-136.23188405797103" y="-908.70535714285711"/>
         </scene>
-        <!--Thought List Filter View Controller-->
+        <!--Scrap Filter List View Controller-->
         <scene sceneID="GQE-8V-7Be">
             <objects>
-                <tableViewController id="WOy-6y-hyc" customClass="ThoughtListFilterViewController" customModule="Treehole" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7QT-7Y-zlG" customClass="ThoughtListFilterView" customModule="Treehole" customModuleProvider="target">
+                <tableViewController id="WOy-6y-hyc" customClass="ScrapFilterListViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7QT-7Y-zlG" customClass="ScrapFilterListView" customModule="Scraps" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -279,7 +279,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Treehole" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -318,6 +318,6 @@
     </scenes>
     <resources>
         <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
-        <image name="xmark.circle.fill" catalog="system" width="32" height="32"/>
+        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
     </resources>
 </document>

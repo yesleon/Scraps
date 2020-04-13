@@ -13,7 +13,7 @@ import PencilKit
 import AVFoundation
 
 private struct DocumentData: Codable {
-    var thoughts: [Thought.Identifier: Thought]
+    var thoughts: [Scrap.Identifier: Scrap]
     var tags: [Tag.Identifier: Tag]
     var linkIDs: Set<Attachment.Identifier>?
     var imageIDs: Set<Attachment.Identifier>?
@@ -116,10 +116,10 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         
-        ThoughtList.shared.$value
-            .previousResult(initialResult: [Thought.Identifier : Thought]())
+        ScrapList.shared.$value
+            .previousResult(initialResult: [Scrap.Identifier : Scrap]())
             .sink(receiveValue: { oldValue in
-                undoManager?.registerUndo(withTarget: ThoughtList.shared) {
+                undoManager?.registerUndo(withTarget: ScrapList.shared) {
                     $0.modifyValue {
                         $0 = oldValue
                     }
@@ -155,7 +155,7 @@ class Document: UIDocument {
             TagList.shared.modifyValue { tags in
                 tags = documentData.tags
             }
-            ThoughtList.shared.modifyValue { thoughts in
+            ScrapList.shared.modifyValue { thoughts in
                 thoughts = documentData.thoughts
             }
             AttachmentList.shared.modifyValue { attachments in
@@ -194,7 +194,7 @@ class Document: UIDocument {
                 drawings[id] = drawing
             }
         }
-        let data = try JSONEncoder().encode(DocumentData(thoughts: ThoughtList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs, drawings: drawings))
+        let data = try JSONEncoder().encode(DocumentData(thoughts: ScrapList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs, drawings: drawings))
         return FileWrapper(directoryWithFileWrappers: [
             "data.json": FileWrapper(regularFileWithContents: data),
             "assets": FileWrapper(directoryWithFileWrappers: assetFolders)

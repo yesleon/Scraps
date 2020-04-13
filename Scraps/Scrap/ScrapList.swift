@@ -1,5 +1,5 @@
 //
-//  ThoughtList.swift
+//  ScrapList.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/4/2.
@@ -8,19 +8,19 @@
 
 import Foundation
 
-class ThoughtList {
+class ScrapList {
     
-    static let shared = ThoughtList()
+    static let shared = ScrapList()
     
-    @Published private(set) var value = [Thought.Identifier: Thought]()
+    @Published private(set) var value = [Scrap.Identifier: Scrap]()
     
-    func modifyValue(handler: (inout [Thought.Identifier: Thought]) -> Void) {
+    func modifyValue(handler: (inout [Scrap.Identifier: Scrap]) -> Void) {
         var value = self.value
         handler(&value)
         self.value = value
     }
     
-    func publisher(for id: Thought.Identifier) -> AnyPublisher<Thought, Never> {
+    func publisher(for id: Scrap.Identifier) -> AnyPublisher<Scrap, Never> {
         return $value
             .compactMap { $0[id] }
             .removeDuplicates()

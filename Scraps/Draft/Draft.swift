@@ -76,7 +76,7 @@ class Draft {
         }()
         
         var tagIDs = Set<Tag.Identifier>()
-        if case let .hasTags(selectedTagIDs) = ThoughtFilter.shared.value.first(ofType: TagFilter.self) {
+        if case let .hasTags(selectedTagIDs) = ScrapFilterList.shared.value.first(ofType: ScrapFilters.TagFilter.self) {
             tagIDs = selectedTagIDs
         }
         
@@ -86,7 +86,7 @@ class Draft {
             }
         }
         
-        ThoughtList.shared.modifyValue {
+        ScrapList.shared.modifyValue {
             $0[.init()] = .init(content: value, date: .init(), tagIDs: tagIDs, attachmentID: attachmentID)
         }
         

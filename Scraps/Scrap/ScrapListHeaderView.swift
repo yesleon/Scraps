@@ -1,5 +1,5 @@
 //
-//  ThoughtListHeaderView.swift
+//  ScrapListHeaderView.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/4/10.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThoughtListHeaderView: UITableViewHeaderFooterView {
+class ScrapListHeaderView: UITableViewHeaderFooterView {
 
     var subscriptions = Set<AnyCancellable>()
     

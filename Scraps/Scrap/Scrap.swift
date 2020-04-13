@@ -1,5 +1,5 @@
 //
-//  Thought.swift
+//  Scrap.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/4/5.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Thought: Codable, Equatable {
+struct Scrap: Codable, Equatable {
     struct Identifier: Codable, Hashable {
         private let uuid: UUID
         init() {

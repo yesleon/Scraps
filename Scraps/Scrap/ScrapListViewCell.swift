@@ -1,5 +1,5 @@
 //
-//  ThoughtListViewCell.swift
+//  ScrapListViewCell.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/4/7.
@@ -11,7 +11,7 @@ import LinkPresentation
 import Combine
 
 
-class ThoughtListViewCell: UITableViewCell {
+class ScrapListViewCell: UITableViewCell {
 
     @IBOutlet weak var attachmentView: AttachmentView!
     @IBOutlet weak var myTextLabel: UILabel!
@@ -19,7 +19,7 @@ class ThoughtListViewCell: UITableViewCell {
     
     var subscriptions = Set<AnyCancellable>()
     
-    func subscribe<T: Publisher>(to publisher: T) where T.Output == Thought, T.Failure == Never {
+    func subscribe<T: Publisher>(to publisher: T) where T.Output == Scrap, T.Failure == Never {
         subscriptions.removeAll()
         
         // Content
@@ -40,7 +40,7 @@ class ThoughtListViewCell: UITableViewCell {
             .combineLatest(TagList.shared.$value, { thought, tags in
                 (thought, thought.tagIDs.compactMap { tags[$0] })
             })
-            .map({ (thought: Thought, tags: [Tag]) -> String? in
+            .map({ (thought: Scrap, tags: [Tag]) -> String? in
                 DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
                     + " "
                     + tags.map(\.title).map({ "#" + $0 }).joined(separator: " ")

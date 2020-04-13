@@ -11,7 +11,7 @@ import UIKit
 
 extension UIViewController {
     
-    static func tagListViewController(thoughtIDs: Set<Thought.Identifier>, sourceView: UIView?, sourceRect: CGRect, barButtonItem: UIBarButtonItem?) -> UIViewController {
+    static func tagListViewController(thoughtIDs: Set<Scrap.Identifier>, sourceView: UIView?, sourceRect: CGRect, barButtonItem: UIBarButtonItem?) -> UIViewController {
         let vc = TagListViewController()
         let view = TagListView()
         view.thoughtIDs = thoughtIDs

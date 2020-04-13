@@ -1,5 +1,5 @@
 //
-//  ThoughtListViewController.swift
+//  ScrapListViewController.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/3/23.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-/// Handles user input in `ThoughtListView`.
-class ThoughtListViewController: UITableViewController {
+/// Handles user input in `ScrapListView`.
+class ScrapListViewController: UITableViewController {
     
     @IBOutlet var composeButton: UIBarButtonItem!
     @IBOutlet var tagListButton: UIBarButtonItem!
@@ -26,12 +26,12 @@ class ThoughtListViewController: UITableViewController {
     func subscribe() {
         subscriptions.removeAll()
         
-        ThoughtFilter.shared.$value
+        ScrapFilterList.shared.$value
             .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
             .assign(to: \.image, on: tagListButton)
             .store(in: &subscriptions)
         
-        ThoughtFilter.shared.$value
+        ScrapFilterList.shared.$value
             .map(\.stringRepresentation)
             .map { $0 ?? NSLocalizedString("All", comment: "") }
             .assign(to: \.title, on: self)
@@ -50,14 +50,14 @@ class ThoughtListViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.allowsMultipleSelectionDuringEditing = true
-        (tableView as? ThoughtListView)?.controller = self
+        (tableView as? ScrapListView)?.controller = self
         subscribe()
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
     
     @IBAction func showTagList(_ button: UIBarButtonItem) {
-        guard let tableView = tableView as? ThoughtListView else { return }
+        guard let tableView = tableView as? ScrapListView else { return }
         tableView.indexPathsForSelectedRows.map { $0.compactMap { tableView.diffableDataSource.itemIdentifier(for: $0) } }
             .map { present(.tagListViewController(thoughtIDs: Set($0), sourceView: nil, sourceRect: .null, barButtonItem: button), animated: true) }
     }
@@ -71,9 +71,9 @@ class ThoughtListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let diffableDataSource = tableView.dataSource as? ThoughtListViewDataSource else { return nil }
+        guard let diffableDataSource = tableView.dataSource as? ScrapListViewDataSource else { return nil }
         guard let thoughtID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
-        guard let thought = ThoughtList.shared.value[thoughtID] else { return nil }
+        guard let thought = ScrapList.shared.value[thoughtID] else { return nil }
         var actions = [UIAction]()
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in
             
@@ -85,7 +85,7 @@ class ThoughtListViewController: UITableViewController {
             self.present(.tagListViewController(thoughtIDs: [thoughtID], sourceView: tableView, sourceRect: tableView.rectForRow(at: indexPath), barButtonItem: nil), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-            ThoughtList.shared.modifyValue {
+            ScrapList.shared.modifyValue {
                 $0.removeValue(forKey: thoughtID)
             }
         }

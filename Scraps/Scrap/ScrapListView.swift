@@ -1,5 +1,5 @@
 //
-//  ThoughtListView.swift
+//  ScrapListView.swift
 //  Scraps
 //
 //  Created by Li-Heng Hsu on 2020/4/2.
@@ -11,16 +11,16 @@ import UIKit
 private let headerIdentifier = "SectionHeader"
 private let footerIdentifier = "SectionFooter"
 
-class ThoughtListView: UITableView, UITableViewDelegate {
+class ScrapListView: UITableView, UITableViewDelegate {
     
-    lazy var diffableDataSource = ThoughtListViewDataSource.make(tableView: self)
-    weak var controller: ThoughtListViewController?
+    lazy var diffableDataSource = ScrapListViewDataSource.make(tableView: self)
+    weak var controller: ScrapListViewController?
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
         delegate = self
-        register(ThoughtListHeaderView.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
+        register(ScrapListHeaderView.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
         register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: footerIdentifier)
         sectionFooterHeight = 200
         
@@ -57,7 +57,7 @@ class ThoughtListView: UITableView, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if ThoughtFilter.shared.value.first(ofType: TodayFilter.self) != nil {
+        if ScrapFilterList.shared.value.first(ofType: ScrapFilters.TodayFilter.self) != nil {
             return 0
         } else {
             return 44
@@ -65,16 +65,16 @@ class ThoughtListView: UITableView, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier) as? ThoughtListHeaderView else { return nil }
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier) as? ScrapListHeaderView else { return nil }
         view.subscribe(to: diffableDataSource.snapshot().sectionIdentifiers[section])
         return view
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerIdentifier) else { return nil }
-        view.backgroundView = UIView()
-        return view
-    }
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerIdentifier) else { return nil }
+//        view.backgroundView = UIView()
+//        return view
+//    }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         controller?.tableView(tableView, contextMenuConfigurationForRowAt: indexPath, point: point)
