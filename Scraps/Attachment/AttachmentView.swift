@@ -10,6 +10,7 @@ import UIKit
 import LinkPresentation
 import PencilKit
 import AVFoundation
+import QuickLook
 
 class AttachmentView: UIView {
     
@@ -42,72 +43,52 @@ class AttachmentView: UIView {
             .sink(receiveValue: { attachment, contentInsets in
                 guard let self = self else { return }
                 
-                self.subviews
-                    .filter { !($0 is UIControl) }
-                    .forEach { $0.removeFromSuperview() }
                 switch attachment {
                 case .image(let image):
                     guard let image = image[dimension] else { break }
-                    let view = UIImageView(image: image)
-                    self.insertSubview(view, at: 0)
-                    self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
-                    self.bounds.size.width += contentInsets.left + contentInsets.right
-                    self.bounds.size.height += contentInsets.top + contentInsets.bottom
-                    view.frame = self.bounds.inset(by: contentInsets)
-                    view.layer.cornerRadius = 10
-                    view.layer.masksToBounds = true
-                    view.contentMode = .scaleAspectFill
-                    view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-                    self.invalidateIntrinsicContentSize()
+                    self.addView(UIImageView(image: image), dimension: dimension, contentInsets: contentInsets)
                     
                 case .linkMetadata(let metadata):
-                    let view = LPLinkView(metadata: metadata)
-                    self.insertSubview(view, at: 0)
-                    self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
-                    self.bounds.size.width += contentInsets.left + contentInsets.right
-                    self.bounds.size.height += contentInsets.top + contentInsets.bottom
-                    view.frame = self.bounds.inset(by: contentInsets)
-                    view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-                    self.invalidateIntrinsicContentSize()
+                    self.addView(LPLinkView(metadata: metadata), dimension: dimension, contentInsets: contentInsets)
                     
                     if metadata.title == nil, let url = metadata.originalURL {
                         LPMetadataProvider().startFetchingMetadata(for: url) { metadata, error in
                             DispatchQueue.main.async { [weak self] in
                                 guard let self = self else { return }
                                 guard let metadata = metadata else { return }
-                                view.metadata = metadata
-                                self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
-                                self.bounds.size.width += contentInsets.left + contentInsets.right
-                                self.bounds.size.height += contentInsets.top + contentInsets.bottom
-                                view.frame = self.bounds.inset(by: contentInsets)
-                                self.invalidateIntrinsicContentSize()
+                                self.addView(LPLinkView(metadata: metadata), dimension: dimension, contentInsets: contentInsets)
                                 self.sizeChangedHandler()
                             }
                         }
                     }
                 case .drawing(let drawing):
                     UIScreen.main.traitCollection.performAsCurrent {
-                        
-                        
                         let rect = AVMakeRect(aspectRatio: drawing.bounds.size, insideRect: .init(x: 0, y: 0, width: dimension, height: dimension))
                         let image = UIGraphicsImageRenderer(bounds: rect).image { _ in
                             drawing.image(from: drawing.bounds, scale: UIScreen.main.scale).draw(in: rect)
                         }
-                        let view = UIImageView(image: image)
-                        self.insertSubview(view, at: 0)
-                        self.bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
-                        self.bounds.size.width += contentInsets.left + contentInsets.right
-                        self.bounds.size.height += contentInsets.top + contentInsets.bottom
-                        view.frame = self.bounds.inset(by: contentInsets)
-                        view.layer.cornerRadius = 10
-                        view.layer.masksToBounds = true
-                        view.contentMode = .scaleAspectFill
-                        view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-                        self.invalidateIntrinsicContentSize()
+                        self.addView(UIImageView(image: image), dimension: dimension, contentInsets: contentInsets)
                     }
                 }
             })
             .store(in: &subscriptions)
+    }
+    
+    private func addView(_ view: UIView, dimension: CGFloat, contentInsets: UIEdgeInsets) {
+        subviews
+            .filter { !($0 is UIControl) }
+            .forEach { $0.removeFromSuperview() }
+        
+        view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
+        view.contentMode = .scaleAspectFill
+        insertSubview(view, at: 0)
+        bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
+        bounds.size.width += contentInsets.left + contentInsets.right
+        bounds.size.height += contentInsets.top + contentInsets.bottom
+        view.frame = self.bounds.inset(by: contentInsets)
+        view.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
+        invalidateIntrinsicContentSize()
     }
     
     // MARK: - Events

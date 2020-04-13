@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BarButtonItemTarget: NSObject {
+private class BarButtonItemTarget: NSObject {
     static let shared = BarButtonItemTarget()
     var actions = [ObjectIdentifier: (UIBarButtonItem) -> Void]()
     @objc func handleAction(sender: UIBarButtonItem) {

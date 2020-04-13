@@ -35,6 +35,7 @@
 		71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AFE1B22443781700D0793B /* CanvasViewController.swift */; };
 		71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79192244442E30011BA94 /* ScrapFilter.swift */; };
 		71B79195244443020011BA94 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79194244443020011BA94 /* Array+.swift */; };
+		71B79197244451400011BA94 /* UlGestureRecognizer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79196244451400011BA94 /* UlGestureRecognizer+.swift */; };
 		71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC1243FA13600610A3B /* Combine+.swift */; };
 		71C2CAC4243FA81F00610A3B /* ScrapListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
@@ -76,6 +77,7 @@
 		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
 		71B79192244442E30011BA94 /* ScrapFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilter.swift; sourceTree = "<group>"; };
 		71B79194244443020011BA94 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
+		71B79196244451400011BA94 /* UlGestureRecognizer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UlGestureRecognizer+.swift"; sourceTree = "<group>"; };
 		71C2CAC1243FA13600610A3B /* Combine+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+.swift"; sourceTree = "<group>"; };
 		71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListHeaderView.swift; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Scraps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scraps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +141,7 @@
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
 				71B79194244443020011BA94 /* Array+.swift */,
 				714E21C024424658005C953A /* UIBarButtonItem+.swift */,
+				71B79196244451400011BA94 /* UlGestureRecognizer+.swift */,
 				714E21C2244246E3005C953A /* UIControl+.swift */,
 				714E21C424425373005C953A /* UIViewController+.swift */,
 				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
@@ -295,6 +298,7 @@
 				715F63C12435B22100E12D26 /* DraftView.swift in Sources */,
 				711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */,
 				711DE1BA243C349E0003A1C2 /* Attachment.swift in Sources */,
+				71B79197244451400011BA94 /* UlGestureRecognizer+.swift in Sources */,
 				7144AA452436241600B72934 /* ScrapFilterList.swift in Sources */,
 				71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */,
 				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
