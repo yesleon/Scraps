@@ -59,7 +59,7 @@ class ScrapListViewController: UITableViewController {
     @IBAction func showTagList(_ button: UIBarButtonItem) {
         guard let tableView = tableView as? ScrapListView else { return }
         tableView.indexPathsForSelectedRows.map { $0.compactMap { tableView.diffableDataSource.itemIdentifier(for: $0) } }
-            .map { present(.tagListViewController(thoughtIDs: Set($0), sourceView: nil, sourceRect: .null, barButtonItem: button), animated: true) }
+            .map { present(.tagListViewController(scrapIDs: Set($0), sourceView: nil, sourceRect: .null, barButtonItem: button), animated: true) }
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -72,21 +72,21 @@ class ScrapListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let diffableDataSource = tableView.dataSource as? ScrapListViewDataSource else { return nil }
-        guard let thoughtID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
-        guard let thought = ScrapList.shared.value[thoughtID] else { return nil }
+        guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
+        guard let scrap = ScrapList.shared.value[scrapID] else { return nil }
         var actions = [UIAction]()
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in
             
-            [UIActivityViewController(activityItems: [thought.content], applicationActivities: nil)]
+            [UIActivityViewController(activityItems: [scrap.content], applicationActivities: nil)]
                 .forEach { self.present($0, animated: true) }
             
         }
         let tagsAction = UIAction(title: NSLocalizedString("Tags", comment: "")) { _ in
-            self.present(.tagListViewController(thoughtIDs: [thoughtID], sourceView: tableView, sourceRect: tableView.rectForRow(at: indexPath), barButtonItem: nil), animated: true)
+            self.present(.tagListViewController(scrapIDs: [scrapID], sourceView: tableView, sourceRect: tableView.rectForRow(at: indexPath), barButtonItem: nil), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             ScrapList.shared.modifyValue {
-                $0.removeValue(forKey: thoughtID)
+                $0.removeValue(forKey: scrapID)
             }
         }
         actions = [tagsAction, shareAction, deleteAction]

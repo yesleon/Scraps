@@ -13,7 +13,7 @@ import PencilKit
 import AVFoundation
 
 private struct DocumentData: Codable {
-    var thoughts: [Scrap.Identifier: Scrap]
+    var scraps: [Scrap.Identifier: Scrap]
     var tags: [Tag.Identifier: Tag]
     var linkIDs: Set<Attachment.Identifier>?
     var imageIDs: Set<Attachment.Identifier>?
@@ -155,8 +155,8 @@ class Document: UIDocument {
             TagList.shared.modifyValue { tags in
                 tags = documentData.tags
             }
-            ScrapList.shared.modifyValue { thoughts in
-                thoughts = documentData.thoughts
+            ScrapList.shared.modifyValue { scraps in
+                scraps = documentData.scraps
             }
             AttachmentList.shared.modifyValue { attachments in
                 documentData.imageIDs?.forEach {
@@ -194,7 +194,7 @@ class Document: UIDocument {
                 drawings[id] = drawing
             }
         }
-        let data = try JSONEncoder().encode(DocumentData(thoughts: ScrapList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs, drawings: drawings))
+        let data = try JSONEncoder().encode(DocumentData(scraps: ScrapList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs, drawings: drawings))
         return FileWrapper(directoryWithFileWrappers: [
             "data.json": FileWrapper(regularFileWithContents: data),
             "assets": FileWrapper(directoryWithFileWrappers: assetFolders)

@@ -24,14 +24,14 @@ class TagListViewController: UITableViewController {
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete...", comment: ""), attributes: .destructive) { _ in
             
-            [UIAlertController(title: NSLocalizedString("Delete Tag", comment: ""), message: NSLocalizedString("This will remove the tag from all thoughts.", comment: ""), preferredStyle: .alert)].forEach {
+            [UIAlertController(title: NSLocalizedString("Delete Tag", comment: ""), message: NSLocalizedString("This will remove the tag from all scraps.", comment: ""), preferredStyle: .alert)].forEach {
                 $0.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: { _ in
                     TagList.shared.modifyValue {
                         $0.removeValue(forKey: tagID)
                     }
-                    ScrapList.shared.modifyValue { thoughts in
-                        thoughts.keys.forEach { key in
-                            thoughts[key]?.tagIDs.remove(tagID)
+                    ScrapList.shared.modifyValue { scraps in
+                        scraps.keys.forEach { key in
+                            scraps[key]?.tagIDs.remove(tagID)
                         }
                     }
                 }))
@@ -58,9 +58,9 @@ class TagListViewController: UITableViewController {
             
         case .tag(let tagID):
             
-            ScrapList.shared.modifyValue { thoughts in
-                tableView.thoughtIDs.forEach {
-                    thoughts[$0]?.tagIDs.insert(tagID)
+            ScrapList.shared.modifyValue { scraps in
+                tableView.scrapIDs.forEach {
+                    scraps[$0]?.tagIDs.insert(tagID)
                 }
             }
         }
@@ -71,9 +71,9 @@ class TagListViewController: UITableViewController {
         
         guard case let .tag(tagID) = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
         
-        ScrapList.shared.modifyValue { thoughts in
-            tableView.thoughtIDs.forEach {
-                thoughts[$0]?.tagIDs.remove(tagID)
+        ScrapList.shared.modifyValue { scraps in
+            tableView.scrapIDs.forEach {
+                scraps[$0]?.tagIDs.remove(tagID)
             }
         }
     }

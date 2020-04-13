@@ -11,9 +11,9 @@ import UIKit
 class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scrap.Identifier> {
     
     static func make(tableView: UITableView) -> ScrapListViewDataSource {
-        ScrapListViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, thoughtID in
+        ScrapListViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, scrapID in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ScrapListViewCell else { return nil }
-            cell.subscribe(to: ScrapList.shared.publisher(for: thoughtID))
+            cell.subscribe(to: ScrapList.shared.publisher(for: scrapID))
             cell.attachmentView.sizeChangedHandler = { [weak tableView] in
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
@@ -29,25 +29,25 @@ class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scr
         
         ScrapList.shared.$value
             .combineLatest(ScrapFilterList.shared.$value, NotificationCenter.default.significantTimeChangeNotificationPublisher())
-            .map({ thoughts, filters, _ in
-                thoughts.sorted(by: { $0.value.date > $1.value.date })
+            .map({ scraps, filters, _ in
+                scraps.sorted(by: { $0.value.date > $1.value.date })
                     .filter { filters.shouldInclude($0.value) }
-                    .reduce([(dateComponents: DateComponents, thoughtIDs: [Scrap.Identifier])](), { list, pair in
+                    .reduce([(dateComponents: DateComponents, scrapIDs: [Scrap.Identifier])](), { list, pair in
                         let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: pair.value.date)
                         var list = list
                         if list.last?.dateComponents == dateComponents {
-                            list[list.index(before: list.endIndex)].thoughtIDs.append(pair.key)
+                            list[list.index(before: list.endIndex)].scrapIDs.append(pair.key)
                         } else {
-                            list.append((dateComponents: dateComponents, thoughtIDs: [pair.key]))
+                            list.append((dateComponents: dateComponents, scrapIDs: [pair.key]))
                         }
                         return list
                     })
             })
-            .map({ thoughtsByDates in
+            .map({ scrapsByDates in
                 var snapshot = NSDiffableDataSourceSnapshot<DateComponents, Scrap.Identifier>()
-                thoughtsByDates.forEach {
+                scrapsByDates.forEach {
                     snapshot.appendSections([$0.dateComponents])
-                    snapshot.appendItems($0.thoughtIDs, toSection: $0.dateComponents)
+                    snapshot.appendItems($0.scrapIDs, toSection: $0.dateComponents)
                 }
                 return snapshot
             })

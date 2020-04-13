@@ -24,7 +24,7 @@ class TagListView: UITableView {
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
-    var thoughtIDs = Set<Scrap.Identifier>()
+    var scrapIDs = Set<Scrap.Identifier>()
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -32,9 +32,9 @@ class TagListView: UITableView {
         case .tag(let tagID):
             self.cellSubscriptions[cell] = TagList.shared.publisher(for: tagID)
                 .combineLatest(ScrapList.shared.$value)
-                .sink(receiveValue: { tag, thoughts in
+                .sink(receiveValue: { tag, scraps in
                     cell.textLabel?.text = tag.title
-                    if self.thoughtIDs.compactMap({ thoughts[$0] })
+                    if self.scrapIDs.compactMap({ scraps[$0] })
                         .allSatisfy({ $0.tagIDs.contains(tagID) }) {
                         cell.imageView?.image = UIImage(systemName: "tag.fill")
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)

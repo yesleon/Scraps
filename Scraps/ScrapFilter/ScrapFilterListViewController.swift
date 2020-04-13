@@ -39,6 +39,10 @@ class ScrapFilterListViewController: UITableViewController {
             ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
                 $0 = .init()
             }
+        case .attachment(let attachment):
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
+                $0 = .init(attachment: attachment)
+            }
         }
         
     }
@@ -64,6 +68,10 @@ class ScrapFilterListViewController: UITableViewController {
                 $0 = nil
             }
             
+        case .attachment(_):
+            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
+                $0 = nil
+            }
         }
     }
 }

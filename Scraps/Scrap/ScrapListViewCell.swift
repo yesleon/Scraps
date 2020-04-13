@@ -37,11 +37,11 @@ class ScrapListViewCell: UITableViewCell {
         
         // Metadata
         publisher
-            .combineLatest(TagList.shared.$value, { thought, tags in
-                (thought, thought.tagIDs.compactMap { tags[$0] })
+            .combineLatest(TagList.shared.$value, { scrap, tags in
+                (scrap, scrap.tagIDs.compactMap { tags[$0] })
             })
-            .map({ (thought: Scrap, tags: [Tag]) -> String? in
-                DateFormatter.localizedString(from: thought.date, dateStyle: .none, timeStyle: .short)
+            .map({ (scrap: Scrap, tags: [Tag]) -> String? in
+                DateFormatter.localizedString(from: scrap.date, dateStyle: .none, timeStyle: .short)
                     + " "
                     + tags.map(\.title).map({ "#" + $0 }).joined(separator: " ")
             })
