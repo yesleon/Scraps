@@ -53,14 +53,14 @@ class ScrapListViewCell: UITableViewCell {
         
         publisher
             .map(\.attachmentID)
-            .map({ id -> AnyPublisher<Attachment?, Never> in
+            .map({ id -> (CGFloat) -> AnyPublisher<Attachment?, Never> in
                 if let id = id {
-                    return AttachmentList.shared.publisher(for: id, targetDimension: .itemWidth).eraseToAnyPublisher()
+                    return { AttachmentList.shared.publisher(for: id, targetDimension: $0).eraseToAnyPublisher() }
                 } else {
-                    return Just(nil).eraseToAnyPublisher()
+                    return { _ in Just(nil).eraseToAnyPublisher() }
                 }
             })
-            .map({ ($0, 200) })
+            .map({ ($0, CGFloat.itemWidth) })
             .sink(receiveValue: attachmentView.subscribe(to:dimension:))
             .store(in: &subscriptions)
     }

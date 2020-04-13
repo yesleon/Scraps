@@ -53,7 +53,7 @@ class DraftView: UIView {
         
         subscribe()
         
-        attachmentView.subscribe(to: Draft.shared.$attachment, dimension: .itemWidth)
+        attachmentView.subscribe(to: { _ in Draft.shared.$attachment }, dimension: .itemWidth)
     }
     
     override func layoutMarginsDidChange() {
