@@ -12,13 +12,16 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    override var undoManager: UndoManager? { document.undoManager }
+    override var myUndoManager: UndoManager? { document.undoManager }
     
     lazy var document = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("database"))
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         document.subscribe()
         document.openOrCreateIfFileNotExists()
+        
+        UIView.appearance().tintColor = .systemRed
+//        UITableViewHeaderFooterView.appearance().tintColor = nil
         
         return true
     }

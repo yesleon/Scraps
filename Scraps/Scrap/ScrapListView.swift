@@ -9,7 +9,6 @@
 import UIKit
 
 private let headerIdentifier = "SectionHeader"
-private let footerIdentifier = "SectionFooter"
 
 class ScrapListView: UITableView, UITableViewDelegate {
     
@@ -21,8 +20,6 @@ class ScrapListView: UITableView, UITableViewDelegate {
         
         delegate = self
         register(ScrapListHeaderView.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
-        register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: footerIdentifier)
-        sectionFooterHeight = 200
         
         diffableDataSource.defaultRowAnimation = .fade
         diffableDataSource.subscribe()
@@ -69,12 +66,6 @@ class ScrapListView: UITableView, UITableViewDelegate {
         view.subscribe(to: diffableDataSource.snapshot().sectionIdentifiers[section])
         return view
     }
-    
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerIdentifier) else { return nil }
-//        view.backgroundView = UIView()
-//        return view
-//    }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         controller?.tableView(tableView, contextMenuConfigurationForRowAt: indexPath, point: point)

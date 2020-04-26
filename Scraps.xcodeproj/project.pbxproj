@@ -31,6 +31,7 @@
 		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
+		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AFE1B22443781700D0793B /* CanvasViewController.swift */; };
 		71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79192244442E30011BA94 /* ScrapFilter.swift */; };
@@ -73,6 +74,7 @@
 		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
+		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
 		71B79192244442E30011BA94 /* ScrapFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilter.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				71EA538F243F232F00CD64CA /* LPLinkMetadata+.swift */,
 				715F63B12435B20F00E12D26 /* Document.swift */,
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
+				71981C962455422B004EC5B2 /* UIResponder+.swift */,
 				71B79194244443020011BA94 /* Array+.swift */,
 				714E21C024424658005C953A /* UIBarButtonItem+.swift */,
 				71B79196244451400011BA94 /* UlGestureRecognizer+.swift */,
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */,
 				7144AA4924365B2F00B72934 /* TagListViewController.swift in Sources */,
 				715F63C82435B52500E12D26 /* TagList.swift in Sources */,
 				714E21C3244246E3005C953A /* UIControl+.swift in Sources */,

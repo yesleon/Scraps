@@ -65,6 +65,12 @@ class ScrapListViewCell: UITableViewCell {
             .store(in: &subscriptions)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        attachmentView.subviews.forEach { $0.removeFromSuperview() }
+    }
+    
     override func removeFromSuperview() {
         super.removeFromSuperview()
         subscriptions.removeAll()

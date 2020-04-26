@@ -109,10 +109,11 @@ class AttachmentView: UIView {
         subviews
             .filter { !($0 is UIControl) }
             .forEach { $0.removeFromSuperview() }
-        
-        view.layer.cornerRadius = 10
-        view.layer.masksToBounds = true
-        view.contentMode = .scaleAspectFill
+        if view is UIImageView {
+            view.layer.cornerRadius = 10
+            view.layer.masksToBounds = true
+            view.contentMode = .scaleAspectFill
+        }
         insertSubview(view, at: 0)
         bounds.size = view.sizeThatFits(.init(width: dimension, height: dimension))
         bounds.size.width += contentInsets.left + contentInsets.right

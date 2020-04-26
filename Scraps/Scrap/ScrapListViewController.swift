@@ -18,7 +18,7 @@ class ScrapListViewController: UITableViewController {
     override var canBecomeFirstResponder: Bool { true }
     
     override var undoManager: UndoManager? {
-        (UIApplication.shared.delegate as? UIResponder)?.undoManager
+        myUndoManager
     }
     
     var subscriptions = Set<AnyCancellable>()

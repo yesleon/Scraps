@@ -14,39 +14,6 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
     
     @IBOutlet weak var draftView: DraftView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    lazy var toolbar: UIToolbar = {
-        let toolbar = UIToolbar()
-        toolbar.items = [
-            .flexibleSpace(),
-            .init(image: UIImage(systemName: "link"), style: .plain) { [weak self] _ in
-                guard let self = self else { return }
-                self.draftView.textView.resignFirstResponder()
-                self.present(.saveURLAlert(), animated: true)
-            },
-            .fixedSpace(width: 16),
-            .init(image: UIImage(systemName: "pencil"), style: .plain) { [weak self] _ in
-                guard let self = self else { return }
-                self.draftView.textView.resignFirstResponder()
-                let vc = CanvasViewController()
-                vc.saveHandler = Draft.shared.saveDrawing
-                self.present(UINavigationController(rootViewController: vc), animated: true)
-            },
-            .fixedSpace(width: 16),
-            .init(image: UIImage(systemName: "photo.on.rectangle"), style: .plain) { [weak self] _ in
-                guard let self = self else { return }
-                self.draftView.textView.resignFirstResponder()
-                self.present(.photoLibraryPicker(delegate: self), animated: true)
-            },
-            .fixedSpace(width: 16),
-            .init(barButtonSystemItem: .camera) { [weak self] _ in
-                guard let self = self else { return }
-                self.draftView.textView.resignFirstResponder()
-                self.present(.cameraPicker(delegate: self), animated: true)
-            }
-        ]
-        toolbar.sizeToFit()
-        return toolbar
-    }()
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -63,12 +30,44 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        draftView.textView.inputAccessoryView = toolbar
+        draftView.textView.inputAccessoryView = {
+            let toolbar = UIToolbar()
+            toolbar.items = [
+                .flexibleSpace(),
+                .init(image: UIImage(systemName: "link"), style: .plain) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.draftView.textView.resignFirstResponder()
+                    self.present(.saveURLAlert(), animated: true)
+                },
+                .fixedSpace(width: 16),
+                .init(image: UIImage(systemName: "pencil"), style: .plain) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.draftView.textView.resignFirstResponder()
+                    let vc = CanvasViewController()
+                    vc.saveHandler = Draft.shared.saveDrawing
+                    self.present(UINavigationController(rootViewController: vc), animated: true)
+                },
+                .fixedSpace(width: 16),
+                .init(image: UIImage(systemName: "photo.on.rectangle"), style: .plain) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.draftView.textView.resignFirstResponder()
+                    self.present(.photoLibraryPicker(delegate: self), animated: true)
+                },
+                .fixedSpace(width: 16),
+                .init(barButtonSystemItem: .camera) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.draftView.textView.resignFirstResponder()
+                    self.present(.cameraPicker(delegate: self), animated: true)
+                }
+            ]
+            toolbar.sizeToFit()
+            return toolbar
+        }()
         subscribe()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         draftView.textView.becomeFirstResponder()
     }
     
