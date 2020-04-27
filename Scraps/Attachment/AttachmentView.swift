@@ -93,13 +93,7 @@ class AttachmentView: UIView {
                         }
                     }
                 case .drawing(let drawing):
-                    UIScreen.main.traitCollection.performAsCurrent {
-                        let rect = AVMakeRect(aspectRatio: drawing.bounds.size, insideRect: .init(x: 0, y: 0, width: dimension, height: dimension))
-                        let image = UIGraphicsImageRenderer(bounds: rect).image { _ in
-                            drawing.image(from: drawing.bounds, scale: UIScreen.main.scale).draw(in: rect)
-                        }
-                        self.addView(UIImageView(image: image), dimension: dimension, contentInsets: contentInsets)
-                    }
+                    self.addView(UIImageView(image: drawing.image(from: drawing.bounds, scale: 2)), dimension: dimension, contentInsets: contentInsets)
                 }
             })
             .store(in: &subscriptions)
