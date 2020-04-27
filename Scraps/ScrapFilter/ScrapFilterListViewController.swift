@@ -10,11 +10,36 @@ import UIKit
 
 
 @available(iOS 13.0, *)
-class ScrapFilterListViewController: UITableViewController {
+class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        (view as? ScrapFilterListView)?.controller = self
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         preferredContentSize = tableView.contentSize
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TextFilter.self) {
+            if !searchText.isEmpty {
+                $0 = .init(text: searchText)
+            } else {
+                $0 = nil
+            }
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let dataSource = tableView.dataSource as? ScrapFilterListView.DataSource else { return nil }
+        guard let row = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        return row == .text ? nil : indexPath
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -43,6 +68,8 @@ class ScrapFilterListViewController: UITableViewController {
             ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
                 $0 = .init(attachment: attachment)
             }
+        case .text:
+            break
         }
         
     }
@@ -72,6 +99,9 @@ class ScrapFilterListViewController: UITableViewController {
             ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
                 $0 = nil
             }
+        case .text:
+            break
         }
     }
 }
+

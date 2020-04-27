@@ -20,15 +20,21 @@ class ScrapFilterListView: UITableView {
     }
 
     enum Row: Hashable {
-        case noTags, tag(Tag.Identifier), attachment(Attachment?), today
+        case noTags, tag(Tag.Identifier), attachment(Attachment?), today, text
     }
+    
+    weak var controller: ScrapFilterListViewController?
     
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        
         self.cellSubscriptions[cell] = ScrapFilterList.shared.$value
-            .sink(receiveValue: { filters in
+            .sink(receiveValue: { [weak self] filters in
+                if row != .text {
+                    cell.contentView.subviews.filter({ $0 is UISearchBar }).forEach({ $0.removeFromSuperview() })
+                }
                 switch row {
                 case .noTags:
                     cell.textLabel?.text = NSLocalizedString("No Tags", comment: "")
@@ -73,6 +79,26 @@ class ScrapFilterListView: UITableView {
                         tableView.deselectRow(at: indexPath, animated: false)
                         cell.imageView?.image = filter.imageRepresentation(selected: false)
                     }
+                case .text:
+                    cell.textLabel?.text = nil
+                    let searchBar: UISearchBar
+                    if let oldSearchBar = cell.contentView.subviews.first(ofType: UISearchBar.self) {
+                        searchBar = oldSearchBar
+                    } else {
+                        searchBar = UISearchBar(frame: cell.bounds)
+                        searchBar.searchBarStyle = .minimal
+                        searchBar.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                        searchBar.delegate = self?.controller
+                        cell.contentView.addSubview(searchBar)
+                    }
+                    if let filter = filters.first(ofType: ScrapFilters.TextFilter.self) {
+                        if searchBar.text != filter.text {
+                            searchBar.text = filter.text
+                        }
+                    } else {
+                        searchBar.text = nil
+                    }
+                    
                 }
             })
         
@@ -92,6 +118,7 @@ class ScrapFilterListView: UITableView {
             .sink(receiveValue: { tags in
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])
+                snapshot.appendItems([.text])
                 snapshot.appendItems([.today])
                 if !tags.isEmpty {
                     snapshot.appendItems(tags)

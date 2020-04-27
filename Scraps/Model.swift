@@ -15,7 +15,7 @@ class Model<Value> {
         self.value = value
     }
     
-    @Published private(set) var value: Value
+    @Published var value: Value
     
     func modifyValue(handler: (inout Value) throws -> Void) rethrows {
         var value = self.value

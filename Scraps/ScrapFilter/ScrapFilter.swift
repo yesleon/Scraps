@@ -17,7 +17,20 @@ protocol ScrapFilter {
 
 enum ScrapFilters {
     
+    struct TextFilter: ScrapFilter {
+        func shouldInclude(_ scrap: Scrap) -> Bool {
+            scrap.content.lowercased().contains(text.lowercased())
+        }
+        
+        let isEnabled = true
+        
+        var stringRepresentation: String? { "\"\(text)\"" }
+        
+        var text: String
+    }
+    
     enum TagFilter: ScrapFilter {
+        
         var stringRepresentation: String? {
             switch self {
             case .hasTags(let tagIDs):
@@ -53,6 +66,7 @@ enum ScrapFilters {
                 return scrap.tagIDs.isEmpty
             }
         }
+        
     }
 
     struct TodayFilter: ScrapFilter {
