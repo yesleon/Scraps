@@ -13,10 +13,11 @@ protocol FileWrapperConvertible {
     init(_ fileWrapper: FileWrapper) throws
     func fileWrapperRepresentation() throws -> FileWrapper
 }
+
 extension FileWrapperConvertible where Self: Codable {
     
     init(_ fileWrapper: FileWrapper) throws {
-        guard let data = fileWrapper.regularFileContents else { throw "file wrapper no content" }
+        let data = fileWrapper.regularFileContents ?? Data()
         self = try JSONDecoder().decode(Self.self, from: data)
     }
     
@@ -33,7 +34,7 @@ extension Set: FileWrapperConvertible where Element: Codable { }
 extension Dictionary: FileWrapperConvertible where Key: FilenameConvertible, Value: FileWrapperConvertible {
     
     init(_ fileWrapper: FileWrapper) throws {
-        guard let fileWrappers = fileWrapper.fileWrappers else { throw "file wrapper no child" }
+        let fileWrappers = fileWrapper.fileWrappers ?? [:]
         var dict = Self()
         for (key, value) in fileWrappers {
             guard let key = Key(key) else { continue }

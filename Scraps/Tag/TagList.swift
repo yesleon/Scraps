@@ -9,20 +9,12 @@
 import Foundation
 import Combine
 
-class TagList {
+class TagList: Model<[Tag.Identifier: Tag]> {
     
-    static let shared = TagList()
-    
-    @Published private(set) var value = [Tag.Identifier: Tag]()
+    static let shared = TagList(value: [Tag.Identifier: Tag]())
     
     func isTitleValid(_ title: String) -> Bool {
         !value.contains(where: { $0.value.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
-    }
-    
-    func modifyValue(handler: (inout [Tag.Identifier: Tag]) throws -> Void) rethrows {
-        var value = self.value
-        try handler(&value)
-        self.value = value
     }
     
     func publisher(for id: Tag.Identifier) -> AnyPublisher<Tag, Never> {
@@ -31,4 +23,5 @@ class TagList {
             .removeDuplicates()
             .eraseToAnyPublisher()
     }
+    
 }

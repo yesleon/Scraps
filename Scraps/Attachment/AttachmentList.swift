@@ -11,21 +11,13 @@ import Combine
 import CoreGraphics
 
 
-class AttachmentList {
-    static let shared = AttachmentList()
+class AttachmentList: Model<[Attachment.Identifier: Attachment]> {
+    static let shared = AttachmentList(value: [Attachment.Identifier: Attachment]())
     
     private let loadingSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
     
-    @Published private(set) var value = [Attachment.Identifier: Attachment]()
-    
     func loadingPublisher() -> AnyPublisher<(id: Attachment.Identifier, targetDimension: CGFloat), Never> {
         loadingSubject.eraseToAnyPublisher()
-    }
-    
-    func modifyValue(handler: (inout [Attachment.Identifier: Attachment]) throws -> Void) rethrows {
-        var value = self.value
-        try handler(&value)
-        self.value = value
     }
     
     func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment?, Never> {

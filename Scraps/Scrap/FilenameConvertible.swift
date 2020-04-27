@@ -6,7 +6,7 @@
 //  Copyright © 2020 Li-Heng Hsu. All rights reserved.
 //
 
-
+import Foundation
 
 
 protocol FilenameConvertible {
