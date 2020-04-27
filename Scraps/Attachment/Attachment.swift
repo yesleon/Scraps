@@ -30,7 +30,7 @@ extension Attachment.Identifier {
         var urlComponents = URLComponents()
         urlComponents.scheme = "treehole"
         urlComponents.host = "attachments"
-        urlComponents.path = filename
+        urlComponents.path = "/" + filename
         guard let url = urlComponents.url else { return nil }
         self.url = url
     }

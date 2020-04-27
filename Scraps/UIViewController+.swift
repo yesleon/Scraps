@@ -23,21 +23,24 @@ extension UIViewController {
             $0.sourceView = sourceView
             $0.sourceRect = sourceRect
             $0.barButtonItem = barButtonItem
+            $0.passthroughViews = nil
         }
         vc.preferredContentSize = .init(width: 240, height: 360)
         return vc
     }
     
-    static func tagNamingAlert(tagID: Tag.Identifier?) -> UIViewController {
+    static func tagNamingAlert(tagID: Tag.Identifier?, doneCompletion: ((Tag.Identifier) -> Void)? = nil) -> UIViewController {
         let vc = UIAlertController(title: NSLocalizedString("Name the Tag", comment: ""), message: nil, preferredStyle: .alert)
         var subscriptions = Set<AnyCancellable>()
         var text = ""
         let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default, handler: { _ in
+            let tagID = tagID ?? .init()
             TagList.shared.modifyValue {
-                $0.updateValue(.init(title: text), forKey: tagID ?? .init())
+                $0.updateValue(.init(title: text), forKey: tagID)
             }
             subscriptions.removeAll()
             vc.textFields?.forEach { $0.removeAllActions() }
+            doneCompletion?(tagID)
         })
         doneAction.isEnabled = false
         vc.addTextField { textField in

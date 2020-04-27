@@ -69,7 +69,7 @@ class Draft {
             case .drawing(_):
                 var components = URLComponents()
                 components.scheme = "treehole"
-                components.host = "drawings"
+                components.host = "attachments"
                 components.path = "/" + UUID().uuidString
                 return components.url.map(Attachment.Identifier.init(url:))
             }

@@ -58,7 +58,8 @@ class ScrapListViewController: UITableViewController {
     
     @IBAction func showTagList(_ button: UIBarButtonItem) {
         guard let tableView = tableView as? ScrapListView else { return }
-        tableView.indexPathsForSelectedRows.map { $0.compactMap { tableView.diffableDataSource.itemIdentifier(for: $0) } }
+        tableView.indexPathsForSelectedRows
+            .map { $0.compactMap { tableView.diffableDataSource.itemIdentifier(for: $0) } }
             .map { present(.tagListViewController(scrapIDs: Set($0), sourceView: nil, sourceRect: .null, barButtonItem: button), animated: true) }
     }
     

@@ -53,7 +53,13 @@ class TagListViewController: UITableViewController {
         
         switch row {
         case .newTag:
-            present(.tagNamingAlert(tagID: nil), animated: true)
+            present(.tagNamingAlert(tagID: nil) { tagID in
+                ScrapList.shared.modifyValue { scraps in
+                    tableView.scrapIDs.forEach {
+                        scraps[$0]?.tagIDs.insert(tagID)
+                    }
+                }
+                }, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
             
         case .tag(let tagID):
