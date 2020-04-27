@@ -169,6 +169,8 @@
 				713FAF37245709FA002B7A46 /* ActionTarget.swift */,
 				713FAF3D24574CBC002B7A46 /* UUIDIdentifier.swift */,
 				713FAF3F24574E44002B7A46 /* Model.swift */,
+				713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */,
+				713FAF3B24570F89002B7A46 /* FilenameConvertible.swift */,
 				713FAF3424570535002B7A46 /* Extensions */,
 				71EA538B243EE45900CD64CA /* Scrap */,
 				71EA538C243EE46000CD64CA /* Tag */,
@@ -198,8 +200,6 @@
 			isa = PBXGroup;
 			children = (
 				719579462439CCE8007DC6BA /* Scrap.swift */,
-				713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */,
-				713FAF3B24570F89002B7A46 /* FilenameConvertible.swift */,
 				715F63C52435B26800E12D26 /* ScrapList.swift */,
 				715F63CB2435C61A00E12D26 /* ScrapListView.swift */,
 				714E21C624425AD4005C953A /* ScrapListViewDataSource.swift */,

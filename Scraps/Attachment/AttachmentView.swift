@@ -18,8 +18,6 @@ class AttachmentView: UIView {
         bounds.size
     }
     
-    var sizeChangedHandler = { }
-    
     override var canBecomeFirstResponder: Bool { true }
     
     @Published var contentInsets = UIEdgeInsets.zero
@@ -88,7 +86,7 @@ class AttachmentView: UIView {
                                 guard let self = self else { return }
                                 guard let metadata = metadata else { return }
                                 self.addView(LPLinkView(metadata: metadata), dimension: dimension, contentInsets: contentInsets)
-                                self.sizeChangedHandler()
+                                self.updateLayout()
                             }
                         }
                     }

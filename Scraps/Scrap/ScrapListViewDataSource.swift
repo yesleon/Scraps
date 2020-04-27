@@ -14,10 +14,6 @@ class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scr
         ScrapListViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, scrapID in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ScrapListViewCell else { return nil }
             cell.subscribe(to: ScrapList.shared.publisher(for: scrapID))
-            cell.attachmentView.sizeChangedHandler = { [weak tableView] in
-                tableView?.beginUpdates()
-                tableView?.endUpdates()
-            }
             return cell
         })
     }

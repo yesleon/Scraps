@@ -13,6 +13,7 @@ private let headerIdentifier = "SectionHeader"
 class ScrapListView: UITableView, UITableViewDelegate {
     
     lazy var diffableDataSource = ScrapListViewDataSource.make(tableView: self)
+    
     weak var controller: ScrapListViewController?
     
     override func didMoveToSuperview() {
