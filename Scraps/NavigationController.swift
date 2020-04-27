@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+/// A navigation controller whose sets its navigation bar margins to its view margins.
 class NavigationController: UINavigationController {
 
     override func viewLayoutMarginsDidChange() {

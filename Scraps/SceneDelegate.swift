@@ -9,6 +9,7 @@
 import UIKit
 
 
+/// Holds the main window.
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?

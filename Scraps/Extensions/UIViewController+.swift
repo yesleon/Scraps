@@ -44,7 +44,7 @@ extension UIViewController {
         })
         doneAction.isEnabled = false
         vc.addTextField { textField in
-            textField.addAction(for: .editingChanged) { textField, event in
+            textField.addAction(for: .editingChanged) { textField in
                 text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
                 doneAction.isEnabled = TagList.shared.isTitleValid(text)
                 
@@ -73,7 +73,7 @@ extension UIViewController {
         doneAction.isEnabled = false
         
         alertController.addTextField {
-            $0.addAction(for: .editingChanged) { textField, event in
+            $0.addAction(for: .editingChanged) { textField in
                 if let url = URL(string: textField.text ?? ""), UIApplication.shared.canOpenURL(url) {
                     doneAction.isEnabled = true
                     linkURL = url

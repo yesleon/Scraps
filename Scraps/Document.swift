@@ -13,8 +13,6 @@ import PencilKit
 import AVFoundation
 
 
-extension PKDrawing: FileWrapperConvertible { }
-
 /// The Model. Holds data and publishes data changes. I/O to disk.
 /// Converts between disk data structure and data structure in app.
 class Document: UIDocument {
@@ -25,7 +23,7 @@ class Document: UIDocument {
     
     var subscriptions = Set<AnyCancellable>()
     
-    var assetFolders = [String: FileWrapper]()
+    var imageFolders = [String: FileWrapper]()
     
     func subscribe() {
         
@@ -35,7 +33,7 @@ class Document: UIDocument {
                 attachments.forEach { id, attachment in
                     guard case let .image(images) = attachment else { return }
                     let imageID = id.url.lastPathComponent
-                    var imageFiles = self.assetFolders[imageID]?.fileWrappers ?? [:]
+                    var imageFiles = self.imageFolders[imageID]?.fileWrappers ?? [:]
                     images.forEach { dimension, image in
                         if imageFiles["\(dimension)"] == nil, let data = image.jpegData(compressionQuality: 0.95) {
                             imageFiles["\(dimension)"] = FileWrapper(regularFileWithContents: data)
@@ -46,7 +44,7 @@ class Document: UIDocument {
                 }
                 return newAssetFolders
             })
-            .assign(to: \.assetFolders, on: self)
+            .assign(to: \.imageFolders, on: self)
             .store(in: &subscriptions)
         
         AttachmentList.shared.loadingPublisher()
@@ -59,7 +57,7 @@ class Document: UIDocument {
                 switch attachment {
                 case var .image(images):
                     guard images[targetDimension] == nil else { break }
-                    guard let data = self.assetFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents else { break }
+                    guard let data = self.imageFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents else { break }
                     guard let originalImage  = UIImage(data: data) else { break }
                     
                     let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: targetDimension, height: targetDimension))
@@ -149,7 +147,7 @@ class Document: UIDocument {
         
         
         
-        assetFolders = imagesFolder.fileWrappers ?? [:]
+        imageFolders = imagesFolder.fileWrappers ?? [:]
         try ScrapList.shared.modifyValue {
             $0 = try .init(scrapsFile)
         }
@@ -198,7 +196,7 @@ class Document: UIDocument {
                 "LinkIDs": try linkIDs.fileWrapperRepresentation(),
                 "ImageIDs": try imageIDs.fileWrapperRepresentation(),
                 "Drawings": try drawings.fileWrapperRepresentation(),
-                "Images": FileWrapper(directoryWithFileWrappers: assetFolders),
+                "Images": FileWrapper(directoryWithFileWrappers: imageFolders),
             ])
         } catch {
             print(error)

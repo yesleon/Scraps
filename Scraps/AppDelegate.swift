@@ -9,19 +9,24 @@
 import UIKit
 
 
+/// Holds the main document and sets global view appearances.
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    override var myUndoManager: UndoManager? { document.undoManager }
+    override var myUndoManager: UndoManager? { document?.undoManager }
     
-    lazy var document = Document(fileURL: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("database"))
-
+    var document: UIDocument?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+         
+        guard let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return false }
+        let document = Document(fileURL: documentURL.appendingPathComponent("database"))
         document.subscribe()
         document.openOrCreateIfFileNotExists()
+        self.document = document
         
         UIView.appearance().tintColor = .systemRed
-//        UITableViewHeaderFooterView.appearance().tintColor = nil
         
         return true
     }

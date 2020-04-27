@@ -10,6 +10,9 @@ import CoreGraphics
 
 
 extension CGFloat {
+    
     static let maxDimension: CGFloat = 1024
+    
     static let itemWidth: CGFloat = 200
+    
 }

@@ -9,10 +9,14 @@
 import UIKit
 import Combine
 
+
 extension NotificationCenter {
     
     func significantTimeChangeNotificationPublisher() -> AnyPublisher<Void, Never> {
-        publisher(for: UIApplication.significantTimeChangeNotification).map({ _ in }).prepend(Just(())).eraseToAnyPublisher()
+        publisher(for: UIApplication.significantTimeChangeNotification)
+            .map { _ in }
+            .prepend(Just(()))
+            .eraseToAnyPublisher()
     }
     
 }

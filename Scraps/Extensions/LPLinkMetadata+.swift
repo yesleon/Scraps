@@ -9,8 +9,10 @@
 import LinkPresentation
 
 extension LPLinkMetadata {
+    
     convenience init(originalURL: URL) {
         self.init()
         self.originalURL = originalURL
     }
+    
 }
