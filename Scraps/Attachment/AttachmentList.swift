@@ -22,9 +22,9 @@ class AttachmentList {
         loadingSubject.eraseToAnyPublisher()
     }
     
-    func modifyValue(handler: (inout [Attachment.Identifier: Attachment]) -> Void) {
+    func modifyValue(handler: (inout [Attachment.Identifier: Attachment]) throws -> Void) rethrows {
         var value = self.value
-        handler(&value)
+        try handler(&value)
         self.value = value
     }
     

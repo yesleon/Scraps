@@ -13,10 +13,27 @@ import LinkPresentation
 import PencilKit
 
 enum Attachment: Equatable, Hashable {
-    struct Identifier: Codable, Hashable {
+    struct Identifier: Codable, Hashable, FilenameConvertible {
         let url: URL
     }
     case image([CGFloat: UIImage]), linkMetadata(LPLinkMetadata), drawing(PKDrawing)
+    
+}
+
+extension Attachment.Identifier {
+    
+    var filename: String {
+        url.lastPathComponent
+    }
+    
+    init?(_ filename: String) {
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "treehole"
+        urlComponents.host = "attachments"
+        urlComponents.path = filename
+        guard let url = urlComponents.url else { return nil }
+        self.url = url
+    }
     
 }
 

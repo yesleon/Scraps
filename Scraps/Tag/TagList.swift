@@ -19,9 +19,9 @@ class TagList {
         !value.contains(where: { $0.value.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
     }
     
-    func modifyValue(handler: (inout [Tag.Identifier: Tag]) -> Void) {
+    func modifyValue(handler: (inout [Tag.Identifier: Tag]) throws -> Void) rethrows {
         var value = self.value
-        handler(&value)
+        try handler(&value)
         self.value = value
     }
     

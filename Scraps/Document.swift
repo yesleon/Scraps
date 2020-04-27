@@ -12,18 +12,8 @@ import LinkPresentation
 import PencilKit
 import AVFoundation
 
-private struct DocumentData: Codable {
-    var scraps: [Scrap.Identifier: Scrap]
-    var tags: [Tag.Identifier: Tag]
-    var linkIDs: Set<Attachment.Identifier>?
-    var imageIDs: Set<Attachment.Identifier>?
-    var drawings: [Attachment.Identifier: PKDrawing]?
-}
 
-extension CGFloat {
-    static let maxDimension: CGFloat = 1024
-    static let itemWidth: CGFloat = 200
-}
+extension PKDrawing: FileWrapperConvertible { }
 
 /// The Model. Holds data and publishes data changes. I/O to disk.
 /// Converts between disk data structure and data structure in app.
@@ -149,30 +139,37 @@ class Document: UIDocument {
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let rootFolder = contents as? FileWrapper else { throw Error.readingError(contents) }
-        assetFolders = rootFolder.fileWrappers?["assets"]?.fileWrappers ?? [:]
-        if let data = rootFolder.fileWrappers?["data.json"]?.regularFileContents {
-            let documentData = try JSONDecoder().decode(DocumentData.self, from: data)
-            TagList.shared.modifyValue { tags in
-                tags = documentData.tags
-            }
-            ScrapList.shared.modifyValue { scraps in
-                scraps = documentData.scraps
-            }
-            AttachmentList.shared.modifyValue { attachments in
-                documentData.imageIDs?.forEach {
-                    if attachments[$0] == nil {
-                        attachments[$0] = .image([:])
-                    }
+        guard let folders = rootFolder.fileWrappers else { throw Error.readingError(contents) }
+        guard let scrapsFile = folders["Scraps"] else { throw Error.readingError(contents) }
+        guard let tagsFile = folders["Tags"] else { throw Error.readingError(contents) }
+        guard let linkIDsFile = folders["LinkIDs"] else { throw Error.readingError(contents) }
+        guard let imageIDsFile = folders["ImageIDs"] else { throw Error.readingError(contents) }
+        guard let drawingsFolder = folders["Drawings"] else { throw Error.readingError(contents) }
+        guard let imagesFolder = folders["Images"] else { throw Error.readingError(contents) }
+        
+        
+        
+        assetFolders = imagesFolder.fileWrappers ?? [:]
+        try ScrapList.shared.modifyValue {
+            $0 = try .init(scrapsFile)
+        }
+        try TagList.shared.modifyValue {
+            $0 = try .init(tagsFile)
+        }
+        try AttachmentList.shared.modifyValue { attachments in
+            try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
+                if attachments[linkID] == nil {
+                    attachments[linkID] = .linkMetadata(.init(originalURL: linkID.url))
                 }
-                documentData.linkIDs?.forEach {
-                    if attachments[$0] == nil {
-                        attachments[$0] = .linkMetadata(.init(originalURL: $0.url))
-                    }
+            }
+            try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
+                if attachments[imageID] == nil {
+                    attachments[imageID] = .image([:])
                 }
-                documentData.drawings?.forEach { id, drawing in
-                    if attachments[id] == nil {
-                        attachments[id] = .drawing(drawing)
-                    }
+            }
+            try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
+                if attachments[id] == nil {
+                    attachments[id] = .drawing(drawing)
                 }
             }
         }
@@ -181,7 +178,7 @@ class Document: UIDocument {
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        var links = Set<Attachment.Identifier>()
+        var linkIDs = Set<Attachment.Identifier>()
         var imageIDs = Set<Attachment.Identifier>()
         var drawings = [Attachment.Identifier: PKDrawing]()
         AttachmentList.shared.value.forEach { id, attachment in
@@ -189,16 +186,24 @@ class Document: UIDocument {
             case .image(_):
                 imageIDs.insert(id)
             case .linkMetadata(_):
-                links.insert(id)
+                linkIDs.insert(id)
             case .drawing(let drawing):
                 drawings[id] = drawing
             }
         }
-        let data = try JSONEncoder().encode(DocumentData(scraps: ScrapList.shared.value, tags: TagList.shared.value, linkIDs: links, imageIDs: imageIDs, drawings: drawings))
-        return FileWrapper(directoryWithFileWrappers: [
-            "data.json": FileWrapper(regularFileWithContents: data),
-            "assets": FileWrapper(directoryWithFileWrappers: assetFolders)
-        ])
+        do {
+            return FileWrapper(directoryWithFileWrappers: [
+                "Scraps": try ScrapList.shared.value.fileWrapperRepresentation(),
+                "Tags": try TagList.shared.value.fileWrapperRepresentation(),
+                "LinkIDs": try linkIDs.fileWrapperRepresentation(),
+                "ImageIDs": try imageIDs.fileWrapperRepresentation(),
+                "Drawings": try drawings.fileWrapperRepresentation(),
+                "Images": FileWrapper(directoryWithFileWrappers: assetFolders),
+            ])
+        } catch {
+            print(error)
+            throw error
+        }
     }
     
     override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {

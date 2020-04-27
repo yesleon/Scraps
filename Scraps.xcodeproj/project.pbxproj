@@ -32,6 +32,7 @@
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
 		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
+		71981C9B245582D9004EC5B2 /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C9A245582D9004EC5B2 /* CGFloat+.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AFE1B22443781700D0793B /* CanvasViewController.swift */; };
 		71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79192244442E30011BA94 /* ScrapFilter.swift */; };
@@ -75,6 +76,7 @@
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
 		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
+		71981C9A245582D9004EC5B2 /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
 		71B79192244442E30011BA94 /* ScrapFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilter.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				717B5009243A100A0080F263 /* NotificationCenter+.swift */,
 				71EA538F243F232F00CD64CA /* LPLinkMetadata+.swift */,
 				715F63B12435B20F00E12D26 /* Document.swift */,
+				71981C9A245582D9004EC5B2 /* CGFloat+.swift */,
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
 				71981C962455422B004EC5B2 /* UIResponder+.swift */,
 				71B79194244443020011BA94 /* Array+.swift */,
@@ -299,6 +302,7 @@
 				715F63C82435B52500E12D26 /* TagList.swift in Sources */,
 				714E21C3244246E3005C953A /* UIControl+.swift in Sources */,
 				715F63BF2435B22100E12D26 /* ScrapListViewController.swift in Sources */,
+				71981C9B245582D9004EC5B2 /* CGFloat+.swift in Sources */,
 				715F63C12435B22100E12D26 /* DraftView.swift in Sources */,
 				711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */,
 				711DE1BA243C349E0003A1C2 /* Attachment.swift in Sources */,

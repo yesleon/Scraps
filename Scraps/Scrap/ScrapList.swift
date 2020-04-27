@@ -14,9 +14,9 @@ class ScrapList {
     
     @Published private(set) var value = [Scrap.Identifier: Scrap]()
     
-    func modifyValue(handler: (inout [Scrap.Identifier: Scrap]) -> Void) {
+    func modifyValue(handler: (inout [Scrap.Identifier: Scrap]) throws -> Void) rethrows {
         var value = self.value
-        handler(&value)
+        try handler(&value)
         self.value = value
     }
     
