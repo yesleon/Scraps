@@ -198,22 +198,22 @@
                             <outlet property="delegate" destination="1fT-Lp-UQ9" id="AAP-3c-xWb"/>
                         </connections>
                     </tableView>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="gGg-ls-ZYq"/>
+                        <barButtonItem systemItem="compose" id="3Pe-zY-JwH">
+                            <connections>
+                                <segue destination="eje-5e-k4h" kind="presentation" identifier="NewScrap" id="qOc-1I-8CX"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="All" id="EFZ-Oz-kza">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="compose" id="3Pe-zY-JwH">
-                                <connections>
-                                    <segue destination="eje-5e-k4h" kind="presentation" identifier="NewScrap" id="qOc-1I-8CX"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="line.horizontal.3.decrease.circle" catalog="system" id="pMY-ms-0KF">
-                                <connections>
-                                    <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Scraps" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="N6H-Hx-Yhh">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="line.horizontal.3.decrease.circle" catalog="system" id="pMY-ms-0KF">
+                            <connections>
+                                <segue destination="WOy-6y-hyc" kind="popoverPresentation" customClass="PresentTagListSegue" customModule="Scraps" customModuleProvider="target" popoverAnchorBarButtonItem="pMY-ms-0KF" id="N6H-Hx-Yhh">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -279,7 +279,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -287,6 +287,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XkX-rq-ygz">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
