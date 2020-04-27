@@ -36,7 +36,18 @@ extension ActionSending where Self: UIGestureRecognizer {
     init(handler: @escaping (Self) -> Void) {
         let target = ActionTarget(handler: handler)
         self.init(target: target, action: #selector(target.handleAction(sender:)))
+        Self.targets[ObjectIdentifier(self)] = [target]
+    }
+    
+    func addAction(handler: @escaping (Self) -> Void) {
+        let target = ActionTarget(handler: handler)
+        addTarget(target, action: #selector(target.handleAction(sender:)))
         Self.targets[ObjectIdentifier(self), default: []].append(target)
+    }
+    
+    func removeAllActions() {
+        removeTarget(nil, action: nil)
+        Self.targets[ObjectIdentifier(self)] = nil
     }
 
 }
@@ -46,13 +57,13 @@ extension ActionSending where Self: UIBarButtonItem {
     init(barButtonSystemItem: SystemItem, handler: @escaping (Self) -> Void) {
         let target = ActionTarget(handler: handler)
         self.init(barButtonSystemItem: barButtonSystemItem, target: target, action: #selector(target.handleAction(sender:)))
-        Self.targets[ObjectIdentifier(self), default: []].append(target)
+        Self.targets[ObjectIdentifier(self)] = [target]
     }
     
     init(image: UIImage?, style: UIBarButtonItem.Style, handler: @escaping (Self) -> Void) {
         let target = ActionTarget(handler: handler)
         self.init(image: image, style: style, target: target, action: #selector(target.handleAction(sender:)))
-        Self.targets[ObjectIdentifier(self), default: []].append(target)
+        Self.targets[ObjectIdentifier(self)] = [target]
     }
     
 }
@@ -67,6 +78,7 @@ extension ActionSending where Self: UIControl {
     }
     
     func removeAllActions() {
+        removeTarget(nil, action: nil, for: .allEvents)
         Self.targets[ObjectIdentifier(self)] = nil
     }
     
