@@ -50,16 +50,18 @@ class CanvasViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        var zoomScale: CGFloat = 0
-        zoomScale = canvasView.zoomScale
+        let zoomScale = canvasView.zoomScale
         canvasView.setZoomScale(1, animated: true)
+        defer {
+            canvasView.setZoomScale(zoomScale, animated: true)
+        }
         
         if view.frame.width > view.frame.height {
             canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.width/canvasView.contentSize.width
         } else {
             canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.height/canvasView.contentSize.height
         }
-        canvasView.setZoomScale(zoomScale, animated: true)
+        
         
     }
     
