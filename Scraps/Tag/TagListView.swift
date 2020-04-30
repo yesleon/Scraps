@@ -18,13 +18,13 @@ class TagListView: UITableView {
     }
     
     enum Row: Hashable {
-        case newTag, tag(Tag.Identifier)
+        case newTag, tag(Tag.ID)
     }
 
     var subscriptions = Set<AnyCancellable>()
     var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
-    var scrapIDs = Set<Scrap.Identifier>()
+    var scrapIDs = Set<Scrap.ID>()
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -62,11 +62,10 @@ class TagListView: UITableView {
         self.dataSource = diffableDataSource
         
         TagList.shared.$value
-            .map(\.keys)
             .map({
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])
-                snapshot.appendItems(Array($0).map(Row.tag))
+                snapshot.appendItems($0.lazy.map(\.id).map(Row.tag))
                 snapshot.appendItems([.newTag])
                 return snapshot
             })

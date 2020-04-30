@@ -8,11 +8,11 @@
 
 import Foundation
 
-class ScrapList: Model<[Scrap.Identifier: Scrap]> {
+class ScrapList: Model<IdentifiableSet<Scrap>> {
     
-    static let shared = ScrapList(value: [Scrap.Identifier: Scrap]())
+    static let shared = ScrapList(value: [])
     
-    func publisher(for id: Scrap.Identifier) -> AnyPublisher<Scrap, Never> {
+    func publisher(for id: Scrap.ID) -> AnyPublisher<Scrap, Never> {
         return $value
             .compactMap { $0[id] }
             .removeDuplicates()

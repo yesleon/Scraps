@@ -20,7 +20,7 @@ class ScrapFilterListView: UITableView {
     }
 
     enum Row: Hashable {
-        case noTags, tag(Tag.Identifier), attachment(Attachment?), today, text
+        case noTags, tag(Tag.ID), attachment(Attachment?), today, text
     }
     
     weak var controller: ScrapFilterListViewController?
@@ -114,7 +114,7 @@ class ScrapFilterListView: UITableView {
         self.dataSource = diffableDataSource
         
         TagList.shared.$value
-            .map { $0.keys.map(Row.tag) }
+            .map { $0.map(\.id).map(Row.tag) }
             .sink(receiveValue: { tags in
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])

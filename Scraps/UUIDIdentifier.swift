@@ -11,7 +11,7 @@ import Foundation
 
 struct UUIDIdentifier: Codable, Hashable {
     
-    private let uuid: UUID
+    let uuid: UUID
     
     init() {
         uuid = UUID()

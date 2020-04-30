@@ -87,7 +87,7 @@ class ScrapListViewController: UITableViewController {
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             ScrapList.shared.modifyValue {
-                $0.removeValue(forKey: scrapID)
+                $0[scrapID] = nil
             }
         }
         actions = [tagsAction, shareAction, deleteAction]

@@ -9,15 +9,15 @@
 import Foundation
 import Combine
 
-class TagList: Model<[Tag.Identifier: Tag]> {
+class TagList: Model<IdentifiableSet<Tag>> {
     
-    static let shared = TagList(value: [Tag.Identifier: Tag]())
+    static let shared = TagList(value: [])
     
     func isTitleValid(_ title: String) -> Bool {
-        !value.contains(where: { $0.value.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
+        !value.contains(where: { $0.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
     }
     
-    func publisher(for id: Tag.Identifier) -> AnyPublisher<Tag, Never> {
+    func publisher(for id: Tag.ID) -> AnyPublisher<Tag, Never> {
         return $value
             .compactMap { $0[id] }
             .removeDuplicates()

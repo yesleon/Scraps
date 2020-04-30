@@ -75,7 +75,7 @@ class Draft {
             }
         }()
         
-        var tagIDs = Set<Tag.Identifier>()
+        var tagIDs = Set<Tag.ID>()
         if case let .hasTags(selectedTagIDs) = ScrapFilterList.shared.value.first(ofType: ScrapFilters.TagFilter.self) {
             tagIDs = selectedTagIDs
         }
@@ -87,7 +87,7 @@ class Draft {
         }
         
         ScrapList.shared.modifyValue {
-            $0[.init()] = .init(content: value, date: .init(), tagIDs: tagIDs, attachmentID: attachmentID)
+            $0.insert(.init(id: .init(), content: value, date: .init(), tagIDs: tagIDs, attachmentID: attachmentID))
         }
         
         value.removeAll()

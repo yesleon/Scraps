@@ -10,6 +10,21 @@
 struct IdentifiableSet<Element: Identifiable> {
     
     typealias Store = Dictionary<Element.ID, Element>
+
+    init() {
+        self.store = [:]
+    }
+    
+    init<Source: Sequence>(_ sequence: Source) where Element == Source.Element {
+        self.init()
+        for element in sequence {
+            store[element.id] = element
+        }
+    }
+
+    var isEmpty: Bool {
+        store.isEmpty
+    }
     
     private var store: Store
     
@@ -28,6 +43,14 @@ struct IdentifiableSet<Element: Identifiable> {
         }
         set {
             store[id, default: defaultValue()] = newValue
+        }
+    }
+    
+    mutating func modifyEach(handler: (inout Element) -> Void) {
+        for key in store.keys {
+            guard var element = store[key] else { continue }
+            handler(&element)
+            store[key] = element
         }
     }
     
@@ -64,11 +87,10 @@ extension IdentifiableSet: Collection {
 extension IdentifiableSet: ExpressibleByArrayLiteral {
     
     init(arrayLiteral elements: Element...) {
-        var store = Store()
+        self.init()
         for element in elements {
-            store[element.id] = element
+            self[element.id] = element
         }
-        self.store = store
     }
     
 }
@@ -91,22 +113,14 @@ extension IdentifiableSet: CustomDebugStringConvertible, CustomReflectable, Cust
 
 extension IdentifiableSet: Codable where Element: Codable, Element.ID: Codable { }
 
-extension IdentifiableSet: Equatable where Element: Equatable { }
+extension IdentifiableSet: Equatable, SetAlgebra where Element: Equatable { }
 
 extension IdentifiableSet: Hashable where Element: Hashable { }
 
-extension IdentifiableSet: SetAlgebra where Element: Equatable {
-
-    init() {
-        self.store = [:]
-    }
-
-    var isEmpty: Bool {
-        store.isEmpty
-    }
+extension IdentifiableSet {
     
     func contains(_ element: Element) -> Bool {
-        return store[element.id] != nil
+        return self[element.id] != nil
     }
 
     func union(_ other: IdentifiableSet<Element>) -> IdentifiableSet<Element> {
@@ -139,7 +153,9 @@ extension IdentifiableSet: SetAlgebra where Element: Equatable {
 
     @discardableResult
     mutating func remove(_ member: Element) -> Element? {
-        return store.removeValue(forKey: member.id)
+        let element = self[member.id]
+        self[member.id] = nil
+        return element
     }
 
     @discardableResult
@@ -176,6 +192,5 @@ extension IdentifiableSet: SetAlgebra where Element: Equatable {
             }
         }
     }
-
 
 }

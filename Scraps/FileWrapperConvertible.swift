@@ -52,3 +52,24 @@ extension Dictionary: FileWrapperConvertible where Key: FilenameConvertible, Val
     }
     
 }
+
+extension IdentifiableSet: FileWrapperConvertible where Element.ID: FilenameConvertible, Element: FileWrapperConvertible {
+    
+    init(_ fileWrapper: FileWrapper) throws {
+        self.init()
+        let fileWrappers = fileWrapper.fileWrappers ?? [:]
+        for (filename, fileWrapper) in fileWrappers {
+            guard let id = Element.ID(filename) else { continue }
+            self[id] = try Element(fileWrapper)
+        }
+    }
+    
+    func fileWrapperRepresentation() throws -> FileWrapper {
+        var fileWrappers = [String: FileWrapper]()
+        for element in self {
+            fileWrappers[element.id.filename] = try element.fileWrapperRepresentation()
+        }
+        return FileWrapper(directoryWithFileWrappers: fileWrappers)
+    }
+    
+}

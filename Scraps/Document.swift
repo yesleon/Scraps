@@ -105,7 +105,7 @@ class Document: UIDocument {
         
         
         ScrapList.shared.$value
-            .previousResult(initialResult: [Scrap.Identifier : Scrap]())
+            .previousResult(initialResult: [])
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: ScrapList.shared) {
                     $0.modifyValue {
@@ -116,7 +116,7 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         TagList.shared.$value
-            .previousResult(initialResult: [Tag.Identifier : Tag]())
+            .previousResult(initialResult: [])
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: TagList.shared) {
                     $0.modifyValue {
@@ -149,10 +149,20 @@ class Document: UIDocument {
         
         imageFolders = imagesFolder.fileWrappers ?? [:]
         try ScrapList.shared.modifyValue {
-            $0 = try .init(scrapsFile)
+            do {
+                $0 = try .init(scrapsFile)
+            } catch {
+                let scraps = try [Scrap0_5.Identifier: Scrap0_5](scrapsFile)
+                $0 = .init(scrapDict: scraps)
+            }
         }
         try TagList.shared.modifyValue {
-            $0 = try .init(tagsFile)
+            do {
+                $0 = try .init(tagsFile)
+            } catch {
+                let tags = try [Tag0_5.Identifier: Tag0_5](tagsFile)
+                $0 = .init(tagDict: tags)
+            }
         }
         try AttachmentList.shared.modifyValue { attachments in
             try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in

@@ -57,7 +57,7 @@ enum ScrapFilters {
             }
         }
         
-        case noTags, hasTags(Set<Tag.Identifier>)
+        case noTags, hasTags(Set<Tag.ID>)
         func shouldInclude(_ scrap: Scrap) -> Bool {
             switch self {
             case .hasTags(let tagIDs):

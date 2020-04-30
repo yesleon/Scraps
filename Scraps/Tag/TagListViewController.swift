@@ -27,11 +27,12 @@ class TagListViewController: UITableViewController {
             [UIAlertController(title: NSLocalizedString("Delete Tag", comment: ""), message: NSLocalizedString("This will remove the tag from all scraps.", comment: ""), preferredStyle: .alert)].forEach {
                 $0.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: { _ in
                     TagList.shared.modifyValue {
-                        $0.removeValue(forKey: tagID)
+                        $0[tagID] = nil
+//                        $0.removeValue(forKey: tagID)
                     }
                     ScrapList.shared.modifyValue { scraps in
-                        scraps.keys.forEach { key in
-                            scraps[key]?.tagIDs.remove(tagID)
+                        scraps.modifyEach {
+                            $0.tagIDs.remove(tagID)
                         }
                     }
                 }))

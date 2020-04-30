@@ -11,6 +11,7 @@
 		711DE1BE243C455B0003A1C2 /* AttachmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DE1BD243C455B0003A1C2 /* AttachmentList.swift */; };
 		711DE1C0243C55E70003A1C2 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DE1BF243C55E70003A1C2 /* AttachmentView.swift */; };
 		711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DE1C3243C83540003A1C2 /* ScrapListViewCell.swift */; };
+		7133A678245ACCE90013D1E9 /* UUID+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7133A677245ACCE90013D1E9 /* UUID+.swift */; };
 		713FAF33245703EF002B7A46 /* PKDrawing+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF32245703EF002B7A46 /* PKDrawing+.swift */; };
 		713FAF38245709FA002B7A46 /* ActionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF37245709FA002B7A46 /* ActionTarget.swift */; };
 		713FAF3A24570F72002B7A46 /* FileWrapperConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */; };
@@ -60,6 +61,7 @@
 		711DE1BD243C455B0003A1C2 /* AttachmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentList.swift; sourceTree = "<group>"; };
 		711DE1BF243C55E70003A1C2 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		711DE1C3243C83540003A1C2 /* ScrapListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListViewCell.swift; sourceTree = "<group>"; };
+		7133A677245ACCE90013D1E9 /* UUID+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+.swift"; sourceTree = "<group>"; };
 		713FAF32245703EF002B7A46 /* PKDrawing+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKDrawing+.swift"; sourceTree = "<group>"; };
 		713FAF37245709FA002B7A46 /* ActionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTarget.swift; sourceTree = "<group>"; };
 		713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWrapperConvertible.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				713FAF32245703EF002B7A46 /* PKDrawing+.swift */,
 				71981C9A245582D9004EC5B2 /* CGFloat+.swift */,
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
+				7133A677245ACCE90013D1E9 /* UUID+.swift */,
 				71981C962455422B004EC5B2 /* UIResponder+.swift */,
 				71B79194244443020011BA94 /* Array+.swift */,
 				714E21C424425373005C953A /* UIViewController+.swift */,
@@ -358,6 +361,7 @@
 				711DE1BE243C455B0003A1C2 /* AttachmentList.swift in Sources */,
 				71FC15BD242E158C0092DD24 /* NavigationController.swift in Sources */,
 				715F63C02435B22100E12D26 /* ScrapFilterListViewController.swift in Sources */,
+				7133A678245ACCE90013D1E9 /* UUID+.swift in Sources */,
 				71EA5390243F232F00CD64CA /* LPLinkMetadata+.swift in Sources */,
 				714E21C524425373005C953A /* UIViewController+.swift in Sources */,
 				715F63BE2435B22100E12D26 /* ScrapFilterListView.swift in Sources */,
