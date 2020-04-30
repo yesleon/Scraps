@@ -36,7 +36,7 @@ enum ScrapFilters {
             case .hasTags(let tagIDs):
                 if !tagIDs.isEmpty {
                     return tagIDs.lazy
-                        .compactMap { TagList.shared.value[$0] }
+                        .compactMap { Model.shared.tagsSubject.value[$0] }
                         .map(\.title)
                         .map({ "#" + $0 })
                         .joined(separator: ", ")
@@ -84,19 +84,19 @@ enum ScrapFilters {
         func shouldInclude(_ scrap: Scrap) -> Bool {
             switch attachment {
             case .drawing(_):
-                if case .drawing(_) = scrap.attachmentID.flatMap({ AttachmentList.shared.value[$0] }) {
+                if case .drawing(_) = scrap.attachmentID.flatMap({ Model.shared.attachmentsSubject.value[$0] }) {
                     return true
                 } else {
                     return false
                 }
             case .image(_):
-                if case .image(_) = scrap.attachmentID.flatMap({ AttachmentList.shared.value[$0] }) {
+                if case .image(_) = scrap.attachmentID.flatMap({ Model.shared.attachmentsSubject.value[$0] }) {
                     return true
                 } else {
                     return false
                 }
             case .linkMetadata(_):
-                if case .linkMetadata(_) = scrap.attachmentID.flatMap({ AttachmentList.shared.value[$0] }) {
+                if case .linkMetadata(_) = scrap.attachmentID.flatMap({ Model.shared.attachmentsSubject.value[$0] }) {
                     return true
                 } else {
                     return false

@@ -11,17 +11,17 @@ import Combine
 import CoreGraphics
 
 
-class AttachmentList: Model<[Attachment.Identifier: Attachment]> {
-    static let shared = AttachmentList([Attachment.Identifier: Attachment]())
-    
-    private let loadingSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
-    
-    func loadingPublisher() -> AnyPublisher<(id: Attachment.Identifier, targetDimension: CGFloat), Never> {
-        loadingSubject.eraseToAnyPublisher()
-    }
-    
-    func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment?, Never> {
-        loadingSubject.send((id: id, targetDimension: targetDimension))
-        return valuePublisher.map { $0[id] }.eraseToAnyPublisher()
-    }
-}
+//class AttachmentList: Model<[Attachment.Identifier: Attachment]> {
+//    static let shared = AttachmentList([Attachment.Identifier: Attachment]())
+//    
+//    private let loadingSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
+//    
+//    func loadingPublisher() -> AnyPublisher<(id: Attachment.Identifier, targetDimension: CGFloat), Never> {
+//        loadingSubject.eraseToAnyPublisher()
+//    }
+//    
+//    func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment?, Never> {
+//        loadingSubject.send((id: id, targetDimension: targetDimension))
+//        return valuePublisher.map { $0[id] }.eraseToAnyPublisher()
+//    }
+//}

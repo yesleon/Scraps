@@ -7,16 +7,17 @@
 //
 
 import Foundation
+import Combine
 
-class ScrapList: Model<IdentifiableSet<Scrap>> {
-    
-    static let shared = ScrapList([])
-    
-    func publisher(for id: Scrap.ID) -> AnyPublisher<Scrap, Never> {
-        return valuePublisher
-            .compactMap { $0[id] }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-    }
-    
-}
+//class ScrapList: Model<IdentifiableSet<Scrap>> {
+//
+//    static let shared = ScrapList([])
+//
+//    func publisher(for id: Scrap.ID) -> AnyPublisher<Scrap, Never> {
+//        return valuePublisher
+//            .compactMap { $0[id] }
+//            .removeDuplicates()
+//            .eraseToAnyPublisher()
+//    }
+//
+//}

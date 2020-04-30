@@ -35,10 +35,7 @@ extension UIViewController {
         var text = ""
         let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default, handler: { _ in
             let tagID = tagID ?? .init()
-            TagList.shared.modifyValue {
-                $0[tagID]?.title = text
-//                $0.updateValue(.init(title: text), forKey: tagID)
-            }
+            Model.shared.tagsSubject.value[tagID]?.title = text
             subscriptions.removeAll()
             vc.textFields?.forEach { $0.removeAllActions() }
             doneCompletion?(tagID)
@@ -47,11 +44,11 @@ extension UIViewController {
         vc.addTextField { textField in
             textField.addAction(for: .editingChanged) { textField in
                 text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                doneAction.isEnabled = TagList.shared.isTitleValid(text)
+                doneAction.isEnabled = Model.shared.tagsSubject.isTitleValid(text)
                 
             }
             if let tagID = tagID {
-                TagList.shared.valuePublisher
+                Model.shared.tagsSubject
                     .compactMap { $0[tagID]?.title }
                     .sink(receiveValue: {
                         textField.text = $0

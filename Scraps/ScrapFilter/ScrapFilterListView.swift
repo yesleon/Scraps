@@ -30,7 +30,7 @@ class ScrapFilterListView: UITableView {
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         
-        self.cellSubscriptions[cell] = ScrapFilterList.shared.valuePublisher
+        self.cellSubscriptions[cell] = Model.shared.scrapFiltersSubject
             .sink(receiveValue: { [weak self] filters in
                 if row != .text {
                     cell.contentView.subviews.filter({ $0 is UISearchBar }).forEach({ $0.removeFromSuperview() })
@@ -46,7 +46,7 @@ class ScrapFilterListView: UITableView {
                         tableView.deselectRow(at: indexPath, animated: false)
                     }
                 case .tag(let tagID):
-                    guard let tag = TagList.shared.value[tagID] else { break }
+                    guard let tag = Model.shared.tagsSubject.value[tagID] else { break }
                     cell.textLabel?.text = tag.title
                     
                     
@@ -113,7 +113,7 @@ class ScrapFilterListView: UITableView {
         
         self.dataSource = diffableDataSource
         
-        TagList.shared.valuePublisher
+        Model.shared.tagsSubject
             .map { $0.map(\.id).map(Row.tag) }
             .sink(receiveValue: { tags in
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()

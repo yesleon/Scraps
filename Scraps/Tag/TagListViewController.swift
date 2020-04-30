@@ -26,14 +26,9 @@ class TagListViewController: UITableViewController {
             
             [UIAlertController(title: NSLocalizedString("Delete Tag", comment: ""), message: NSLocalizedString("This will remove the tag from all scraps.", comment: ""), preferredStyle: .alert)].forEach {
                 $0.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: { _ in
-                    TagList.shared.modifyValue {
-                        $0[tagID] = nil
-//                        $0.removeValue(forKey: tagID)
-                    }
-                    ScrapList.shared.modifyValue { scraps in
-                        scraps.modifyEach {
-                            $0.tagIDs.remove(tagID)
-                        }
+                    Model.shared.tagsSubject.value[tagID] = nil
+                    Model.shared.scrapsSubject.value.modifyEach {
+                        $0.tagIDs.remove(tagID)
                     }
                 }))
                 $0.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
@@ -55,20 +50,15 @@ class TagListViewController: UITableViewController {
         switch row {
         case .newTag:
             present(.tagNamingAlert(tagID: nil) { tagID in
-                ScrapList.shared.modifyValue { scraps in
-                    tableView.scrapIDs.forEach {
-                        scraps[$0]?.tagIDs.insert(tagID)
-                    }
+                tableView.scrapIDs.forEach {
+                    Model.shared.scrapsSubject.value[$0]?.tagIDs.insert(tagID)
                 }
                 }, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
             
         case .tag(let tagID):
-            
-            ScrapList.shared.modifyValue { scraps in
-                tableView.scrapIDs.forEach {
-                    scraps[$0]?.tagIDs.insert(tagID)
-                }
+            tableView.scrapIDs.forEach {
+                Model.shared.scrapsSubject.value[$0]?.tagIDs.insert(tagID)
             }
         }
     }
@@ -77,11 +67,9 @@ class TagListViewController: UITableViewController {
         guard let tableView = tableView as? TagListView else { return }
         
         guard case let .tag(tagID) = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
-        
-        ScrapList.shared.modifyValue { scraps in
-            tableView.scrapIDs.forEach {
-                scraps[$0]?.tagIDs.remove(tagID)
-            }
+
+        tableView.scrapIDs.forEach {
+            Model.shared.scrapsSubject.value[$0]?.tagIDs.remove(tagID)
         }
     }
 

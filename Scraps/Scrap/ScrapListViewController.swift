@@ -26,12 +26,12 @@ class ScrapListViewController: UITableViewController {
     func subscribe() {
         subscriptions.removeAll()
         
-        ScrapFilterList.shared.valuePublisher
+        Model.shared.scrapFiltersSubject
             .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
             .assign(to: \.image, on: tagListButton)
             .store(in: &subscriptions)
         
-        ScrapFilterList.shared.valuePublisher
+        Model.shared.scrapFiltersSubject
             .map(\.stringRepresentation)
             .map { $0 ?? NSLocalizedString("All", comment: "") }
             .assign(to: \.title, on: self)
@@ -74,7 +74,7 @@ class ScrapListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let diffableDataSource = tableView.dataSource as? ScrapListViewDataSource else { return nil }
         guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
-        guard let scrap = ScrapList.shared.value[scrapID] else { return nil }
+        guard let scrap = Model.shared.scrapsSubject.value[scrapID] else { return nil }
         var actions = [UIAction]()
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in
             
@@ -86,9 +86,7 @@ class ScrapListViewController: UITableViewController {
             self.present(.tagListViewController(scrapIDs: [scrapID], sourceView: tableView, sourceRect: tableView.rectForRow(at: indexPath), barButtonItem: nil), animated: true)
         }
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
-            ScrapList.shared.modifyValue {
-                $0[scrapID] = nil
-            }
+            Model.shared.scrapsSubject.value[scrapID] = nil
         }
         actions = [tagsAction, shareAction, deleteAction]
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in

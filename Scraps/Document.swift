@@ -27,7 +27,7 @@ class Document: UIDocument {
     
     func subscribe() {
         
-        AttachmentList.shared.valuePublisher
+        Model.shared.attachmentsSubject
             .map({ attachments in
                 var newAssetFolders = [String: FileWrapper]()
                 attachments.forEach { id, attachment in
@@ -47,8 +47,8 @@ class Document: UIDocument {
             .assign(to: \.imageFolders, on: self)
             .store(in: &subscriptions)
         
-        AttachmentList.shared.loadingPublisher()
-            .combineLatest(AttachmentList.shared.valuePublisher)
+        Model.shared.loadingSubject
+            .combineLatest(Model.shared.attachmentsSubject)
             .compactMap({ (loadingMessage, attachments) -> (Attachment.Identifier, Attachment, CGFloat)? in
                 guard let attachment = attachments[loadingMessage.id] else { return nil }
                 return (loadingMessage.id, attachment, loadingMessage.targetDimension)
@@ -66,10 +66,7 @@ class Document: UIDocument {
                     }
                     
                     images[targetDimension] = targetImage
-                    
-                    AttachmentList.shared.modifyValue { attachments in
-                        attachments[id] = .image(images)
-                    }
+                    Model.shared.attachmentsSubject.value[id] = .image(images)
                     
                     
                 case .linkMetadata(let metadata):
@@ -77,9 +74,7 @@ class Document: UIDocument {
                     LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
                         if let metadata = metadata {
                             DispatchQueue.main.async {
-                                AttachmentList.shared.modifyValue {
-                                    $0[id] = .linkMetadata(metadata)
-                                }
+                                Model.shared.attachmentsSubject.value[id] = .linkMetadata(metadata)
                             }
                         }
                     }
@@ -92,36 +87,30 @@ class Document: UIDocument {
         
         weak var undoManager = self.undoManager
         
-        AttachmentList.shared.valuePublisher
+        Model.shared.attachmentsSubject
             .previousResult(initialResult: [Attachment.Identifier : Attachment]())
             .sink(receiveValue: { oldValue in
-                undoManager?.registerUndo(withTarget: AttachmentList.shared) {
-                    $0.modifyValue {
-                        $0 = oldValue
-                    }
+                undoManager?.registerUndo(withTarget: Model.shared.attachmentsSubject) {
+                    $0.value = oldValue
                 }
             })
             .store(in: &subscriptions)
         
         
-        ScrapList.shared.valuePublisher
+        Model.shared.scrapsSubject
             .previousResult(initialResult: [])
             .sink(receiveValue: { oldValue in
-                undoManager?.registerUndo(withTarget: ScrapList.shared) {
-                    $0.modifyValue {
-                        $0 = oldValue
-                    }
+                undoManager?.registerUndo(withTarget: Model.shared.scrapsSubject) {
+                    $0.value = oldValue
                 }
             })
             .store(in: &subscriptions)
         
-        TagList.shared.valuePublisher
+        Model.shared.tagsSubject
             .previousResult(initialResult: [])
             .sink(receiveValue: { oldValue in
-                undoManager?.registerUndo(withTarget: TagList.shared) {
-                    $0.modifyValue {
-                        $0 = oldValue
-                    }
+                undoManager?.registerUndo(withTarget: Model.shared.tagsSubject) {
+                    $0.value = oldValue
                 }
             })
             .store(in: &self.subscriptions)
@@ -148,39 +137,36 @@ class Document: UIDocument {
         
         
         imageFolders = imagesFolder.fileWrappers ?? [:]
-        try ScrapList.shared.modifyValue {
-            do {
-                $0 = try .init(scrapsFile)
-            } catch {
-                let scraps = try [Scrap0_5.Identifier: Scrap0_5](scrapsFile)
-                $0 = .init(scrapDict: scraps)
+        
+        do {
+            Model.shared.scrapsSubject.value = try .init(scrapsFile)
+        } catch {
+            let scraps = try [Scrap0_5.Identifier: Scrap0_5](scrapsFile)
+            Model.shared.scrapsSubject.value = .init(scrapDict: scraps)
+        }
+        
+        do {
+            Model.shared.tagsSubject.value = try .init(tagsFile)
+        } catch {
+            let tags = try [Tag0_5.Identifier: Tag0_5](tagsFile)
+            Model.shared.tagsSubject.value = .init(tagDict: tags)
+        }
+        try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
+            if Model.shared.attachmentsSubject.value[linkID] == nil {
+                Model.shared.attachmentsSubject.value[linkID] = .linkMetadata(.init(originalURL: linkID.url))
             }
         }
-        try TagList.shared.modifyValue {
-            do {
-                $0 = try .init(tagsFile)
-            } catch {
-                let tags = try [Tag0_5.Identifier: Tag0_5](tagsFile)
-                $0 = .init(tagDict: tags)
+        try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
+            if Model.shared.attachmentsSubject.value[imageID] == nil {
+                Model.shared.attachmentsSubject.value[imageID] = .image([:])
             }
         }
-        try AttachmentList.shared.modifyValue { attachments in
-            try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
-                if attachments[linkID] == nil {
-                    attachments[linkID] = .linkMetadata(.init(originalURL: linkID.url))
-                }
-            }
-            try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
-                if attachments[imageID] == nil {
-                    attachments[imageID] = .image([:])
-                }
-            }
-            try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
-                if attachments[id] == nil {
-                    attachments[id] = .drawing(drawing)
-                }
+        try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
+            if Model.shared.attachmentsSubject.value[id] == nil {
+                Model.shared.attachmentsSubject.value[id] = .drawing(drawing)
             }
         }
+        
         
         undoManager.removeAllActions()
     }
@@ -189,7 +175,7 @@ class Document: UIDocument {
         var linkIDs = Set<Attachment.Identifier>()
         var imageIDs = Set<Attachment.Identifier>()
         var drawings = [Attachment.Identifier: PKDrawing]()
-        AttachmentList.shared.value.forEach { id, attachment in
+        Model.shared.attachmentsSubject.value.forEach { id, attachment in
             switch attachment {
             case .image(_):
                 imageIDs.insert(id)
@@ -201,8 +187,8 @@ class Document: UIDocument {
         }
         do {
             return FileWrapper(directoryWithFileWrappers: [
-                "Scraps": try ScrapList.shared.value.fileWrapperRepresentation(),
-                "Tags": try TagList.shared.value.fileWrapperRepresentation(),
+                "Scraps": try Model.shared.scrapsSubject.value.fileWrapperRepresentation(),
+                "Tags": try Model.shared.tagsSubject.value.fileWrapperRepresentation(),
                 "LinkIDs": try linkIDs.fileWrapperRepresentation(),
                 "ImageIDs": try imageIDs.fileWrapperRepresentation(),
                 "Drawings": try drawings.fileWrapperRepresentation(),

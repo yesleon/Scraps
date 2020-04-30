@@ -13,7 +13,7 @@ class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scr
     static func make(tableView: UITableView) -> ScrapListViewDataSource {
         ScrapListViewDataSource(tableView: tableView, cellProvider: { tableView, indexPath, scrapID in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? ScrapListViewCell else { return nil }
-            cell.subscribe(to: ScrapList.shared.publisher(for: scrapID))
+            cell.subscribe(to: Model.shared.scrapsSubject.publisher(for: scrapID))
             return cell
         })
     }
@@ -23,8 +23,8 @@ class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scr
     func subscribe() {
         subscriptions.removeAll()
         
-        ScrapList.shared.valuePublisher
-            .combineLatest(ScrapFilterList.shared.valuePublisher, NotificationCenter.default.significantTimeChangeNotificationPublisher())
+        Model.shared.scrapsSubject
+            .combineLatest(Model.shared.scrapFiltersSubject, NotificationCenter.default.significantTimeChangeNotificationPublisher())
             .map({ scraps, filters, _ in
                 scraps.sorted(by: { $0.date > $1.date })
                     .filter { filters.shouldInclude($0) }

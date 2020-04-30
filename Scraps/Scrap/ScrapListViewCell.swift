@@ -37,7 +37,7 @@ class ScrapListViewCell: UITableViewCell {
         
         // Metadata
         publisher
-            .combineLatest(TagList.shared.valuePublisher, { scrap, tags in
+            .combineLatest(Model.shared.tagsSubject, { scrap, tags in
                 (scrap, scrap.tagIDs.compactMap { tags[$0] })
             })
             .map({ (scrap: Scrap, tags: [Tag]) -> String? in
@@ -55,7 +55,7 @@ class ScrapListViewCell: UITableViewCell {
             .map(\.attachmentID)
             .map({ id -> (CGFloat) -> AnyPublisher<Attachment?, Never> in
                 if let id = id {
-                    return { AttachmentList.shared.publisher(for: id, targetDimension: $0).eraseToAnyPublisher() }
+                    return { Model.shared.publisher(for: id, targetDimension: $0).eraseToAnyPublisher() }
                 } else {
                     return { _ in Just(nil).eraseToAnyPublisher() }
                 }

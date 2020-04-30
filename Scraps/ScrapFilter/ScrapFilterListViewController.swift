@@ -23,7 +23,7 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TextFilter.self) {
+        Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TextFilter.self) {
             if !searchText.isEmpty {
                 $0 = .init(text: searchText)
             } else {
@@ -48,11 +48,11 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
         
         switch row {
         case .noTags:
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 $0 = .noTags
             }
         case .tag(let tag):
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 if case .hasTags(var tags) = $0 {
                     tags.insert(tag)
                     $0 = .hasTags(tags)
@@ -61,11 +61,11 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
                 }
             }
         case .today:
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
                 $0 = .init()
             }
         case .attachment(let attachment):
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
                 $0 = .init(attachment: attachment)
             }
         case .text:
@@ -80,23 +80,23 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
         
         switch row {
         case .noTags:
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 $0 = .hasTags([])
             }
         case .tag(let tag):
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TagFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 if case .hasTags(var tags) = $0 {
                     tags.remove(tag)
                     $0 = .hasTags(tags)
                 }
             }
         case .today:
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
                 $0 = nil
             }
             
         case .attachment(_):
-            ScrapFilterList.shared.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
                 $0 = nil
             }
         case .text:

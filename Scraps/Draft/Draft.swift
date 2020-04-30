@@ -76,19 +76,16 @@ class Draft {
         }()
         
         var tagIDs = Set<Tag.ID>()
-        if case let .hasTags(selectedTagIDs) = ScrapFilterList.shared.value.first(ofType: ScrapFilters.TagFilter.self) {
+        if case let .hasTags(selectedTagIDs) = Model.shared.scrapFiltersSubject.value.first(ofType: ScrapFilters.TagFilter.self) {
             tagIDs = selectedTagIDs
         }
         
         if let attachment = attachment, let id = attachmentID {
-            AttachmentList.shared.modifyValue {
-                $0[id] = attachment
-            }
+            Model.shared.attachmentsSubject.value[id] = attachment
+            
         }
+        Model.shared.scrapsSubject.value.insert(.init(id: .init(), content: value, date: .init(), tagIDs: tagIDs, attachmentID: attachmentID))
         
-        ScrapList.shared.modifyValue {
-            $0.insert(.init(id: .init(), content: value, date: .init(), tagIDs: tagIDs, attachmentID: attachmentID))
-        }
         
         value.removeAll()
         attachment = nil

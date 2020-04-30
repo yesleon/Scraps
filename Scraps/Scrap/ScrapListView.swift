@@ -55,7 +55,7 @@ class ScrapListView: UITableView, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if ScrapFilterList.shared.value.first(ofType: ScrapFilters.TodayFilter.self) != nil {
+        if Model.shared.scrapFiltersSubject.value.first(ofType: ScrapFilters.TodayFilter.self) != nil {
             return 0
         } else {
             return 44
