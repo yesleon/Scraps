@@ -139,37 +139,22 @@ class Document: UIDocument {
         
         imageFolders = imagesFolder.fileWrappers ?? [:]
         
-        do {
-            Model.shared.scrapsSubject.value = try .init(scrapsFile)
-        } catch {
-            let scraps = try [Scrap0_5.Identifier: Scrap0_5](scrapsFile)
-            Model.shared.scrapsSubject.value = .init(scrapDict: scraps)
+        
+        Model.shared.scrapsSubject.value = try .init(scrapsFile)
+        
+        
+        Model.shared.tagsSubject.value = try .init(tagsFile)
+        
+        try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
+            Model.shared.attachmentsSubject.value[linkID] = .linkMetadata(.init(originalURL: linkID.url))
         }
         
-        do {
-            Model.shared.tagsSubject.value = try .init(tagsFile)
-        } catch {
-            let tags = try [Tag0_5.Identifier: Tag0_5](tagsFile)
-            Model.shared.tagsSubject.value = .init(tagDict: tags)
+        try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
+            Model.shared.attachmentsSubject.value[imageID] = .image([:])
         }
-        do {
-            try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
-                if Model.shared.attachmentsSubject.value[linkID] == nil {
-                    Model.shared.attachmentsSubject.value[linkID] = .linkMetadata(.init(originalURL: linkID.url))
-                }
-            }
-            try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
-                if Model.shared.attachmentsSubject.value[imageID] == nil {
-                    Model.shared.attachmentsSubject.value[imageID] = .image([:])
-                }
-            }
-            try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
-                if Model.shared.attachmentsSubject.value[id] == nil {
-                    Model.shared.attachmentsSubject.value[id] = .drawing(drawing)
-                }
-            }
-        } catch {
-            throw error
+        
+        try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
+            Model.shared.attachmentsSubject.value[id] = .drawing(drawing)
         }
         
         
