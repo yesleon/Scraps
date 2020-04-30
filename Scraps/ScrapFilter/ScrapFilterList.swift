@@ -10,7 +10,7 @@ import Foundation
 
 class ScrapFilterList: Model<[ScrapFilter]> {
     
-    static let shared = ScrapFilterList(value: [ScrapFilters.TagFilter.hasTags([])])
+    static let shared = ScrapFilterList([ScrapFilters.TagFilter.hasTags([])])
     
     func modifyValue<T: ScrapFilter>(ofType type: T.Type, handler: (inout T?) -> Void) {
         modifyValue { value in

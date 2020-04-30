@@ -23,8 +23,8 @@ class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scr
     func subscribe() {
         subscriptions.removeAll()
         
-        ScrapList.shared.$value
-            .combineLatest(ScrapFilterList.shared.$value, NotificationCenter.default.significantTimeChangeNotificationPublisher())
+        ScrapList.shared.valuePublisher
+            .combineLatest(ScrapFilterList.shared.valuePublisher, NotificationCenter.default.significantTimeChangeNotificationPublisher())
             .map({ scraps, filters, _ in
                 scraps.sorted(by: { $0.date > $1.date })
                     .filter { filters.shouldInclude($0) }

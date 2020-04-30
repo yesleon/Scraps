@@ -31,7 +31,7 @@ class TagListView: UITableView {
         switch row {
         case .tag(let tagID):
             self.cellSubscriptions[cell] = TagList.shared.publisher(for: tagID)
-                .combineLatest(ScrapList.shared.$value)
+                .combineLatest(ScrapList.shared.valuePublisher)
                 .sink(receiveValue: { tag, scraps in
                     cell.textLabel?.text = tag.title
                     if self.scrapIDs.compactMap({ scraps[$0] })
@@ -61,7 +61,7 @@ class TagListView: UITableView {
         register(UITableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
         self.dataSource = diffableDataSource
         
-        TagList.shared.$value
+        TagList.shared.valuePublisher
             .map({
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])

@@ -7,20 +7,29 @@
 //
 
 import Foundation
+import Combine
 
 
 class Model<Value> {
     
-    init(value: Value) {
-        self.value = value
+    init(_ value: Value) {
+        self.subject = .init(value)
     }
     
-    @Published var value: Value
+    private let subject: CurrentValueSubject<Value, Never>
+    
+    var valuePublisher: AnyPublisher<Value, Never> {
+        subject.eraseToAnyPublisher()
+    }
+    
+    var value: Value {
+        subject.value
+    }
     
     func modifyValue(handler: (inout Value) throws -> Void) rethrows {
-        var value = self.value
+        var value = self.subject.value
         try handler(&value)
-        self.value = value
+        self.subject.value = value
     }
     
 }

@@ -26,12 +26,12 @@ class ScrapListViewController: UITableViewController {
     func subscribe() {
         subscriptions.removeAll()
         
-        ScrapFilterList.shared.$value
+        ScrapFilterList.shared.valuePublisher
             .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
             .assign(to: \.image, on: tagListButton)
             .store(in: &subscriptions)
         
-        ScrapFilterList.shared.$value
+        ScrapFilterList.shared.valuePublisher
             .map(\.stringRepresentation)
             .map { $0 ?? NSLocalizedString("All", comment: "") }
             .assign(to: \.title, on: self)

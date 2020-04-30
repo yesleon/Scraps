@@ -27,7 +27,7 @@ class Document: UIDocument {
     
     func subscribe() {
         
-        AttachmentList.shared.$value
+        AttachmentList.shared.valuePublisher
             .map({ attachments in
                 var newAssetFolders = [String: FileWrapper]()
                 attachments.forEach { id, attachment in
@@ -48,7 +48,7 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         AttachmentList.shared.loadingPublisher()
-            .combineLatest(AttachmentList.shared.$value)
+            .combineLatest(AttachmentList.shared.valuePublisher)
             .compactMap({ (loadingMessage, attachments) -> (Attachment.Identifier, Attachment, CGFloat)? in
                 guard let attachment = attachments[loadingMessage.id] else { return nil }
                 return (loadingMessage.id, attachment, loadingMessage.targetDimension)
@@ -92,7 +92,7 @@ class Document: UIDocument {
         
         weak var undoManager = self.undoManager
         
-        AttachmentList.shared.$value
+        AttachmentList.shared.valuePublisher
             .previousResult(initialResult: [Attachment.Identifier : Attachment]())
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: AttachmentList.shared) {
@@ -104,7 +104,7 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         
-        ScrapList.shared.$value
+        ScrapList.shared.valuePublisher
             .previousResult(initialResult: [])
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: ScrapList.shared) {
@@ -115,7 +115,7 @@ class Document: UIDocument {
             })
             .store(in: &subscriptions)
         
-        TagList.shared.$value
+        TagList.shared.valuePublisher
             .previousResult(initialResult: [])
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: TagList.shared) {

@@ -12,7 +12,7 @@ import CoreGraphics
 
 
 class AttachmentList: Model<[Attachment.Identifier: Attachment]> {
-    static let shared = AttachmentList(value: [Attachment.Identifier: Attachment]())
+    static let shared = AttachmentList([Attachment.Identifier: Attachment]())
     
     private let loadingSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
     
@@ -22,6 +22,6 @@ class AttachmentList: Model<[Attachment.Identifier: Attachment]> {
     
     func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment?, Never> {
         loadingSubject.send((id: id, targetDimension: targetDimension))
-        return $value.map { $0[id] }.eraseToAnyPublisher()
+        return valuePublisher.map { $0[id] }.eraseToAnyPublisher()
     }
 }

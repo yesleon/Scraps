@@ -37,7 +37,7 @@ class ScrapListViewCell: UITableViewCell {
         
         // Metadata
         publisher
-            .combineLatest(TagList.shared.$value, { scrap, tags in
+            .combineLatest(TagList.shared.valuePublisher, { scrap, tags in
                 (scrap, scrap.tagIDs.compactMap { tags[$0] })
             })
             .map({ (scrap: Scrap, tags: [Tag]) -> String? in

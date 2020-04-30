@@ -51,7 +51,7 @@ extension UIViewController {
                 
             }
             if let tagID = tagID {
-                TagList.shared.$value
+                TagList.shared.valuePublisher
                     .compactMap { $0[tagID]?.title }
                     .sink(receiveValue: {
                         textField.text = $0
