@@ -23,13 +23,16 @@ class Document: UIDocument {
     
     var subscriptions = Set<AnyCancellable>()
     
-    var imageFolders = [String: FileWrapper]()
+    private var imageFolders = [String: FileWrapper]() {
+        willSet {
+            print("set")
+        }
+    }
     
     func subscribe() {
         
         Model.shared.attachmentsSubject
-            .map({ attachments in
-                var newAssetFolders = [String: FileWrapper]()
+            .sink(receiveValue: { attachments in
                 attachments.forEach { id, attachment in
                     guard case let .image(images) = attachment else { return }
                     let imageID = id.url.lastPathComponent
@@ -39,12 +42,10 @@ class Document: UIDocument {
                             imageFiles["\(dimension)"] = FileWrapper(regularFileWithContents: data)
                         }
                     }
-                    
-                    newAssetFolders[imageID] = FileWrapper(directoryWithFileWrappers: imageFiles)
+
+                    self.imageFolders[imageID] = FileWrapper(directoryWithFileWrappers: imageFiles)
                 }
-                return newAssetFolders
             })
-            .assign(to: \.imageFolders, on: self)
             .store(in: &subscriptions)
         
         Model.shared.loadingSubject
@@ -151,20 +152,24 @@ class Document: UIDocument {
             let tags = try [Tag0_5.Identifier: Tag0_5](tagsFile)
             Model.shared.tagsSubject.value = .init(tagDict: tags)
         }
-        try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
-            if Model.shared.attachmentsSubject.value[linkID] == nil {
-                Model.shared.attachmentsSubject.value[linkID] = .linkMetadata(.init(originalURL: linkID.url))
+        do {
+            try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
+                if Model.shared.attachmentsSubject.value[linkID] == nil {
+                    Model.shared.attachmentsSubject.value[linkID] = .linkMetadata(.init(originalURL: linkID.url))
+                }
             }
-        }
-        try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
-            if Model.shared.attachmentsSubject.value[imageID] == nil {
-                Model.shared.attachmentsSubject.value[imageID] = .image([:])
+            try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
+                if Model.shared.attachmentsSubject.value[imageID] == nil {
+                    Model.shared.attachmentsSubject.value[imageID] = .image([:])
+                }
             }
-        }
-        try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
-            if Model.shared.attachmentsSubject.value[id] == nil {
-                Model.shared.attachmentsSubject.value[id] = .drawing(drawing)
+            try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
+                if Model.shared.attachmentsSubject.value[id] == nil {
+                    Model.shared.attachmentsSubject.value[id] = .drawing(drawing)
+                }
             }
+        } catch {
+            throw error
         }
         
         
