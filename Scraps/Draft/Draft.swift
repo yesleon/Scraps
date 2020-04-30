@@ -84,6 +84,7 @@ class Draft {
             Model.shared.attachmentsSubject.value[id] = attachment
             
         }
+        
         Model.shared.scrapsSubject.value.insert(.init(id: .init(), content: value, date: .init(), tagIDs: tagIDs, attachmentID: attachmentID))
         
         

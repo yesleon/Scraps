@@ -114,7 +114,7 @@ class ScrapFilterListView: UITableView {
         self.dataSource = diffableDataSource
         
         Model.shared.tagsSubject
-            .map { $0.map(\.id).map(Row.tag) }
+            .map { $0.keys.map(Row.tag) }
             .sink(receiveValue: { tags in
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])

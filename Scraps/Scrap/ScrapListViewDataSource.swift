@@ -26,15 +26,15 @@ class ScrapListViewDataSource: UITableViewDiffableDataSource<DateComponents, Scr
         Model.shared.scrapsSubject
             .combineLatest(Model.shared.scrapFiltersSubject, NotificationCenter.default.significantTimeChangeNotificationPublisher())
             .map({ scraps, filters, _ in
-                scraps.sorted(by: { $0.date > $1.date })
-                    .filter { filters.shouldInclude($0) }
-                    .reduce([(dateComponents: DateComponents, scrapIDs: [Scrap.ID])](), { list, scrap in
-                        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: scrap.date)
+                scraps.sorted(by: { $0.value.date > $1.value.date })
+                    .filter { filters.shouldInclude($0.value) }
+                    .reduce([(dateComponents: DateComponents, scrapIDs: [Scrap.ID])](), { list, pair in
+                        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: pair.value.date)
                         var list = list
                         if list.last?.dateComponents == dateComponents {
-                            list[list.index(before: list.endIndex)].scrapIDs.append(scrap.id)
+                            list[list.index(before: list.endIndex)].scrapIDs.append(pair.value.id)
                         } else {
-                            list.append((dateComponents: dateComponents, scrapIDs: [scrap.id]))
+                            list.append((dateComponents: dateComponents, scrapIDs: [pair.key]))
                         }
                         return list
                     })

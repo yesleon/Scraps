@@ -47,7 +47,7 @@ extension CurrentValueSubject where Output == IdentifiableSet<Scrap>, Failure ==
 extension CurrentValueSubject where Output == IdentifiableSet<Tag>, Failure == Never {
     
     func isTitleValid(_ title: String) -> Bool {
-        !value.contains(where: { $0.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
+        !value.contains(where: { $0.value.title == title }) && !title.isEmpty && !title.hasPrefix("#") && !title.contains(",")
     }
     
     func publisher(for id: Tag.ID) -> AnyPublisher<Tag, Never> {

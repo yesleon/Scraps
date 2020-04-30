@@ -65,7 +65,7 @@ class TagListView: UITableView {
             .map({
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
                 snapshot.appendSections([.main])
-                snapshot.appendItems($0.lazy.map(\.id).map(Row.tag))
+                snapshot.appendItems($0.keys.map(Row.tag))
                 snapshot.appendItems([.newTag])
                 return snapshot
             })
