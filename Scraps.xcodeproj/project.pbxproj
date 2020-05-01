@@ -27,6 +27,7 @@
 		717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */; };
 		717BF8A1245C064700C48BA0 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A0245C064700C48BA0 /* Cache.swift */; };
 		717BF8A3245C158500C48BA0 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A2245C158500C48BA0 /* Attachment.swift */; };
+		717BF8A6245C20EE00C48BA0 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A5245C20EE00C48BA0 /* AttachmentViewController.swift */; };
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
 		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
@@ -66,6 +67,7 @@
 		717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		717BF8A0245C064700C48BA0 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		717BF8A2245C158500C48BA0 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		717BF8A5245C20EE00C48BA0 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
 		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				717BF8A2245C158500C48BA0 /* Attachment.swift */,
 				717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */,
+				717BF8A5245C20EE00C48BA0 /* AttachmentViewController.swift */,
 			);
 			path = Attachment;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717BF8A6245C20EE00C48BA0 /* AttachmentViewController.swift in Sources */,
 				71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */,
 				7144AA4924365B2F00B72934 /* TagListViewController.swift in Sources */,
 				713FAF38245709FA002B7A46 /* ActionTarget.swift in Sources */,

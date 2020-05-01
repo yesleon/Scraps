@@ -13,6 +13,8 @@ import AVFoundation
 
 class AttachmentView: UIView {
     
+    private static let viewCache = Cache<Attachment, UIView>()
+    
     var contentSize: CGSize? {
         didSet {
             invalidateIntrinsicContentSize()
@@ -29,7 +31,13 @@ class AttachmentView: UIView {
             if let attachment = attachment {
                 isHidden = false
                 do {
-                    let view = try attachment.viewThatFits(.init(width: 240.0, height: .infinity))
+                    let view: UIView
+                    if let cachedVview = AttachmentView.viewCache[attachment] {
+                        view = cachedVview
+                    } else {
+                        view = try attachment.viewThatFits(.init(width: 240.0, height: .infinity))
+                        AttachmentView.viewCache[attachment] = view
+                    }
                     contentSize = view.frame.size
                     view.frame = bounds
                     view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -43,12 +51,16 @@ class AttachmentView: UIView {
             }
         }
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        layer.cornerRadius = 10
+    }
 
 }
 
 extension Attachment {
-    
-    private static let viewCache = Cache<Attachment, UIView>()
     
     private func makeImageView(size: CGSize, image: UIImage) -> UIView {
         
@@ -76,28 +88,23 @@ extension Attachment {
         return view
     }
     
-    fileprivate func viewThatFits(_ size: CGSize) throws -> UIView {
-        if let view = Attachment.viewCache[self] {
-            return view
-        } else {
-            let view: UIView
-            switch kind {
-            case .image:
-                view = makeImageView(size: size, image: UIImage(data: self.content)!)
-                
-            case .linkMetadata:
-                let metadata = try NSKeyedUnarchiver.unarchivedObject(ofClass: LPLinkMetadata.self, from: content)
-                view = LPLinkView(metadata: metadata!)
-                view.bounds.size = view.sizeThatFits(size)
-                
-            case .drawing:
-                let drawing = try PKDrawing(data: self.content)
-                let image = drawing.image(from: drawing.bounds.insetBy(dx: -10, dy: -10), scale: UIScreen.main.scale)
-                view = makeImageView(size: size, image: image)
-            }
-            Attachment.viewCache[self] = view
-            return view
+    func viewThatFits(_ size: CGSize) throws -> UIView {
+        let view: UIView
+        switch kind {
+        case .image:
+            view = makeImageView(size: size, image: UIImage(data: self.content)!)
+            
+        case .linkMetadata:
+            let metadata = try NSKeyedUnarchiver.unarchivedObject(ofClass: LPLinkMetadata.self, from: content)
+            view = LPLinkView(metadata: metadata!)
+            view.bounds.size = view.sizeThatFits(size)
+            
+        case .drawing:
+            let drawing = try PKDrawing(data: self.content)
+            let image = drawing.image(from: drawing.bounds.insetBy(dx: -10, dy: -10), scale: UIScreen.main.scale)
+            view = makeImageView(size: size, image: image)
         }
+        return view
     }
     
 }

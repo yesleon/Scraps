@@ -77,5 +77,7 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>For taking photos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>For saving photos.</string>
 </dict>
 </plist>

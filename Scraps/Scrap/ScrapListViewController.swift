@@ -23,6 +23,8 @@ class ScrapListViewController: UITableViewController {
     
     var subscriptions = Set<AnyCancellable>()
     
+    var attachmentVCs = [ObjectIdentifier: UIViewController]()
+    
     func subscribe() {
         subscriptions.removeAll()
         
@@ -93,6 +95,17 @@ class ScrapListViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in
             UIMenu(title: "", children: actions)
         })
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? ScrapListViewCell else { return }
+        if attachmentVCs[ObjectIdentifier(cell)] == nil {
+            let vc = AttachmentViewController()
+            vc.view = cell.attachmentView
+            vc.view.addInteraction(UIContextMenuInteraction(delegate: vc))
+            addChild(vc)
+            attachmentVCs[ObjectIdentifier(cell)] = vc
+        }
     }
     
 }
