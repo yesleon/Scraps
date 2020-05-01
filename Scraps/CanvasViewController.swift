@@ -15,8 +15,10 @@ class CanvasViewController: UIViewController {
     
     var saveHandler: (PKDrawing) -> Void = { _ in }
     
+    var oldFrame: CGRect = .null
+    
     override func loadView() {
-//        canvasView.contentSize = .init(width: .maxDimension, height: .maxDimension)
+        canvasView.contentSize = .init(width: 1024, height: 1024)
         canvasView.backgroundColor = .systemBackground
         view = canvasView
     }
@@ -50,19 +52,21 @@ class CanvasViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        let zoomScale = canvasView.zoomScale
-        canvasView.setZoomScale(1, animated: true)
-        defer {
-            canvasView.setZoomScale(zoomScale, animated: true)
+        
+        if view.frame != oldFrame {
+            let zoomScale = canvasView.zoomScale
+            canvasView.setZoomScale(1, animated: true)
+            defer {
+                canvasView.setZoomScale(zoomScale, animated: true)
+            }
+            
+            if view.frame.width > view.frame.height {
+                canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.width/canvasView.contentSize.width
+            } else {
+                canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.height/canvasView.contentSize.height
+            }
+            oldFrame = view.frame
         }
-        
-        if view.frame.width > view.frame.height {
-            canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.width/canvasView.contentSize.width
-        } else {
-            canvasView.minimumZoomScale = view.safeAreaLayoutGuide.layoutFrame.height/canvasView.contentSize.height
-        }
-        
-        
     }
     
 }
