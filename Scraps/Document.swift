@@ -23,12 +23,6 @@ class Document: UIDocument {
     
     var subscriptions = Set<AnyCancellable>()
     
-    private var imageFolders = [String: FileWrapper]() {
-        willSet {
-            print("set")
-        }
-    }
-    
     func subscribe() {
         weak var undoManager = self.undoManager
         
@@ -62,35 +56,23 @@ class Document: UIDocument {
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let rootFolder = contents as? FileWrapper else { throw Error.readingError(contents) }
         guard let folders = rootFolder.fileWrappers else { throw Error.readingError(contents) }
-        guard let scrapsFile = folders["Scraps"] else { throw Error.readingError(contents) }
-        guard let tagsFile = folders["Tags"] else { throw Error.readingError(contents) }
-        guard let imagesFolder = folders["Images"] else { throw Error.readingError(contents) }
+        guard let scrapsFolder = folders["Scraps"] else { throw Error.readingError(contents) }
+        guard let tagsFolder = folders["Tags"] else { throw Error.readingError(contents) }
         
         
         
-        imageFolders = imagesFolder.fileWrappers ?? [:]
-        
-        
-        Model.shared.scrapsSubject.value = try .init(scrapsFile)
-        
-        
-        Model.shared.tagsSubject.value = try .init(tagsFile)
-        
+        Model.shared.scrapsSubject.value = try .init(fileWrapper: scrapsFolder)
+
+        Model.shared.tagsSubject.value = try .init(fileWrapper: tagsFolder)
         
         undoManager.removeAllActions()
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        do {
-            return FileWrapper(directoryWithFileWrappers: [
-                "Scraps": try Model.shared.scrapsSubject.value.fileWrapperRepresentation(),
-                "Tags": try Model.shared.tagsSubject.value.fileWrapperRepresentation(),
-                "Images": FileWrapper(directoryWithFileWrappers: imageFolders),
-            ])
-        } catch {
-            print(error)
-            throw error
-        }
+        return FileWrapper(directoryWithFileWrappers: [
+            "Scraps": try Model.shared.scrapsSubject.value.fileWrapperRepresentation(),
+            "Tags": try Model.shared.tagsSubject.value.fileWrapperRepresentation(),
+        ])
     }
     
     override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {

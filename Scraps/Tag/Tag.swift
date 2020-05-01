@@ -9,7 +9,19 @@
 import Foundation
 
 
-struct Tag: Codable, Equatable, FileWrapperConvertible, Identifiable {
+struct Tag: Codable, Equatable, Identifiable {
     var id: UUID
     var title: String
+}
+
+extension IdentifiableSet where Key == Tag.ID, Value == Tag {
+    
+    init(fileWrapper: FileWrapper) throws {
+        self = try JSONDecoder().decode(Self.self, from: fileWrapper.regularFileContents!)
+    }
+    
+    func fileWrapperRepresentation() throws -> FileWrapper {
+        return FileWrapper(regularFileWithContents: try JSONEncoder().encode(self))
+    }
+    
 }

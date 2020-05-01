@@ -8,11 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711DE1C3243C83540003A1C2 /* ScrapListViewCell.swift */; };
-		7133A678245ACCE90013D1E9 /* UUID+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7133A677245ACCE90013D1E9 /* UUID+.swift */; };
-		713FAF33245703EF002B7A46 /* PKDrawing+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF32245703EF002B7A46 /* PKDrawing+.swift */; };
 		713FAF38245709FA002B7A46 /* ActionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF37245709FA002B7A46 /* ActionTarget.swift */; };
-		713FAF3A24570F72002B7A46 /* FileWrapperConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */; };
-		713FAF3C24570F89002B7A46 /* FilenameConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF3B24570F89002B7A46 /* FilenameConvertible.swift */; };
 		713FAF4024574E44002B7A46 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713FAF3F24574E44002B7A46 /* Model.swift */; };
 		7144AA412435E84400B72934 /* Draft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA402435E84400B72934 /* Draft.swift */; };
 		7144AA47243658AE00B72934 /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7144AA46243658AE00B72934 /* TagListView.swift */; };
@@ -28,6 +24,7 @@
 		715F63C22435B22100E12D26 /* DraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63B92435B22000E12D26 /* DraftViewController.swift */; };
 		715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ScrapListView.swift */; };
 		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
+		717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */; };
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
 		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
@@ -49,11 +46,7 @@
 
 /* Begin PBXFileReference section */
 		711DE1C3243C83540003A1C2 /* ScrapListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListViewCell.swift; sourceTree = "<group>"; };
-		7133A677245ACCE90013D1E9 /* UUID+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+.swift"; sourceTree = "<group>"; };
-		713FAF32245703EF002B7A46 /* PKDrawing+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKDrawing+.swift"; sourceTree = "<group>"; };
 		713FAF37245709FA002B7A46 /* ActionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTarget.swift; sourceTree = "<group>"; };
-		713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWrapperConvertible.swift; sourceTree = "<group>"; };
-		713FAF3B24570F89002B7A46 /* FilenameConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilenameConvertible.swift; sourceTree = "<group>"; };
 		713FAF3F24574E44002B7A46 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7144AA402435E84400B72934 /* Draft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Draft.swift; sourceTree = "<group>"; };
 		7144AA46243658AE00B72934 /* TagListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
@@ -69,6 +62,7 @@
 		715F63BB2435B22000E12D26 /* ScrapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListViewController.swift; sourceTree = "<group>"; };
 		715F63CB2435C61A00E12D26 /* ScrapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListView.swift; sourceTree = "<group>"; };
 		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
+		717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
 		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
@@ -108,9 +102,7 @@
 			children = (
 				717B5009243A100A0080F263 /* NotificationCenter+.swift */,
 				71EA538F243F232F00CD64CA /* LPLinkMetadata+.swift */,
-				713FAF32245703EF002B7A46 /* PKDrawing+.swift */,
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
-				7133A677245ACCE90013D1E9 /* UUID+.swift */,
 				71981C962455422B004EC5B2 /* UIResponder+.swift */,
 				71B79194244443020011BA94 /* Array+.swift */,
 				714E21C424425373005C953A /* UIViewController+.swift */,
@@ -153,9 +145,8 @@
 				71AFE1B22443781700D0793B /* CanvasViewController.swift */,
 				713FAF37245709FA002B7A46 /* ActionTarget.swift */,
 				719E20B8245A003B003139A5 /* IdentifiableSet.swift */,
+				717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */,
 				713FAF3F24574E44002B7A46 /* Model.swift */,
-				713FAF3924570F72002B7A46 /* FileWrapperConvertible.swift */,
-				713FAF3B24570F89002B7A46 /* FilenameConvertible.swift */,
 				713FAF3424570535002B7A46 /* Extensions */,
 				71EA538B243EE45900CD64CA /* Scrap */,
 				71EA538C243EE46000CD64CA /* Tag */,
@@ -294,12 +285,9 @@
 				715F63BF2435B22100E12D26 /* ScrapListViewController.swift in Sources */,
 				719E20B9245A003B003139A5 /* IdentifiableSet.swift in Sources */,
 				715F63C12435B22100E12D26 /* DraftView.swift in Sources */,
-				713FAF33245703EF002B7A46 /* PKDrawing+.swift in Sources */,
 				711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */,
-				713FAF3C24570F89002B7A46 /* FilenameConvertible.swift in Sources */,
 				71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */,
 				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
-				713FAF3A24570F72002B7A46 /* FileWrapperConvertible.swift in Sources */,
 				71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				715F63B42435B20F00E12D26 /* Document.swift in Sources */,
@@ -317,7 +305,7 @@
 				715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */,
 				71C2CAC4243FA81F00610A3B /* ScrapListHeaderView.swift in Sources */,
 				715F63C02435B22100E12D26 /* ScrapFilterListViewController.swift in Sources */,
-				7133A678245ACCE90013D1E9 /* UUID+.swift in Sources */,
+				717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */,
 				71EA5390243F232F00CD64CA /* LPLinkMetadata+.swift in Sources */,
 				714E21C524425373005C953A /* UIViewController+.swift in Sources */,
 				715F63BE2435B22100E12D26 /* ScrapFilterListView.swift in Sources */,

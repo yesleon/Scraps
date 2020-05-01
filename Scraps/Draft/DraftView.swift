@@ -13,7 +13,7 @@ import UIKit
 class DraftView: UIView {
     
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var attachmentView: UIView!
+    @IBOutlet weak var attachmentView: AttachmentView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     var subscriptions = Set<AnyCancellable>()
@@ -27,19 +27,7 @@ class DraftView: UIView {
             .store(in: &subscriptions)
         
         Draft.shared.$attachment
-            .map({ $0 == nil })
-            .assign(to: \.isHidden, on: attachmentView)
-            .store(in: &subscriptions)
-        
-        Draft.shared.$attachment
-            .compactMap { try? $0?.view() }
-            .sink(receiveValue: { [weak attachmentView] view in
-                guard let attachmentView = attachmentView else { return }
-                attachmentView.subviews.forEach { $0.removeFromSuperview() }
-                view.frame = attachmentView.bounds
-                view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                attachmentView.addSubview(view)
-            })
+            .assign(to: \.attachment, on: attachmentView)
             .store(in: &subscriptions)
             
         NotificationCenter.default
