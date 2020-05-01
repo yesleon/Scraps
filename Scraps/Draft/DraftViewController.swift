@@ -87,7 +87,7 @@ class DraftViewController: UIViewController, UITextViewDelegate, UIImagePickerCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.presentingViewController?.dismiss(animated: true)
         guard let image = info[.originalImage] as? UIImage else { return }
-        Draft.shared.saveImage(image, dimensions: [.maxDimension, .itemWidth])
+        Draft.shared.saveImage(image)
     }
     
 }

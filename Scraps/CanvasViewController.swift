@@ -16,7 +16,7 @@ class CanvasViewController: UIViewController {
     var saveHandler: (PKDrawing) -> Void = { _ in }
     
     override func loadView() {
-        canvasView.contentSize = .init(width: .maxDimension, height: .maxDimension)
+//        canvasView.contentSize = .init(width: .maxDimension, height: .maxDimension)
         canvasView.backgroundColor = .systemBackground
         view = canvasView
     }

@@ -13,7 +13,7 @@ import Combine
 
 class ScrapListViewCell: UITableViewCell {
 
-    @IBOutlet weak var attachmentView: AttachmentView!
+    @IBOutlet weak var attachmentView: UIView!
     @IBOutlet weak var myTextLabel: UILabel!
     @IBOutlet weak var myDetailLabel: UILabel!
     
@@ -52,16 +52,21 @@ class ScrapListViewCell: UITableViewCell {
         // Attachment
         
         publisher
-            .map(\.attachmentID)
-            .map({ id -> (CGFloat) -> AnyPublisher<Attachment?, Never> in
-                if let id = id {
-                    return { Model.shared.publisher(for: id, targetDimension: $0).eraseToAnyPublisher() }
-                } else {
-                    return { _ in Just(nil).eraseToAnyPublisher() }
-                }
+            .map(\.attachment)
+            .map { $0 == nil }
+            .assign(to: \.isHidden, on: attachmentView)
+            .store(in: &subscriptions)
+        
+        publisher
+            .compactMap(\.attachment)
+            .compactMap { try? $0.view() }
+            .sink(receiveValue: { [weak attachmentView] view in
+                guard let attachmentView = attachmentView else { return }
+                attachmentView.subviews.forEach { $0.removeFromSuperview() }
+                view.frame = attachmentView.bounds
+                view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                attachmentView.addSubview(view)
             })
-            .map({ ($0, CGFloat.itemWidth) })
-            .sink(receiveValue: attachmentView.subscribe(to:dimension:))
             .store(in: &subscriptions)
     }
     

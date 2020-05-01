@@ -64,10 +64,6 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
                 $0 = .init()
             }
-        case .attachment(let attachment):
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
-                $0 = .init(attachment: attachment)
-            }
         case .text:
             break
         }
@@ -92,11 +88,6 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             }
         case .today:
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
-                $0 = nil
-            }
-            
-        case .attachment(_):
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.AttachmentTypeFilter.self) {
                 $0 = nil
             }
         case .text:

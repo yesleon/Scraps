@@ -80,62 +80,6 @@ enum ScrapFilters {
         }
     }
     
-    struct AttachmentTypeFilter: ScrapFilter {
-        func shouldInclude(_ scrap: Scrap) -> Bool {
-            switch attachment {
-            case .drawing(_):
-                if case .drawing(_) = scrap.attachmentID.flatMap({ Model.shared.attachmentsSubject.value[$0] }) {
-                    return true
-                } else {
-                    return false
-                }
-            case .image(_):
-                if case .image(_) = scrap.attachmentID.flatMap({ Model.shared.attachmentsSubject.value[$0] }) {
-                    return true
-                } else {
-                    return false
-                }
-            case .linkMetadata(_):
-                if case .linkMetadata(_) = scrap.attachmentID.flatMap({ Model.shared.attachmentsSubject.value[$0] }) {
-                    return true
-                } else {
-                    return false
-                }
-            case nil:
-                return scrap.attachmentID == nil
-            }
-        }
-        
-        let isEnabled = true
-        
-        var stringRepresentation: String? {
-            switch attachment {
-            case .drawing(_):
-                return "Drawings"
-            case .image(_):
-                return "Images"
-            case .linkMetadata(_):
-                return "Links"
-            case nil:
-                return "Texts"
-            }
-        }
-        
-        func imageRepresentation(selected: Bool) -> UIImage? {
-            switch attachment {
-            case .drawing(_):
-                return UIImage(systemName: "scribble")
-            case .image(_):
-                return UIImage(systemName: selected ? "photo.fill.on.rectangle.fill" : "photo.on.rectangle")
-            case .linkMetadata(_):
-                return UIImage(systemName: "link")
-            case nil:
-                return UIImage(systemName: selected ? "doc.text.fill" : "doc.text")
-            }
-        }
-        
-        var attachment: Attachment?
-    }
     
 }
 

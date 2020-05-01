@@ -19,12 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-         
-        guard let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return false }
-        let document = Document(fileURL: documentURL.appendingPathComponent("database"))
-        document.subscribe()
-        document.openOrCreateIfFileNotExists()
-        self.document = document
+        
+        self.document = {
+            guard let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+            let document = Document(fileURL: documentURL.appendingPathComponent("database"))
+            document.subscribe()
+            document.openOrCreateIfFileNotExists()
+            return document
+        }()
         
         UIView.appearance().tintColor = .systemRed
         

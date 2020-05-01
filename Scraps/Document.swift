@@ -30,73 +30,7 @@ class Document: UIDocument {
     }
     
     func subscribe() {
-        
-        Model.shared.attachmentsSubject
-            .sink(receiveValue: { attachments in
-                attachments.forEach { id, attachment in
-                    guard case let .image(images) = attachment else { return }
-                    let imageID = id.url.lastPathComponent
-                    var imageFiles = self.imageFolders[imageID]?.fileWrappers ?? [:]
-                    images.forEach { dimension, image in
-                        if imageFiles["\(dimension)"] == nil, let data = image.jpegData(compressionQuality: 0.95) {
-                            imageFiles["\(dimension)"] = FileWrapper(regularFileWithContents: data)
-                        }
-                    }
-
-                    self.imageFolders[imageID] = FileWrapper(directoryWithFileWrappers: imageFiles)
-                }
-            })
-            .store(in: &subscriptions)
-        
-        Model.shared.loadingSubject
-            .combineLatest(Model.shared.attachmentsSubject)
-            .compactMap({ (loadingMessage, attachments) -> (Attachment.Identifier, Attachment, CGFloat)? in
-                guard let attachment = attachments[loadingMessage.id] else { return nil }
-                return (loadingMessage.id, attachment, loadingMessage.targetDimension)
-            })
-            .sink(receiveValue: { id, attachment, targetDimension in
-                switch attachment {
-                case var .image(images):
-                    guard images[targetDimension] == nil else { break }
-                    guard let data = self.imageFolders[id.url.lastPathComponent]?.fileWrappers?["\(CGFloat.maxDimension)"]?.regularFileContents else { break }
-                    guard let originalImage  = UIImage(data: data) else { break }
-                    
-                    let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: .init(x: 0, y: 0, width: targetDimension, height: targetDimension))
-                    let targetImage = UIGraphicsImageRenderer(bounds: rect).image { context in
-                        originalImage.draw(in: rect)
-                    }
-                    
-                    images[targetDimension] = targetImage
-                    Model.shared.attachmentsSubject.value[id] = .image(images)
-                    
-                    
-                case .linkMetadata(let metadata):
-                    guard metadata.title == nil else { break }
-                    LPMetadataProvider().startFetchingMetadata(for: id.url) { metadata, error in
-                        if let metadata = metadata {
-                            DispatchQueue.main.async {
-                                Model.shared.attachmentsSubject.value[id] = .linkMetadata(metadata)
-                            }
-                        }
-                    }
-                    
-                case .drawing(_):
-                    break
-                }
-            })
-            .store(in: &subscriptions)
-        
         weak var undoManager = self.undoManager
-        
-        Model.shared.attachmentsSubject
-            .previousResult(initialResult: [Attachment.Identifier : Attachment]())
-            .sink(receiveValue: { oldValue in
-                undoManager?.registerUndo(withTarget: Model.shared.attachmentsSubject) {
-                    $0.value = oldValue
-                }
-            })
-            .store(in: &subscriptions)
-        
         
         Model.shared.scrapsSubject
             .previousResult(initialResult: [])
@@ -130,9 +64,6 @@ class Document: UIDocument {
         guard let folders = rootFolder.fileWrappers else { throw Error.readingError(contents) }
         guard let scrapsFile = folders["Scraps"] else { throw Error.readingError(contents) }
         guard let tagsFile = folders["Tags"] else { throw Error.readingError(contents) }
-        guard let linkIDsFile = folders["LinkIDs"] else { throw Error.readingError(contents) }
-        guard let imageIDsFile = folders["ImageIDs"] else { throw Error.readingError(contents) }
-        guard let drawingsFolder = folders["Drawings"] else { throw Error.readingError(contents) }
         guard let imagesFolder = folders["Images"] else { throw Error.readingError(contents) }
         
         
@@ -145,43 +76,15 @@ class Document: UIDocument {
         
         Model.shared.tagsSubject.value = try .init(tagsFile)
         
-        try Set<Attachment.Identifier>(linkIDsFile).forEach { linkID in
-            Model.shared.attachmentsSubject.value[linkID] = .linkMetadata(.init(originalURL: linkID.url))
-        }
-        
-        try Set<Attachment.Identifier>(imageIDsFile).forEach { imageID in
-            Model.shared.attachmentsSubject.value[imageID] = .image([:])
-        }
-        
-        try [Attachment.Identifier: PKDrawing](drawingsFolder).forEach { id, drawing in
-            Model.shared.attachmentsSubject.value[id] = .drawing(drawing)
-        }
-        
         
         undoManager.removeAllActions()
     }
     
     override func contents(forType typeName: String) throws -> Any {
-        var linkIDs = Set<Attachment.Identifier>()
-        var imageIDs = Set<Attachment.Identifier>()
-        var drawings = [Attachment.Identifier: PKDrawing]()
-        Model.shared.attachmentsSubject.value.forEach { id, attachment in
-            switch attachment {
-            case .image(_):
-                imageIDs.insert(id)
-            case .linkMetadata(_):
-                linkIDs.insert(id)
-            case .drawing(let drawing):
-                drawings[id] = drawing
-            }
-        }
         do {
             return FileWrapper(directoryWithFileWrappers: [
                 "Scraps": try Model.shared.scrapsSubject.value.fileWrapperRepresentation(),
                 "Tags": try Model.shared.tagsSubject.value.fileWrapperRepresentation(),
-                "LinkIDs": try linkIDs.fileWrapperRepresentation(),
-                "ImageIDs": try imageIDs.fileWrapperRepresentation(),
-                "Drawings": try drawings.fileWrapperRepresentation(),
                 "Images": FileWrapper(directoryWithFileWrappers: imageFolders),
             ])
         } catch {

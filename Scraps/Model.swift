@@ -22,15 +22,6 @@ class Model {
     
     let scrapFiltersSubject = Subject<[ScrapFilter]>(.init())
     
-    let attachmentsSubject = Subject<[Attachment.Identifier: Attachment]>(.init())
-    
-    let loadingSubject = PassthroughSubject<(id: Attachment.Identifier, targetDimension: CGFloat), Never>()
-    
-    func publisher(for id: Attachment.Identifier, targetDimension: CGFloat) -> AnyPublisher<Attachment?, Never> {
-        loadingSubject.send((id: id, targetDimension: targetDimension))
-        return attachmentsSubject.map { $0[id] }.eraseToAnyPublisher()
-    }
-    
 }
 
 extension CurrentValueSubject where Output == IdentifiableSet<Scrap>, Failure == Never {

@@ -10,3 +10,10 @@ import PencilKit
 
 
 extension PKDrawing: FileWrapperConvertible { }
+
+
+extension PKDrawing: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.dataRepresentation())
+    }
+}

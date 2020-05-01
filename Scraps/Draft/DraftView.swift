@@ -9,21 +9,37 @@
 import UIKit
 
 
-
 @available(iOS 13.0, *)
 class DraftView: UIView {
     
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var attachmentView: AttachmentView!
+    @IBOutlet weak var attachmentView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     var subscriptions = Set<AnyCancellable>()
     
     func subscribe() {
         subscriptions.removeAll()
+        
         Draft.shared.$value
             .filter { $0 != self.textView.text }
             .assign(to: \.text, on: textView)
+            .store(in: &subscriptions)
+        
+        Draft.shared.$attachment
+            .map({ $0 == nil })
+            .assign(to: \.isHidden, on: attachmentView)
+            .store(in: &subscriptions)
+        
+        Draft.shared.$attachment
+            .compactMap { try? $0?.view() }
+            .sink(receiveValue: { [weak attachmentView] view in
+                guard let attachmentView = attachmentView else { return }
+                attachmentView.subviews.forEach { $0.removeFromSuperview() }
+                view.frame = attachmentView.bounds
+                view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                attachmentView.addSubview(view)
+            })
             .store(in: &subscriptions)
             
         NotificationCenter.default
@@ -52,21 +68,12 @@ class DraftView: UIView {
         super.didMoveToSuperview()
         
         subscribe()
-        
-        attachmentView.subscribe(to: { _ in Draft.shared.$attachment }, dimension: .itemWidth)
     }
     
     override func layoutMarginsDidChange() {
         super.layoutMarginsDidChange()
         
         textView.textContainerInset = .init(
-            top: 8,
-            left: layoutMargins.left,
-            bottom: 8,
-            right: layoutMargins.right
-        )
-        
-        attachmentView.contentInsets = .init(
             top: 8,
             left: layoutMargins.left,
             bottom: 8,

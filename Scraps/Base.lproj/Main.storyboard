@@ -22,25 +22,16 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="4TW-Cm-s3Y">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="752"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="216" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TpM-cP-ys9" customClass="AttachmentView" customModule="Scraps" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-Cl-Ent">
-                                                        <rect key="frame" x="16" y="16" width="25" height="24"/>
-                                                        <state key="normal" image="xmark.circle.fill" catalog="system"/>
-                                                        <connections>
-                                                            <action selector="deleteAttachment:" destination="8rr-SM-NiG" eventType="touchUpInside" id="8dX-Kk-6Z9"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6He-J3-6Jy">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="leading" secondItem="TpM-cP-ys9" secondAttribute="leadingMargin" constant="8" id="eDl-bv-r7O"/>
-                                                    <constraint firstItem="kGD-Cl-Ent" firstAttribute="top" secondItem="TpM-cP-ys9" secondAttribute="topMargin" constant="8" id="zKx-ep-ks0"/>
+                                                    <constraint firstAttribute="height" constant="128" id="JMS-sb-ztq"/>
+                                                    <constraint firstAttribute="width" constant="240" id="nZg-hN-Phm"/>
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="536" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q5K-Dc-f5S">
-                                                <rect key="frame" x="0.0" y="216" width="414" height="536"/>
+                                                <rect key="frame" x="0.0" y="128" width="414" height="624"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -76,7 +67,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nqS-JH-wcy"/>
                         <connections>
-                            <outlet property="attachmentView" destination="TpM-cP-ys9" id="A0a-zu-FVB"/>
+                            <outlet property="attachmentView" destination="6He-J3-6Jy" id="kFd-4b-a3W"/>
                             <outlet property="scrollView" destination="CSe-FT-TiN" id="Ver-S0-Dfu"/>
                             <outlet property="textView" destination="q5K-Dc-f5S" id="FKn-IL-uVT"/>
                         </connections>
@@ -166,9 +157,13 @@
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="150" translatesAutoresizingMaskIntoConstraints="NO" id="kfS-R8-a0m" customClass="AttachmentView" customModule="Scraps" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="217.5" width="200" height="150"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRl-Nu-FZo">
+                                                    <rect key="frame" x="0.0" y="228.5" width="240" height="128"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="240" id="8nF-aV-Hox"/>
+                                                        <constraint firstAttribute="height" constant="128" id="jiQ-zb-sR1"/>
+                                                    </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJb-rk-TYL">
                                                     <rect key="frame" x="0.0" y="568.5" width="42" height="20.5"/>
@@ -187,7 +182,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="attachmentView" destination="kfS-R8-a0m" id="fOF-hf-bCu"/>
+                                    <outlet property="attachmentView" destination="NRl-Nu-FZo" id="wkQ-Mb-AWx"/>
                                     <outlet property="myDetailLabel" destination="elm-m7-hgG" id="ind-hj-Hyx"/>
                                     <outlet property="myTextLabel" destination="pJb-rk-TYL" id="k6Z-sC-B2l"/>
                                 </connections>
@@ -279,7 +274,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" customClass="NavigationController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -319,6 +314,5 @@
     </scenes>
     <resources>
         <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
-        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
     </resources>
 </document>
