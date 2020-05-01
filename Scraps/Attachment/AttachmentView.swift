@@ -28,11 +28,15 @@ class AttachmentView: UIView {
             subviews.forEach { $0.removeFromSuperview() }
             if let attachment = attachment {
                 isHidden = false
-                let view = try! attachment.viewThatFits(.init(width: 240.0, height: .infinity))
-                contentSize = view.frame.size
-                view.frame = bounds
-                view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-                addSubview(view)
+                do {
+                    let view = try attachment.viewThatFits(.init(width: 240.0, height: .infinity))
+                    contentSize = view.frame.size
+                    view.frame = bounds
+                    view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+                    addSubview(view)
+                } catch {
+                    print(error)
+                }
                 
             } else {
                 isHidden = true
@@ -44,9 +48,9 @@ class AttachmentView: UIView {
 
 extension Attachment {
     
-    static let viewCache = Cache<Attachment, UIView>()
+    private static let viewCache = Cache<Attachment, UIView>()
     
-    fileprivate func makeImageView(size: CGSize, image: UIImage) -> UIView {
+    private func makeImageView(size: CGSize, image: UIImage) -> UIView {
         
         var rect: CGRect
         let thumbnail: UIImage
@@ -72,7 +76,7 @@ extension Attachment {
         return view
     }
     
-    func viewThatFits(_ size: CGSize) throws -> UIView {
+    fileprivate func viewThatFits(_ size: CGSize) throws -> UIView {
         if let view = Attachment.viewCache[self] {
             return view
         } else {

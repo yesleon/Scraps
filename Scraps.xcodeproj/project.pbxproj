@@ -26,6 +26,7 @@
 		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
 		717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */; };
 		717BF8A1245C064700C48BA0 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A0245C064700C48BA0 /* Cache.swift */; };
+		717BF8A3245C158500C48BA0 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A2245C158500C48BA0 /* Attachment.swift */; };
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
 		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
@@ -64,6 +65,7 @@
 		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
 		717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		717BF8A0245C064700C48BA0 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		717BF8A2245C158500C48BA0 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
 		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
@@ -113,6 +115,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		717BF8A4245C158C00C48BA0 /* Attachment */ = {
+			isa = PBXGroup;
+			children = (
+				717BF8A2245C158500C48BA0 /* Attachment.swift */,
+				717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */,
+			);
+			path = Attachment;
+			sourceTree = "<group>";
+		};
 		71C30DC02429F0B400C9F12E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,11 +156,11 @@
 				715F63B12435B20F00E12D26 /* Document.swift */,
 				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
 				71AFE1B22443781700D0793B /* CanvasViewController.swift */,
-				717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */,
 				713FAF3F24574E44002B7A46 /* Model.swift */,
 				713FAF3424570535002B7A46 /* Extensions */,
 				71EA538B243EE45900CD64CA /* Scrap */,
 				71EA538C243EE46000CD64CA /* Tag */,
+				717BF8A4245C158C00C48BA0 /* Attachment */,
 				71EA538D243EE47100CD64CA /* ScrapFilter */,
 				71EA538E243EE47800CD64CA /* Draft */,
 				71D9D97524261FB60062505B /* Main.storyboard */,
@@ -299,6 +310,7 @@
 				717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */,
 				7144AA412435E84400B72934 /* Draft.swift in Sources */,
 				719579472439CCE8007DC6BA /* Scrap.swift in Sources */,
+				717BF8A3245C158500C48BA0 /* Attachment.swift in Sources */,
 				714E21C124424658005C953A /* UIBarButtonItem+.swift in Sources */,
 				719579452439CCD3007DC6BA /* Tag.swift in Sources */,
 				713FAF4024574E44002B7A46 /* Model.swift in Sources */,

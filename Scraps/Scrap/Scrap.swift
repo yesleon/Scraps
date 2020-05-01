@@ -42,11 +42,3 @@ extension Scrap: FileWrapperRepresentable {
     }
     
 }
-
-struct Attachment: Equatable, Hashable, Codable {
-    enum Kind: String, Codable {
-        case image, linkMetadata, drawing
-    }
-    var kind: Kind
-    var content: Data
-}
