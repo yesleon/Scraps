@@ -28,6 +28,7 @@ class TagListView: UITableView {
     
     lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        self.cellSubscriptions[cell] = nil
         switch row {
         case .tag(let tagID):
             self.cellSubscriptions[cell] = Model.shared.tagsSubject.publisher(for: tagID)
