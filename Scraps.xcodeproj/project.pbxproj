@@ -25,7 +25,7 @@
 		715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ScrapListView.swift */; };
 		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
 		717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */; };
-		717BF8A1245C064700C48BA0 /* NSCache+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A0245C064700C48BA0 /* NSCache+.swift */; };
+		717BF8A1245C064700C48BA0 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A0245C064700C48BA0 /* Cache.swift */; };
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
 		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
@@ -64,7 +64,7 @@
 		715F63CB2435C61A00E12D26 /* ScrapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListView.swift; sourceTree = "<group>"; };
 		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
 		717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
-		717BF8A0245C064700C48BA0 /* NSCache+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCache+.swift"; sourceTree = "<group>"; };
+		717BF8A0245C064700C48BA0 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
 		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
@@ -104,7 +104,6 @@
 			children = (
 				717B5009243A100A0080F263 /* NotificationCenter+.swift */,
 				71EA538F243F232F00CD64CA /* LPLinkMetadata+.swift */,
-				717BF8A0245C064700C48BA0 /* NSCache+.swift */,
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
 				71981C962455422B004EC5B2 /* UIResponder+.swift */,
 				71B79194244443020011BA94 /* Array+.swift */,
@@ -149,6 +148,7 @@
 				713FAF37245709FA002B7A46 /* ActionTarget.swift */,
 				719E20B8245A003B003139A5 /* IdentifiableSet.swift */,
 				717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */,
+				717BF8A0245C064700C48BA0 /* Cache.swift */,
 				713FAF3F24574E44002B7A46 /* Model.swift */,
 				713FAF3424570535002B7A46 /* Extensions */,
 				71EA538B243EE45900CD64CA /* Scrap */,
@@ -291,7 +291,7 @@
 				711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */,
 				71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */,
 				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
-				717BF8A1245C064700C48BA0 /* NSCache+.swift in Sources */,
+				717BF8A1245C064700C48BA0 /* Cache.swift in Sources */,
 				71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				715F63B42435B20F00E12D26 /* Document.swift in Sources */,

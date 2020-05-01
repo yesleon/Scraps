@@ -44,26 +44,21 @@ class AttachmentView: UIView {
 
 extension Attachment {
     
-    fileprivate func makeImageView(size: CGSize, imageGetter: () throws -> UIImage) throws -> UIView {
+    static let viewCache = Cache<Attachment, UIView>()
+    
+    fileprivate func makeImageView(size: CGSize, image: UIImage) -> UIView {
+        
         var rect: CGRect
         let thumbnail: UIImage
-        
-        if let image = ThumbnailCache.shared[self] {
-            thumbnail = image
-            rect = .init(origin: .zero, size: image.size)
-        } else {
-            let image = try imageGetter()
-            if image.size.width > size.width || image.size.height > size.height {
-                rect = AVMakeRect(aspectRatio: image.size, insideRect: .init(origin: .zero, size: size))
-                rect.origin = .zero
-                thumbnail = UIGraphicsImageRenderer(bounds: rect).image { context in
-                    image.draw(in: rect)
-                }
-            } else {
-                rect = .init(origin: .zero, size: image.size)
-                thumbnail = image
+        if image.size.width > size.width || image.size.height > size.height {
+            rect = AVMakeRect(aspectRatio: image.size, insideRect: .init(origin: .zero, size: size))
+            rect.origin = .zero
+            thumbnail = UIGraphicsImageRenderer(bounds: rect).image { context in
+                image.draw(in: rect)
             }
-            ThumbnailCache.shared[self] = thumbnail
+        } else {
+            rect = .init(origin: .zero, size: image.size)
+            thumbnail = image
         }
         
         let view = UIImageView(image: thumbnail)
@@ -73,25 +68,34 @@ extension Attachment {
         view.layer.masksToBounds = true
         view.layer.borderWidth = 0.5
         view.layer.borderColor = UIColor.systemGray3.cgColor
+        
+        
         return view
+        
     }
     
     func viewThatFits(_ size: CGSize) throws -> UIView {
-        switch kind {
-        case .image:
-            return try makeImageView(size: size) { UIImage(data: self.content)! }
-            
-        case .linkMetadata:
-            let metadata = try NSKeyedUnarchiver.unarchivedObject(ofClass: LPLinkMetadata.self, from: content)
-            let view = LPLinkView(metadata: metadata!)
-            view.bounds.size = view.sizeThatFits(size)
+        if let view = Attachment.viewCache[self] {
             return view
-            
-        case .drawing:
-            return try makeImageView(size: size) {
+        } else {
+            let view: UIView
+            switch kind {
+            case .image:
+                view = makeImageView(size: size, image: UIImage(data: self.content)!)
+                
+            case .linkMetadata:
+                let metadata = try NSKeyedUnarchiver.unarchivedObject(ofClass: LPLinkMetadata.self, from: content)
+                view = LPLinkView(metadata: metadata!)
+                view.bounds.size = view.sizeThatFits(size)
+                
+                
+            case .drawing:
                 let drawing = try PKDrawing(data: self.content)
-                return drawing.image(from: drawing.bounds.insetBy(dx: -10, dy: -10), scale: UIScreen.main.scale)
+                let image = drawing.image(from: drawing.bounds.insetBy(dx: -10, dy: -10), scale: UIScreen.main.scale)
+                view = makeImageView(size: size, image: image)
             }
+            Attachment.viewCache[self] = view
+            return view
         }
     }
     
