@@ -35,7 +35,7 @@ extension UIViewController {
         var text = ""
         let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default, handler: { _ in
             let tagID = tagID ?? .init()
-            Model.shared.tagsSubject.value[tagID]?.title = text
+            Model.shared.tagsSubject.value[tagID, default: Tag(id: tagID, title: "")].title = text
             subscriptions.removeAll()
             vc.textFields?.forEach { $0.removeAllActions() }
             doneCompletion?(tagID)
