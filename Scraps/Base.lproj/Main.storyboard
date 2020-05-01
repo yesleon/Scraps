@@ -132,20 +132,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="h35-fk-gwm">
-                            <rect key="frame" x="0.0" y="675" width="414" height="0.0"/>
+                            <rect key="frame" x="0.0" y="620" width="414" height="0.0"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="619" id="MqX-N4-eff" customClass="ScrapListViewCell" customModule="Scraps" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="619"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="564" id="MqX-N4-eff" customClass="ScrapListViewCell" customModule="Scraps" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="564"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MqX-N4-eff" id="6Sf-Nz-EKE">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="619"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="564"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5Qf-Mg-5rP">
-                                            <rect key="frame" x="20" y="11" width="374" height="589"/>
+                                            <rect key="frame" x="20" y="11" width="374" height="534"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="elm-m7-hgG">
                                                     <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
@@ -154,11 +154,11 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="NRl-Nu-FZo" customClass="AttachmentView" customModule="Scraps" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="228.5" width="240" height="128"/>
+                                                    <rect key="frame" x="0.0" y="201" width="240" height="128"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJb-rk-TYL">
-                                                    <rect key="frame" x="0.0" y="568.5" width="42" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="513.5" width="42" height="20.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>

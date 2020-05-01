@@ -35,7 +35,7 @@ class AttachmentView: UIView {
                     if let cachedVview = AttachmentView.viewCache[attachment] {
                         view = cachedVview
                     } else {
-                        view = try attachment.viewThatFits(.init(width: 240.0, height: .infinity))
+                        view = try attachment.viewThatFits(.init(width: 240, height: 240))
                         AttachmentView.viewCache[attachment] = view
                     }
                     contentSize = view.frame.size
