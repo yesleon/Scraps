@@ -24,13 +24,16 @@ extension AttachmentViewController: UIContextMenuInteractionDelegate {
             return vc
         }) { suggestedActions in
             let shareAction = UIAction(title: "Share", image: nil) { action in
-                
-                let vc = UIActivityViewController(activityItems: [attachment.image() as Any, self], applicationActivities: nil)
-                vc.popoverPresentationController.map {
-                    $0.sourceView = self.view
-                    $0.sourceRect = self.view.bounds
+                UITraitCollection(userInterfaceStyle: .light).performAsCurrent {
+                    if let image = attachment.image() {
+                        let vc = UIActivityViewController(activityItems: [image, self], applicationActivities: nil)
+                        vc.popoverPresentationController.map {
+                            $0.sourceView = self.view
+                            $0.sourceRect = self.view.bounds
+                        }
+                        self.present(vc, animated: true)
+                    }
                 }
-                self.present(vc, animated: true)
             }
             return UIMenu(title: "", image: nil, identifier: nil, options: [], children: [shareAction])
         }
