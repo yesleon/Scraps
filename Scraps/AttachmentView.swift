@@ -69,9 +69,7 @@ extension Attachment {
         view.layer.borderWidth = 0.5
         view.layer.borderColor = UIColor.systemGray3.cgColor
         
-        
         return view
-        
     }
     
     func viewThatFits(_ size: CGSize) throws -> UIView {
@@ -87,7 +85,6 @@ extension Attachment {
                 let metadata = try NSKeyedUnarchiver.unarchivedObject(ofClass: LPLinkMetadata.self, from: content)
                 view = LPLinkView(metadata: metadata!)
                 view.bounds.size = view.sizeThatFits(size)
-                
                 
             case .drawing:
                 let drawing = try PKDrawing(data: self.content)

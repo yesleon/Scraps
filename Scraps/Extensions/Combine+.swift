@@ -9,8 +9,6 @@
 import Combine
 
 typealias AnyCancellable = Combine.AnyCancellable
-typealias AnyPublisher = Combine.AnyPublisher
-typealias Publisher = Combine.Publisher
 
 extension Publisher where Failure == Never {
     

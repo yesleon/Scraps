@@ -12,6 +12,11 @@ import LinkPresentation
 import PencilKit
 import AVFoundation
 
+protocol FileWrapperRepresentable {
+    init(fileWrapper: FileWrapper) throws
+    func fileWrapperRepresentation() throws -> FileWrapper
+}
+
 
 /// The Model. Holds data and publishes data changes. I/O to disk.
 /// Converts between disk data structure and data structure in app.
@@ -82,3 +87,22 @@ class Document: UIDocument {
 }
 
 
+extension IdentifiableSet: FileWrapperRepresentable where Value: FileWrapperRepresentable & Identifiable, Value.ID == Key, Key == UUID {
+    
+    init(fileWrapper: FileWrapper) throws {
+        let elements = try (fileWrapper.fileWrappers ?? [:])
+            .values
+            .compactMap(Value.init)
+        self.init(elements)
+    }
+    
+    func fileWrapperRepresentation() throws -> FileWrapper {
+        
+        var files = [String: FileWrapper]()
+        for element in values {
+            files[element.id.uuidString] = try element.fileWrapperRepresentation()
+        }
+        return FileWrapper(directoryWithFileWrappers: files)
+    }
+    
+}
