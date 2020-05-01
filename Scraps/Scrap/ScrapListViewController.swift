@@ -67,8 +67,9 @@ class ScrapListViewController: UITableViewController {
         super.setEditing(editing, animated: animated)
         tableView.beginUpdates()
         tableView.endUpdates()
+        navigationController?.setToolbarHidden(editing, animated: animated)
         navigationItem.setLeftBarButtonItems(editing ? [editButtonItem] : nil, animated: true)
-        navigationItem.setRightBarButtonItems(editing ? [tagsButton]: [composeButton, tagListButton], animated: true)
+        navigationItem.setRightBarButtonItems(editing ? [tagsButton]: [tagListButton], animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

@@ -50,6 +50,10 @@ extension Attachment {
             let image = UIImage(data: content)!
             let view = UIImageView(image: image)
             view.frame = AVMakeRect(aspectRatio: image.size, insideRect: .init(origin: .zero, size: size))
+            view.layer.cornerRadius = 10
+            view.layer.masksToBounds = true
+            view.layer.borderWidth = 0.5
+            view.layer.borderColor = UIColor.systemGray3.cgColor
             return view
         case .linkMetadata:
             let metadata = try NSKeyedUnarchiver.unarchivedObject(ofClass: LPLinkMetadata.self, from: content)
@@ -58,13 +62,17 @@ extension Attachment {
             return view
         case .drawing:
             let drawing = try PKDrawing(data: content)
-            let image = drawing.image(from: drawing.bounds, scale: UIScreen.main.scale)
+            let image = drawing.image(from: drawing.bounds.insetBy(dx: -10, dy: -10), scale: UIScreen.main.scale)
             let view = UIImageView(image: image)
             if image.size.width > size.width || image.size.height > size.height {
                 view.bounds.size = AVMakeRect(aspectRatio: image.size, insideRect: .init(origin: .zero, size: size)).size
             } else {
                 view.bounds.size = image.size
             }
+            view.layer.cornerRadius = 10
+            view.layer.masksToBounds = true
+            view.layer.borderWidth = 0.5
+            view.layer.borderColor = UIColor.systemGray3.cgColor
             return view
         }
     }
