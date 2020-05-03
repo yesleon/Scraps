@@ -10,7 +10,7 @@ import Foundation
 
 
 struct Attachment: Equatable, Hashable, Codable {
-    enum Kind: String, Codable {
+    enum Kind: String, Codable, CaseIterable {
         case image, linkMetadata, drawing
     }
     var kind: Kind

@@ -66,6 +66,10 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             }
         case .text:
             break
+        case .kind(let kind):
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
+                $0 = .init(kind: kind)
+            }
         }
         
     }
@@ -92,6 +96,10 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             }
         case .text:
             break
+        case .kind(_):
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
+                $0 = nil
+            }
         }
     }
 }

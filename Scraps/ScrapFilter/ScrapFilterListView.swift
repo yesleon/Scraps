@@ -20,7 +20,7 @@ class ScrapFilterListView: UITableView {
     }
 
     enum Row: Hashable {
-        case noTags, tag(Tag.ID), today, text
+        case noTags, tag(Tag.ID), today, text, kind(Attachment.Kind?)
     }
     
     weak var controller: ScrapFilterListViewController?
@@ -89,6 +89,16 @@ class ScrapFilterListView: UITableView {
                         searchBar.text = nil
                     }
                     
+                case .kind(let kind):
+                    let filter = ScrapFilters.KindFilter(kind: kind)
+                    let selected = filter == filters.first(ofType: ScrapFilters.KindFilter.self)
+                    cell.textLabel?.text = filter.stringRepresentation
+                    cell.imageView?.image = filter.imageRepresentation(selected: selected)
+                    if selected {
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    } else {
+                        tableView.deselectRow(at: indexPath, animated: false)
+                    }
                 }
             })
         
@@ -114,6 +124,8 @@ class ScrapFilterListView: UITableView {
                     snapshot.appendItems(tags)
                     snapshot.appendItems([.noTags])
                 }
+                snapshot.appendItems(Attachment.Kind.allCases.map(Row.kind))
+                snapshot.appendItems([Row.kind(nil)])
                 self.diffableDataSource.apply(snapshot, animatingDifferences: false)
             })
             .store(in: &subscriptions)

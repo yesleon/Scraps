@@ -80,6 +80,43 @@ enum ScrapFilters {
         }
     }
     
+    struct KindFilter: ScrapFilter, Equatable {
+        
+        var kind: Attachment.Kind?
+        
+        func shouldInclude(_ scrap: Scrap) -> Bool {
+            scrap.attachment?.kind == kind
+        }
+        
+        let isEnabled = true
+        
+        var stringRepresentation: String? {
+            switch kind {
+            case .drawing:
+                return "Drawings"
+            case .image:
+                return "Images"
+            case .linkMetadata:
+                return "Links"
+            case nil:
+                return "Texts"
+            }
+        }
+        
+        func imageRepresentation(selected: Bool) -> UIImage? {
+            switch kind {
+            case .drawing:
+                return UIImage(systemName: "scribble")
+            case .image:
+                return UIImage(systemName: selected ? "photo.fill.on.rectangle.fill" : "photo.on.rectangle")
+            case .linkMetadata:
+                return UIImage(systemName: "link")
+            case nil:
+                return UIImage(systemName: selected ? "doc.text.fill" : "doc.text")
+            }
+        }
+        
+    }
     
 }
 
