@@ -12,12 +12,17 @@ import UIKit
 protocol ScrapFilter {
     func shouldInclude(_ scrap: Scrap) -> Bool
     var isEnabled: Bool { get }
-    var stringRepresentation: String? { get }
+    var title: String? { get }
+    func icon(selected: Bool) -> UIImage?
 }
 
 enum ScrapFilters {
     
     struct TextFilter: ScrapFilter {
+        
+        func icon(selected: Bool) -> UIImage? {
+            nil
+        }
         
         func shouldInclude(_ scrap: Scrap) -> Bool {
             scrap.content.lowercased().contains(text.lowercased())
@@ -25,7 +30,7 @@ enum ScrapFilters {
         
         let isEnabled = true
         
-        var stringRepresentation: String? { "\"\(text)\"" }
+        var title: String? { "\"\(text)\"" }
         
         let text: String
         
@@ -33,7 +38,16 @@ enum ScrapFilters {
     
     enum TagFilter: ScrapFilter {
         
-        var stringRepresentation: String? {
+        func icon(selected: Bool) -> UIImage? {
+            switch self {
+            case .hasTags(_):
+                return UIImage(systemName: selected ? "tag.fill" : "tag")
+            case .noTags:
+                return nil
+            }
+        }
+        
+        var title: String? {
             switch self {
             case .hasTags(let tagIDs):
                 if !tagIDs.isEmpty {
@@ -74,7 +88,11 @@ enum ScrapFilters {
 
     struct TodayFilter: ScrapFilter {
         
-        var stringRepresentation: String? {
+        func icon(selected: Bool) -> UIImage? {
+            UIImage(systemName: selected ? "star.fill" : "star")
+        }
+        
+        var title: String? {
             NSLocalizedString("Today", comment: "")
         }
         
@@ -96,7 +114,7 @@ enum ScrapFilters {
         
         let isEnabled = true
         
-        var stringRepresentation: String? {
+        var title: String? {
             switch kind {
             case .drawing:
                 return "Drawings"
@@ -109,7 +127,7 @@ enum ScrapFilters {
             }
         }
         
-        func imageRepresentation(selected: Bool) -> UIImage? {
+        func icon(selected: Bool) -> UIImage? {
             switch kind {
             case .drawing:
                 return UIImage(systemName: "scribble")
@@ -126,6 +144,15 @@ enum ScrapFilters {
     
     struct TodoFilter: ScrapFilter, Equatable {
         
+        func icon(selected: Bool) -> UIImage? {
+            switch todo {
+            case .anytime:
+                return UIImage(systemName: "square")
+            case .done:
+                return UIImage(systemName: "checkmark.square.fill")
+            }
+        }
+        
         let todo: Todo
         
         func shouldInclude(_ scrap: Scrap) -> Bool {
@@ -134,11 +161,11 @@ enum ScrapFilters {
         
         let isEnabled = true
         
-        var stringRepresentation: String? {
+        var title: String? {
             switch todo {
             case .anytime:
                 return "Anytime"
-            case .cancelled, .done:
+            case .done:
                 return "Done"
             }
         }
@@ -148,8 +175,13 @@ enum ScrapFilters {
 }
 
 extension Array: ScrapFilter where Element == ScrapFilter {
-    var stringRepresentation: String? {
-        let text = compactMap(\.stringRepresentation).joined(separator: ", ")
+    
+    func icon(selected: Bool) -> UIImage? {
+        nil
+    }
+    
+    var title: String? {
+        let text = compactMap(\.title).joined(separator: ", ")
         return text.isEmpty ? nil : text
     }
     
@@ -160,4 +192,5 @@ extension Array: ScrapFilter where Element == ScrapFilter {
     func shouldInclude(_ scrap: Scrap) -> Bool {
         !contains(where: { !$0.shouldInclude(scrap) })
     }
+    
 }

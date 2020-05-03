@@ -92,8 +92,8 @@ class ScrapFilterListView: UITableView {
                 case .kind(let kind):
                     let filter = ScrapFilters.KindFilter(kind: kind)
                     let selected = filter == filters.first(ofType: ScrapFilters.KindFilter.self)
-                    cell.textLabel?.text = filter.stringRepresentation
-                    cell.imageView?.image = filter.imageRepresentation(selected: selected)
+                    cell.textLabel?.text = filter.title
+                    cell.imageView?.image = filter.icon(selected: selected)
                     if selected {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                     } else {
@@ -101,8 +101,10 @@ class ScrapFilterListView: UITableView {
                     }
                 case .todo(let todo):
                     let filter = ScrapFilters.TodoFilter(todo: todo)
-                    cell.textLabel?.text = filter.stringRepresentation
-                    if filter == filters.first(ofType: ScrapFilters.TodoFilter.self) {
+                    let selected = filter == filters.first(ofType: ScrapFilters.TodoFilter.self)
+                    cell.textLabel?.text = filter.title
+                    cell.imageView?.image = filter.icon(selected: selected)
+                    if selected {
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                     } else {
                         tableView.deselectRow(at: indexPath, animated: false)
@@ -128,13 +130,13 @@ class ScrapFilterListView: UITableView {
                 snapshot.appendSections([.main])
                 snapshot.appendItems([.text])
                 snapshot.appendItems([.today])
-                if !tags.isEmpty {
-                    snapshot.appendItems(tags)
-                    snapshot.appendItems([.noTags])
-                }
                 snapshot.appendItems(Attachment.Kind.allCases.map(Row.kind))
                 snapshot.appendItems([Row.kind(nil)])
                 snapshot.appendItems([Row.todo(.anytime), Row.todo(.done)])
+                if !tags.isEmpty {
+                    snapshot.appendItems([.noTags])
+                    snapshot.appendItems(tags)
+                }
                 self.diffableDataSource.apply(snapshot, animatingDifferences: false)
             })
             .store(in: &subscriptions)

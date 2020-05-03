@@ -45,6 +45,7 @@
 		71D9D97924261FB90062505B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97824261FB90062505B /* Assets.xcassets */; };
 		71D9D97C24261FB90062505B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97A24261FB90062505B /* LaunchScreen.storyboard */; };
 		71ED7832245E8F4300C97B54 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED7831245E8F4300C97B54 /* Functions.swift */; };
+		71ED7834245EADCF00C97B54 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED7833245EADCF00C97B54 /* Todo.swift */; };
 		71F623B32428BCCE00A46048 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71F623B12428BCCE00A46048 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		71D9D97B24261FB90062505B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71D9D97D24261FB90062505B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71ED7831245E8F4300C97B54 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		71ED7833245EADCF00C97B54 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		71F623AF2428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		71F623B02428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		71F623B22428BCCE00A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */,
 				71AFE1B22443781700D0793B /* CanvasViewController.swift */,
 				713FAF3F24574E44002B7A46 /* Model.swift */,
+				71ED7833245EADCF00C97B54 /* Todo.swift */,
 				713FAF3424570535002B7A46 /* Extensions */,
 				71EA538B243EE45900CD64CA /* Scrap */,
 				71EA538C243EE46000CD64CA /* Tag */,
@@ -330,6 +333,7 @@
 				715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */,
 				71C2CAC4243FA81F00610A3B /* ScrapListHeaderView.swift in Sources */,
 				715F63C02435B22100E12D26 /* ScrapFilterListViewController.swift in Sources */,
+				71ED7834245EADCF00C97B54 /* Todo.swift in Sources */,
 				717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */,
 				714E21C524425373005C953A /* UIViewController+.swift in Sources */,
 				715F63BE2435B22100E12D26 /* ScrapFilterListView.swift in Sources */,

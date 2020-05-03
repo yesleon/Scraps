@@ -64,8 +64,6 @@ class ScrapListViewCell: UITableViewCell {
                     return UIImage(systemName: "square")
                 case .done:
                     return UIImage(systemName: "checkmark.square.fill")
-                case .cancelled:
-                    return UIImage(systemName: "xmark.square.fill")
                 }
             })
             .sink(receiveValue: { [weak self] image in

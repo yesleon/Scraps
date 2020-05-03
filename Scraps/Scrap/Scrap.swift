@@ -10,9 +10,6 @@
 import Foundation
 
 
-enum Todo: String, Codable, Equatable, CaseIterable {
-    case done, cancelled, anytime
-}
 
 struct Scrap: Codable, Equatable, Identifiable {
     var id: UUID

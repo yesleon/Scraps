@@ -34,7 +34,7 @@ class ScrapListViewController: UITableViewController {
             .store(in: &subscriptions)
         
         Model.shared.scrapFiltersSubject
-            .map(\.stringRepresentation)
+            .map(\.title)
             .map { $0 ?? NSLocalizedString("All", comment: "") }
             .assign(to: \.title, on: self)
             .store(in: &subscriptions)
@@ -151,7 +151,7 @@ class ScrapListViewController: UITableViewController {
             switch todo {
             case .anytime:
                 scrap?.todo = .done
-            case .cancelled, .done:
+            case .done:
                 scrap?.todo = .anytime
             }
         }
