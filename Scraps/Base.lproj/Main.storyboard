@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="1z5-Dg-7zY" customClass="DraftView" customModule="Scraps" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="CSe-FT-TiN">
@@ -95,7 +95,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="TagsVC" id="kbz-Aa-WEk" customClass="ScrapFilterListViewController" customModule="TagList" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZEQ-cr-Mwp" customClass="ScrapFilterListView" customModule="TagList">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="LAc-jf-S1e">
@@ -205,7 +205,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="composeButton" destination="3Pe-zY-JwH" id="vin-eY-DlZ"/>
-                        <outlet property="tagListButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
+                        <outlet property="filterButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
                         <outlet property="tagsButton" destination="uMj-RT-mnN" id="t7q-Ag-URa"/>
                         <segue destination="kbz-Aa-WEk" kind="popoverPresentation" identifier="a" customClass="PresentTagListSegue" customModule="Scraps" customModuleProvider="target" popoverAnchorView="Olw-UH-DAN" id="PAq-2C-952">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -269,12 +269,10 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
-                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XkX-rq-ygz">
-                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>

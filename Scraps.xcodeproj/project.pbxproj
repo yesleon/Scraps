@@ -35,14 +35,16 @@
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AFE1B22443781700D0793B /* CanvasViewController.swift */; };
 		71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79192244442E30011BA94 /* ScrapFilter.swift */; };
-		71B79195244443020011BA94 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79194244443020011BA94 /* Array+.swift */; };
 		71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC1243FA13600610A3B /* Combine+.swift */; };
 		71C2CAC4243FA81F00610A3B /* ScrapListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */; };
+		71D186C7245DB449001590F8 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D186C6245DB449001590F8 /* UITableView+.swift */; };
+		71D186C9245DC0D2001590F8 /* Sequence+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D186C8245DC0D2001590F8 /* Sequence+.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
 		71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D97124261FB60062505B /* SceneDelegate.swift */; };
 		71D9D97724261FB60062505B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97524261FB60062505B /* Main.storyboard */; };
 		71D9D97924261FB90062505B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97824261FB90062505B /* Assets.xcassets */; };
 		71D9D97C24261FB90062505B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71D9D97A24261FB90062505B /* LaunchScreen.storyboard */; };
+		71ED7832245E8F4300C97B54 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED7831245E8F4300C97B54 /* Functions.swift */; };
 		71F623B32428BCCE00A46048 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71F623B12428BCCE00A46048 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -75,9 +77,10 @@
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
 		71B79192244442E30011BA94 /* ScrapFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilter.swift; sourceTree = "<group>"; };
-		71B79194244443020011BA94 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		71C2CAC1243FA13600610A3B /* Combine+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+.swift"; sourceTree = "<group>"; };
 		71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListHeaderView.swift; sourceTree = "<group>"; };
+		71D186C6245DB449001590F8 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
+		71D186C8245DC0D2001590F8 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Scraps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scraps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D9D96F24261FB60062505B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71D9D97124261FB60062505B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 		71D9D97824261FB90062505B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71D9D97B24261FB90062505B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71D9D97D24261FB90062505B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71ED7831245E8F4300C97B54 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		71F623AF2428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		71F623B02428BBE800A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		71F623B22428BCCE00A46048 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -107,10 +111,12 @@
 				713FAF37245709FA002B7A46 /* ActionTarget.swift */,
 				719E20B8245A003B003139A5 /* IdentifiableSet.swift */,
 				717BF8A0245C064700C48BA0 /* Cache.swift */,
+				71ED7831245E8F4300C97B54 /* Functions.swift */,
 				717B5009243A100A0080F263 /* NotificationCenter+.swift */,
 				71C2CAC1243FA13600610A3B /* Combine+.swift */,
+				71D186C6245DB449001590F8 /* UITableView+.swift */,
+				71D186C8245DC0D2001590F8 /* Sequence+.swift */,
 				71981C962455422B004EC5B2 /* UIResponder+.swift */,
-				71B79194244443020011BA94 /* Array+.swift */,
 				714E21C424425373005C953A /* UIViewController+.swift */,
 				714E21C024424658005C953A /* UIBarButtonItem+.swift */,
 			);
@@ -296,6 +302,7 @@
 				717BF8A6245C20EE00C48BA0 /* AttachmentViewController.swift in Sources */,
 				71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */,
 				7144AA4924365B2F00B72934 /* TagListViewController.swift in Sources */,
+				71ED7832245E8F4300C97B54 /* Functions.swift in Sources */,
 				713FAF38245709FA002B7A46 /* ActionTarget.swift in Sources */,
 				715F63BF2435B22100E12D26 /* ScrapListViewController.swift in Sources */,
 				719E20B9245A003B003139A5 /* IdentifiableSet.swift in Sources */,
@@ -304,12 +311,13 @@
 				71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */,
 				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
 				717BF8A1245C064700C48BA0 /* Cache.swift in Sources */,
+				71D186C7245DB449001590F8 /* UITableView+.swift in Sources */,
 				71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				715F63B42435B20F00E12D26 /* Document.swift in Sources */,
-				71B79195244443020011BA94 /* Array+.swift in Sources */,
 				7144AA47243658AE00B72934 /* TagListView.swift in Sources */,
 				71D9D97224261FB60062505B /* SceneDelegate.swift in Sources */,
+				71D186C9245DC0D2001590F8 /* Sequence+.swift in Sources */,
 				715F63C22435B22100E12D26 /* DraftViewController.swift in Sources */,
 				717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */,
 				7144AA412435E84400B72934 /* Draft.swift in Sources */,

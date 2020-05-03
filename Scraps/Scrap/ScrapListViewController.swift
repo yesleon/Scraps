@@ -12,7 +12,7 @@ import UIKit
 class ScrapListViewController: UITableViewController {
     
     @IBOutlet var composeButton: UIBarButtonItem!
-    @IBOutlet var tagListButton: UIBarButtonItem!
+    @IBOutlet var filterButton: UIBarButtonItem!
     @IBOutlet var tagsButton: UIBarButtonItem!
     
     override var canBecomeFirstResponder: Bool { true }
@@ -30,7 +30,7 @@ class ScrapListViewController: UITableViewController {
         
         Model.shared.scrapFiltersSubject
             .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
-            .assign(to: \.image, on: tagListButton)
+            .assign(to: \.image, on: filterButton)
             .store(in: &subscriptions)
         
         Model.shared.scrapFiltersSubject
@@ -54,6 +54,7 @@ class ScrapListViewController: UITableViewController {
         tableView.allowsMultipleSelectionDuringEditing = true
         (tableView as? ScrapListView)?.controller = self
         subscribe()
+        navigationItem.leftBarButtonItem = editButtonItem
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }
@@ -63,15 +64,6 @@ class ScrapListViewController: UITableViewController {
         tableView.indexPathsForSelectedRows
             .map { $0.compactMap { tableView.diffableDataSource.itemIdentifier(for: $0) } }
             .map { present(.tagListViewController(scrapIDs: Set($0), sourceView: nil, sourceRect: .null, barButtonItem: button), animated: true) }
-    }
-    
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        tableView.beginUpdates()
-        tableView.endUpdates()
-        navigationController?.setToolbarHidden(editing, animated: animated)
-        navigationItem.setLeftBarButtonItems(editing ? [editButtonItem] : nil, animated: true)
-        navigationItem.setRightBarButtonItems(editing ? [tagsButton]: [tagListButton], animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -106,6 +98,45 @@ class ScrapListViewController: UITableViewController {
             addChild(vc)
             attachmentVCs[ObjectIdentifier(cell)] = vc
         }
+    }
+    
+    func tableViewDidChangeSelection(_ tableView: UITableView) {
+        let allSelected = Set(tableView.indexPathsForSelectedRows ?? []) == Set(tableView.indexPathsForAllRows)
+        if tableView.isEditing {
+            
+            navigationItem.setRightBarButtonItems([tagsButton], animated: false)
+            
+            let selectAllButtonItem = UIBarButtonItem(title: "Select All", style: .plain) { button in
+                tableView.indexPathsForAllRows.forEach { tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
+            }
+            
+            let selectNoneButtonItem = UIBarButtonItem(title: "Select None", style: .plain) { button in
+                tableView.indexPathsForAllRows.forEach { tableView.deselectRow(at: $0, animated: false) }
+            }
+            
+            navigationItem.setLeftBarButtonItems([editButtonItem, allSelected ? selectNoneButtonItem : selectAllButtonItem], animated: false)
+            
+            let deleteButtonItem = UIBarButtonItem(barButtonSystemItem: .trash) { button in
+                modify(&Model.shared.scrapsSubject.value) { scraps in
+                    tableView.indexPathsForSelectedRows?.forEach { indexPath in
+                        guard let diffableDataSource = tableView.dataSource as? ScrapListViewDataSource else { return }
+                        guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return }
+                        scraps[scrapID] = nil
+                    }
+                }
+            }
+            
+            toolbarItems = [.flexibleSpace(), deleteButtonItem]
+            tagsButton.isEnabled = !(tableView.indexPathsForSelectedRows ?? []).isEmpty
+            deleteButtonItem.isEnabled = !(tableView.indexPathsForSelectedRows ?? []).isEmpty
+            
+        } else {
+            navigationItem.setRightBarButtonItems([filterButton], animated: false)
+            navigationItem.setLeftBarButtonItems([editButtonItem], animated: false)
+            
+            toolbarItems = [.flexibleSpace(), composeButton]
+        }
+        
     }
     
 }

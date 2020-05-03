@@ -66,6 +66,12 @@ extension ActionSending where Self: UIBarButtonItem {
         Self.targets[ObjectIdentifier(self)] = [target]
     }
     
+    init(title: String?, style: UIBarButtonItem.Style, handler: @escaping (Self) -> Void) {
+        let target = ActionTarget(handler: handler)
+        self.init(title: title, style: style, target: target, action: #selector(target.handleAction(sender:)))
+        Self.targets[ObjectIdentifier(self)] = [target]
+    }
+    
 }
 
 extension ActionSending where Self: UIControl {
