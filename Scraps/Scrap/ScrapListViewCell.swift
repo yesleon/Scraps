@@ -16,6 +16,14 @@ class ScrapListViewCell: UITableViewCell {
     @IBOutlet weak var attachmentView: AttachmentView!
     @IBOutlet weak var myTextLabel: UILabel!
     @IBOutlet weak var myDetailLabel: UILabel!
+    @IBOutlet weak var todoButton: UIButton! {
+        didSet {
+            todoButton.addAction(for: .touchUpInside) { [weak self] button in
+                guard let self = self else { return }
+                self.todoButtonTapped(cell: self)
+            }
+        }
+    }
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -48,6 +56,28 @@ class ScrapListViewCell: UITableViewCell {
             .assign(to: \.text, on: myDetailLabel)
             .store(in: &subscriptions)
         
+        publisher
+            .compactMap(\.todo)
+            .compactMap({ todo -> UIImage? in
+                switch todo {
+                case .anytime:
+                    return UIImage(systemName: "square")
+                case .done:
+                    return UIImage(systemName: "checkmark.square.fill")
+                case .cancelled:
+                    return UIImage(systemName: "xmark.square.fill")
+                }
+            })
+            .sink(receiveValue: { [weak self] image in
+                self?.todoButton.setImage(image, for: .normal)
+            })
+            .store(in: &subscriptions)
+        
+        publisher
+            .map { $0.todo == nil }
+            .assign(to: \.isHidden, on: todoButton)
+            .store(in: &subscriptions)
+        
 
         // Attachment
         
@@ -68,4 +98,12 @@ class ScrapListViewCell: UITableViewCell {
         subscriptions.removeAll()
     }
 
+}
+
+extension UIResponder {
+    
+    @objc func todoButtonTapped(cell: UITableViewCell) {
+        next?.todoButtonTapped(cell: cell)
+    }
+    
 }

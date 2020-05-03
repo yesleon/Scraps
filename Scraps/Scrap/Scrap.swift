@@ -9,12 +9,18 @@
 
 import Foundation
 
+
+enum Todo: String, Codable, Equatable {
+    case done, cancelled, anytime
+}
+
 struct Scrap: Codable, Equatable, Identifiable {
     var id: UUID
     var content: String
     var date: Date
     var tagIDs: Set<Tag.ID>
     var attachment: Attachment?
+    var todo: Todo?
 }
 
 extension Scrap: FileWrapperRepresentable {

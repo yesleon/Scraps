@@ -71,6 +71,9 @@ class ScrapListViewController: UITableViewController {
         guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
         guard let scrap = Model.shared.scrapsSubject.value[scrapID] else { return nil }
         var actions = [UIAction]()
+        let todoAction = UIAction(title: scrap.todo == nil ? "Add Todo" : "Remove Todo") { _ in
+            Model.shared.scrapsSubject.value[scrapID]?.todo = scrap.todo == nil ? .anytime : nil
+        }
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in
             
             [UIActivityViewController(activityItems: [scrap.content], applicationActivities: nil)]
@@ -83,7 +86,7 @@ class ScrapListViewController: UITableViewController {
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), attributes: .destructive) { _ in
             Model.shared.scrapsSubject.value[scrapID] = nil
         }
-        actions = [tagsAction, shareAction, deleteAction]
+        actions = [todoAction, tagsAction, shareAction, deleteAction]
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in
             UIMenu(title: "", children: actions)
         })
@@ -137,6 +140,21 @@ class ScrapListViewController: UITableViewController {
             toolbarItems = [.flexibleSpace(), composeButton]
         }
         
+    }
+    
+    override func todoButtonTapped(cell: UITableViewCell) {
+        guard let diffableDataSource = tableView.dataSource as? ScrapListViewDataSource else { return }
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return }
+        modify(&Model.shared.scrapsSubject.value[scrapID]) { scrap in
+            guard let todo = scrap?.todo else { return }
+            switch todo {
+            case .anytime:
+                scrap?.todo = .done
+            case .cancelled, .done:
+                scrap?.todo = .anytime
+            }
+        }
     }
     
 }
