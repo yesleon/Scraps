@@ -10,7 +10,7 @@
 import Foundation
 
 
-enum Todo: String, Codable, Equatable {
+enum Todo: String, Codable, Equatable, CaseIterable {
     case done, cancelled, anytime
 }
 

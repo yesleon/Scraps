@@ -20,7 +20,7 @@ class ScrapFilterListView: UITableView {
     }
 
     enum Row: Hashable {
-        case noTags, tag(Tag.ID), today, text, kind(Attachment.Kind?)
+        case noTags, tag(Tag.ID), today, text, kind(Attachment.Kind?), todo(Todo)
     }
     
     weak var controller: ScrapFilterListViewController?
@@ -99,6 +99,14 @@ class ScrapFilterListView: UITableView {
                     } else {
                         tableView.deselectRow(at: indexPath, animated: false)
                     }
+                case .todo(let todo):
+                    let filter = ScrapFilters.TodoFilter(todo: todo)
+                    cell.textLabel?.text = filter.stringRepresentation
+                    if filter == filters.first(ofType: ScrapFilters.TodoFilter.self) {
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    } else {
+                        tableView.deselectRow(at: indexPath, animated: false)
+                    }
                 }
             })
         
@@ -126,6 +134,7 @@ class ScrapFilterListView: UITableView {
                 }
                 snapshot.appendItems(Attachment.Kind.allCases.map(Row.kind))
                 snapshot.appendItems([Row.kind(nil)])
+                snapshot.appendItems([Row.todo(.anytime), Row.todo(.done)])
                 self.diffableDataSource.apply(snapshot, animatingDifferences: false)
             })
             .store(in: &subscriptions)

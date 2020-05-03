@@ -18,6 +18,7 @@ protocol ScrapFilter {
 enum ScrapFilters {
     
     struct TextFilter: ScrapFilter {
+        
         func shouldInclude(_ scrap: Scrap) -> Bool {
             scrap.content.lowercased().contains(text.lowercased())
         }
@@ -26,7 +27,8 @@ enum ScrapFilters {
         
         var stringRepresentation: String? { "\"\(text)\"" }
         
-        var text: String
+        let text: String
+        
     }
     
     enum TagFilter: ScrapFilter {
@@ -58,6 +60,7 @@ enum ScrapFilters {
         }
         
         case noTags, hasTags(Set<Tag.ID>)
+        
         func shouldInclude(_ scrap: Scrap) -> Bool {
             switch self {
             case .hasTags(let tagIDs):
@@ -70,19 +73,22 @@ enum ScrapFilters {
     }
 
     struct TodayFilter: ScrapFilter {
+        
         var stringRepresentation: String? {
             NSLocalizedString("Today", comment: "")
         }
         
         let isEnabled = true
+        
         func shouldInclude(_ scrap: Scrap) -> Bool {
             return Calendar.current.isDateInToday(scrap.date)
         }
+        
     }
     
     struct KindFilter: ScrapFilter, Equatable {
         
-        var kind: Attachment.Kind?
+        let kind: Attachment.Kind?
         
         func shouldInclude(_ scrap: Scrap) -> Bool {
             scrap.attachment?.kind == kind
@@ -113,6 +119,27 @@ enum ScrapFilters {
                 return UIImage(systemName: "link")
             case nil:
                 return UIImage(systemName: selected ? "doc.text.fill" : "doc.text")
+            }
+        }
+        
+    }
+    
+    struct TodoFilter: ScrapFilter, Equatable {
+        
+        let todo: Todo
+        
+        func shouldInclude(_ scrap: Scrap) -> Bool {
+            scrap.todo == todo
+        }
+        
+        let isEnabled = true
+        
+        var stringRepresentation: String? {
+            switch todo {
+            case .anytime:
+                return "Anytime"
+            case .cancelled, .done:
+                return "Done"
             }
         }
         

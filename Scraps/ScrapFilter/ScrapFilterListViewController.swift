@@ -70,6 +70,10 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
                 $0 = .init(kind: kind)
             }
+        case .todo(let todo):
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodoFilter.self) {
+                $0 = .init(todo: todo)
+            }
         }
         
     }
@@ -98,6 +102,10 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             break
         case .kind(_):
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
+                $0 = nil
+            }
+        case .todo(_):
+            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodoFilter.self) {
                 $0 = nil
             }
         }
