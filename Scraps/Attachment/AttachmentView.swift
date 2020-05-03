@@ -32,8 +32,8 @@ class AttachmentView: UIView {
                 isHidden = false
                 do {
                     let view: UIView
-                    if let cachedVview = AttachmentView.viewCache[attachment] {
-                        view = cachedVview
+                    if let cachedView = AttachmentView.viewCache[attachment] {
+                        view = cachedView
                     } else {
                         view = try attachment.viewThatFits(.init(width: 240, height: 240))
                         AttachmentView.viewCache[attachment] = view

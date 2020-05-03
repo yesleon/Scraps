@@ -147,9 +147,9 @@ enum ScrapFilters {
         func icon(selected: Bool) -> UIImage? {
             switch todo {
             case .anytime:
-                return UIImage(systemName: "square")
+                return UIImage(systemName: selected ? "square.fill" : "square")
             case .done:
-                return UIImage(systemName: "checkmark.square.fill")
+                return UIImage(systemName: selected ? "checkmark.square.fill" : "checkmark.square")
             }
         }
         

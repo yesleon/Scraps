@@ -29,7 +29,7 @@ class ScrapListViewController: UITableViewController {
         subscriptions.removeAll()
         
         Model.shared.scrapFiltersSubject
-            .map({ $0.isEnabled ? UIImage(systemName: "line.horizontal.3.decrease.circle.fill") : UIImage(systemName: "line.horizontal.3.decrease.circle") })
+            .map { UIImage(systemName: $0.isEnabled ? "line.horizontal.3.decrease.circle.fill" : "line.horizontal.3.decrease.circle") }
             .assign(to: \.image, on: filterButton)
             .store(in: &subscriptions)
         
@@ -37,12 +37,6 @@ class ScrapListViewController: UITableViewController {
             .map(\.title)
             .map { $0 ?? NSLocalizedString("All", comment: "") }
             .assign(to: \.title, on: self)
-            .store(in: &subscriptions)
-        
-        Timer.publish(every: 0.1, on: .main, in: .default).autoconnect()
-            .filter({ _ in self.presentedViewController == nil })
-            .filter({ _ in !self.isFirstResponder })
-            .sink(receiveValue: { _ in self.becomeFirstResponder() })
             .store(in: &subscriptions)
     }
     
@@ -54,7 +48,13 @@ class ScrapListViewController: UITableViewController {
         tableView.allowsMultipleSelectionDuringEditing = true
         (tableView as? ScrapListView)?.controller = self
         subscribe()
-        navigationItem.leftBarButtonItem = editButtonItem
+        setEditing(false, animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        becomeFirstResponder()
     }
     
     @IBAction func dismiss(segue: UIStoryboardSegue) { }

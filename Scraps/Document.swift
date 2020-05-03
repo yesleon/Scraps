@@ -82,7 +82,7 @@ class Document: UIDocument {
     
     override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {
         super.handleError(error, userInteractionPermitted: userInteractionPermitted)
-        print(error)
+        fatalError(error.localizedDescription)
     }
 }
 
@@ -91,6 +91,7 @@ extension IdentifiableSet: FileWrapperRepresentable where Value: FileWrapperRepr
     
     init(fileWrapper: FileWrapper) throws {
         let elements = try (fileWrapper.fileWrappers ?? [:])
+            .filter { $0.value.isDirectory }
             .values
             .compactMap(Value.init)
         self.init(elements)
