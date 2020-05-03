@@ -130,9 +130,9 @@ class ScrapFilterListView: UITableView {
                 snapshot.appendSections([.main])
                 snapshot.appendItems([.text])
                 snapshot.appendItems([.today])
-                snapshot.appendItems(Attachment.Kind.allCases.map(Row.kind))
-                snapshot.appendItems([Row.kind(nil)])
                 snapshot.appendItems([Row.todo(.anytime), Row.todo(.done)])
+                snapshot.appendItems([Row.kind(nil)])
+                snapshot.appendItems(Attachment.Kind.allCases.map(Row.kind))
                 if !tags.isEmpty {
                     snapshot.appendItems([.noTags])
                     snapshot.appendItems(tags)
