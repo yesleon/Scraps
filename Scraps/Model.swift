@@ -16,11 +16,33 @@ class Model {
     
     static let shared = Model()
     
+    private var subscriptions = Set<AnyCancellable>()
+    
     let scrapsSubject = Subject<IdentifiableSet<Scrap>>(.init())
     
     let tagsSubject = Subject<IdentifiableSet<Tag>>(.init())
     
     let scrapFiltersSubject = Subject<[ScrapFilter]>(.init())
+    
+    init() {
+        tagsSubject
+            .map(\.values)
+            .map(Set.init)
+            .withPreviousResult(initialResult: Set<Tag>())
+            .map { $0.previousResult.subtracting($0.result) }
+            .map { $0.lazy.map(\.id) }
+            .sink(receiveValue: { deletedTagIDs in
+                self.scrapsSubject.value.modifyEach { scrap in
+                    scrap.tagIDs.subtract(deletedTagIDs)
+                }
+                self.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) { tagFilter in
+                    if case let .hasTags(tags) = tagFilter {
+                        tagFilter = .hasTags(tags.subtracting(deletedTagIDs))
+                    }
+                }
+            })
+            .store(in: &subscriptions)
+    }
     
 }
 

@@ -27,9 +27,6 @@ class TagListViewController: UITableViewController {
             [UIAlertController(title: NSLocalizedString("Delete Tag", comment: ""), message: NSLocalizedString("This will remove the tag from all scraps.", comment: ""), preferredStyle: .alert)].forEach {
                 $0.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: { _ in
                     Model.shared.tagsSubject.value[tagID] = nil
-                    Model.shared.scrapsSubject.value.modifyEach {
-                        $0.tagIDs.remove(tagID)
-                    }
                 }))
                 $0.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
                 self.present($0, animated: true)

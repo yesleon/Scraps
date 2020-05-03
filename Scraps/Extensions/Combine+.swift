@@ -16,11 +16,17 @@ extension Publisher where Failure == Never {
         sink { object?[keyPath: keyPath] = $0 }
     }
     
-    func previousResult(initialResult: Output) -> AnyPublisher<Output, Failure> {
+    func withPreviousResult(initialResult: Output) -> AnyPublisher<(previousResult: Output, result: Output), Failure> {
         self
             .scan((previousResult: initialResult, result: initialResult), { oldPair, result in
                 (previousResult: oldPair.result, result: result)
             })
+            .eraseToAnyPublisher()
+    }
+    
+    func previousResult(initialResult: Output) -> AnyPublisher<Output, Failure> {
+        self
+            .withPreviousResult(initialResult: initialResult)
             .map(\.previousResult)
             .eraseToAnyPublisher()
     }
