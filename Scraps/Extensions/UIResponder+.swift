@@ -14,4 +14,13 @@ extension UIResponder {
         next?.myUndoManager
     }
     
+    func insertIntoViewControllerHierarchy(_ vc: UIViewController) {
+        if let self = self as? UIViewController, self !== vc {
+            self.addChild(vc)
+            vc.didMove(toParent: self)
+        } else {
+            next?.insertIntoViewControllerHierarchy(vc)
+        }
+    }
+    
 }

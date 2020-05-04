@@ -79,8 +79,4 @@ class ScrapListView: UITableView, UITableViewDelegate {
         controller?.tableView(tableView, contextMenuConfigurationForRowAt: indexPath, point: point)
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        controller?.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
-    }
-    
 }

@@ -25,6 +25,15 @@ class AttachmentView: UIView {
         contentSize ?? super.intrinsicContentSize
     }
     
+    weak var controller: AttachmentViewController? {
+        didSet {
+            if let controller = controller {
+                controller.view = self
+                addInteraction(UIContextMenuInteraction(delegate: controller))
+            }
+        }
+    }
+    
     var attachment: Attachment? {
         didSet {
             subviews.forEach { $0.removeFromSuperview() }

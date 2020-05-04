@@ -91,9 +91,18 @@ class ScrapListViewCell: UITableViewCell {
         attachmentView.subviews.forEach { $0.removeFromSuperview() }
     }
     
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        let vc = AttachmentViewController()
+        attachmentView.controller = vc
+        vc.insertIntoViewControllerHierarchy(vc)
+    }
+    
     override func removeFromSuperview() {
         super.removeFromSuperview()
         subscriptions.removeAll()
+        attachmentView.controller?.willMove(toParent: nil)
+        attachmentView.controller?.removeFromParent()
     }
 
 }
