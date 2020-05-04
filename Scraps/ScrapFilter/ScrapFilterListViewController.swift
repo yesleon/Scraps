@@ -45,16 +45,26 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let dataSource = tableView.dataSource as? ScrapFilterListView.DataSource else { return }
         guard let row = dataSource.itemIdentifier(for: indexPath) else { return }
+        tableView.deselectRow(at: indexPath, animated: false)
         
         switch row {
         case .noTags:
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
-                $0 = .noTags
+                switch $0 {
+                case .noTags:
+                    $0 = .hasTags([])
+                default:
+                    $0 = .noTags
+                }
             }
         case .tag(let tag):
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
                 if case .hasTags(var tags) = $0 {
-                    tags.insert(tag)
+                    if tags.contains(tag) {
+                        tags.remove(tag)
+                    } else {
+                        tags.insert(tag)
+                    }
                     $0 = .hasTags(tags)
                 } else {
                     $0 = .hasTags([tag])
@@ -62,53 +72,21 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             }
         case .today:
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
-                $0 = .init()
+                $0 = $0 == nil ? .init() : nil
             }
         case .text:
             break
         case .kind(let kind):
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
-                $0 = .init(kind: kind)
+                $0 = $0 == nil ? .init(kind: kind) : nil
             }
         case .todo(let todo):
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodoFilter.self) {
-                $0 = .init(todo: todo)
+                $0 = $0 == nil ? .init(todo: todo) : nil
             }
         }
         
     }
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let dataSource = tableView.dataSource as? ScrapFilterListView.DataSource else { return }
-        guard let row = dataSource.itemIdentifier(for: indexPath) else { return }
-        
-        switch row {
-        case .noTags:
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
-                $0 = .hasTags([])
-            }
-        case .tag(let tag):
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TagFilter.self) {
-                if case .hasTags(var tags) = $0 {
-                    tags.remove(tag)
-                    $0 = .hasTags(tags)
-                }
-            }
-        case .today:
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodayFilter.self) {
-                $0 = nil
-            }
-        case .text:
-            break
-        case .kind(_):
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
-                $0 = nil
-            }
-        case .todo(_):
-            Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodoFilter.self) {
-                $0 = nil
-            }
-        }
-    }
 }
 

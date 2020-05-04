@@ -42,7 +42,7 @@ class TagListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let tableView = tableView as? TagListView else { return }
         guard let row = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: false)
         
         switch row {
         case .newTag:

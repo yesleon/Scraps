@@ -24,6 +24,7 @@
 		715F63C22435B22100E12D26 /* DraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63B92435B22000E12D26 /* DraftViewController.swift */; };
 		715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ScrapListView.swift */; };
 		7167F3C8246054A500D01813 /* TagListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7167F3C7246054A500D01813 /* TagListViewCell.swift */; };
+		7167F3CA246059B000D01813 /* ScrapFilterListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7167F3C9246059B000D01813 /* ScrapFilterListViewCell.swift */; };
 		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
 		717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */; };
 		717BF8A1245C064700C48BA0 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A0245C064700C48BA0 /* Cache.swift */; };
@@ -70,6 +71,7 @@
 		715F63BB2435B22000E12D26 /* ScrapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListViewController.swift; sourceTree = "<group>"; };
 		715F63CB2435C61A00E12D26 /* ScrapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListView.swift; sourceTree = "<group>"; };
 		7167F3C7246054A500D01813 /* TagListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewCell.swift; sourceTree = "<group>"; };
+		7167F3C9246059B000D01813 /* ScrapFilterListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilterListViewCell.swift; sourceTree = "<group>"; };
 		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
 		717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		717BF8A0245C064700C48BA0 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			children = (
 				71B79192244442E30011BA94 /* ScrapFilter.swift */,
 				715F63B82435B22000E12D26 /* ScrapFilterListView.swift */,
+				7167F3C9246059B000D01813 /* ScrapFilterListViewCell.swift */,
 				715F63B72435B22000E12D26 /* ScrapFilterListViewController.swift */,
 			);
 			path = ScrapFilter;
@@ -325,6 +328,7 @@
 				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
 				717BF8A1245C064700C48BA0 /* Cache.swift in Sources */,
 				71D186C7245DB449001590F8 /* UITableView+.swift in Sources */,
+				7167F3CA246059B000D01813 /* ScrapFilterListViewCell.swift in Sources */,
 				71CB1CDD24602B020063C025 /* ScrapListViewControllerStates.swift in Sources */,
 				71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,

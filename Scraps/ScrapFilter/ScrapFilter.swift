@@ -10,17 +10,17 @@ import Foundation
 import UIKit
 
 protocol ScrapFilter {
-    func shouldInclude(_ scrap: Scrap) -> Bool
     var isEnabled: Bool { get }
     var title: String? { get }
-    func icon(selected: Bool) -> UIImage?
+    var icon: UIImage? { get }
+    func shouldInclude(_ scrap: Scrap) -> Bool
 }
 
 enum ScrapFilters {
     
     struct TextFilter: ScrapFilter {
         
-        func icon(selected: Bool) -> UIImage? {
+        var icon: UIImage? {
             nil
         }
         
@@ -38,10 +38,10 @@ enum ScrapFilters {
     
     enum TagFilter: ScrapFilter {
         
-        func icon(selected: Bool) -> UIImage? {
+        var icon: UIImage? {
             switch self {
             case .hasTags(_):
-                return UIImage(systemName: selected ? "tag.fill" : "tag")
+                return UIImage(systemName: "tag")
             case .noTags:
                 return nil
             }
@@ -88,8 +88,8 @@ enum ScrapFilters {
 
     struct TodayFilter: ScrapFilter {
         
-        func icon(selected: Bool) -> UIImage? {
-            UIImage(systemName: selected ? "star.fill" : "star")
+        var icon: UIImage? {
+            UIImage(systemName: "star")
         }
         
         var title: String? {
@@ -127,16 +127,16 @@ enum ScrapFilters {
             }
         }
         
-        func icon(selected: Bool) -> UIImage? {
+        var icon: UIImage? {
             switch kind {
             case .drawing:
                 return UIImage(systemName: "scribble")
             case .image:
-                return UIImage(systemName: selected ? "photo.fill.on.rectangle.fill" : "photo.on.rectangle")
+                return UIImage(systemName: "photo.on.rectangle")
             case .linkMetadata:
                 return UIImage(systemName: "link")
             case nil:
-                return UIImage(systemName: selected ? "doc.text.fill" : "doc.text")
+                return UIImage(systemName: "doc.text")
             }
         }
         
@@ -144,12 +144,12 @@ enum ScrapFilters {
     
     struct TodoFilter: ScrapFilter, Equatable {
         
-        func icon(selected: Bool) -> UIImage? {
+        var icon: UIImage? {
             switch todo {
             case .anytime:
-                return UIImage(systemName: selected ? "square.fill" : "square")
+                return UIImage(systemName: "square")
             case .done:
-                return UIImage(systemName: selected ? "checkmark.square.fill" : "checkmark.square")
+                return UIImage(systemName: "checkmark.square")
             }
         }
         
@@ -176,7 +176,7 @@ enum ScrapFilters {
 
 extension Array: ScrapFilter where Element == ScrapFilter {
     
-    func icon(selected: Bool) -> UIImage? {
+    var icon: UIImage? {
         nil
     }
     
