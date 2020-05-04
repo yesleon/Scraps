@@ -25,63 +25,61 @@ extension GKStateMachine {
 }
 
 private class SelectionState: GKState {
+    
     init(vc: ScrapListViewController) {
         self.vc = vc
-    }
-    
-    override func didEnter(from previousState: GKState?) {
-        super.didEnter(from: previousState)
-        print(self)
     }
     
     unowned let vc: ScrapListViewController
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return type(of: self) != stateClass
+        type(of: self) != stateClass
     }
+    
 }
 
 private class NotEditingState: SelectionState {
+    
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
         vc.navigationItem.rightBarButtonItems = [vc.filterButton]
         vc.navigationItem.leftBarButtonItems = [vc.editButtonItem]
         vc.toolbarItems = [.flexibleSpace(), vc.composeButton]
     }
+    
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         if vc.isEditing {
             stateMachine?.enter(NoneSelectedState.self)
         }
     }
+    
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass == NoneSelectedState.self
+        stateClass == NoneSelectedState.self
     }
+    
 }
 
 private class EditingState: SelectionState {
-    lazy var selectNoneButtonItem = UIBarButtonItem(title: "Select None", style: .plain) { [unowned vc] button in
-        vc.tableView.indexPathsForAllRows.forEach { vc.tableView.deselectRow(at: $0, animated: false) }
-    }
-    lazy var selectAllButtonItem = UIBarButtonItem(title: "Select All", style: .plain) { [unowned vc] button in
-        vc.tableView.indexPathsForAllRows.forEach { vc.tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
-    }
-    lazy var deleteButtonItem = UIBarButtonItem(barButtonSystemItem: .trash) { [unowned vc] button in
-        modify(&Model.shared.scrapsSubject.value) { scraps in
-            vc.tableView.indexPathsForSelectedRows?.forEach { indexPath in
-                guard let diffableDataSource = self.vc.tableView.dataSource as? ScrapListViewDataSource else { return }
-                guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return }
-                scraps[scrapID] = nil
-            }
-        }
-    }
+    
     var oldSelectedIndexPaths: [IndexPath]?
+    
+    var leftBarButtonItems: [UIBarButtonItem] { [vc.editButtonItem, vc.selectAllButton] }
+    
+    func setButtonAvailability() {
+        vc.deleteButton.isEnabled = true
+        vc.tagsButton.isEnabled = true
+    }
+    
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
         let vc = self.vc
         vc.navigationItem.rightBarButtonItems = [vc.tagsButton]
-        vc.toolbarItems = [.flexibleSpace(), deleteButtonItem]
+        vc.navigationItem.leftBarButtonItems = leftBarButtonItems
+        vc.toolbarItems = [.flexibleSpace(), vc.deleteButton]
+        setButtonAvailability()
     }
+    
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         if !vc.isEditing {
@@ -100,31 +98,22 @@ private class EditingState: SelectionState {
             }
         }
     }
+    
 }
 
 private class AllSelectedState: EditingState {
-    override func didEnter(from previousState: GKState?) {
-        super.didEnter(from: previousState)
-        deleteButtonItem.isEnabled = true
-        vc.tagsButton.isEnabled = true
-        vc.navigationItem.leftBarButtonItems = [vc.editButtonItem, selectNoneButtonItem]
-    }
+    
+    override var leftBarButtonItems: [UIBarButtonItem] { [vc.editButtonItem, vc.selectNoneButton] }
+    
 }
 
-private class SomeSelectedState: EditingState {
-    override func didEnter(from previousState: GKState?) {
-        super.didEnter(from: previousState)
-        deleteButtonItem.isEnabled = true
-        vc.tagsButton.isEnabled = true
-        vc.navigationItem.leftBarButtonItems = [vc.editButtonItem, selectAllButtonItem]
-    }
-}
+private class SomeSelectedState: EditingState { }
 
 private class NoneSelectedState: EditingState {
-    override func didEnter(from previousState: GKState?) {
-        super.didEnter(from: previousState)
-        deleteButtonItem.isEnabled = false
+    
+    override func setButtonAvailability() {
+        vc.deleteButton.isEnabled = false
         vc.tagsButton.isEnabled = false
-        vc.navigationItem.leftBarButtonItems = [vc.editButtonItem, selectAllButtonItem]
     }
+    
 }

@@ -19,6 +19,24 @@ class ScrapListViewController: UITableViewController {
     @IBOutlet var tagsButton: UIBarButtonItem!
     
     
+    lazy var selectNoneButton = UIBarButtonItem(title: "Select None", style: .plain) { [unowned vc = self] button in
+        vc.tableView.indexPathsForAllRows.forEach { vc.tableView.deselectRow(at: $0, animated: false) }
+    }
+    
+    lazy var selectAllButton = UIBarButtonItem(title: "Select All", style: .plain) { [unowned vc = self] button in
+        vc.tableView.indexPathsForAllRows.forEach { vc.tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
+    }
+    
+    lazy var deleteButton = UIBarButtonItem(barButtonSystemItem: .trash) { [unowned vc = self] button in
+        modify(&Model.shared.scrapsSubject.value) { scraps in
+            vc.tableView.indexPathsForSelectedRows?.forEach { indexPath in
+                guard let diffableDataSource = vc.tableView.dataSource as? ScrapListViewDataSource else { return }
+                guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return }
+                scraps[scrapID] = nil
+            }
+        }
+    }
+    
     
     override var canBecomeFirstResponder: Bool { true }
     
