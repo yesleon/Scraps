@@ -26,11 +26,10 @@ class Model {
     
     init() {
         tagsSubject
-            .map(\.values)
+            .map(\.keys)
             .map(Set.init)
-            .withOldValue(initialValue: Set<Tag>())
+            .withOldValue(initialValue: Set<Tag.ID>())
             .map { $0.oldValue.subtracting($0.newValue) }
-            .map { $0.lazy.map(\.id) }
             .sink(receiveValue: { deletedTagIDs in
                 self.scrapsSubject.value.modifyEach { scrap in
                     scrap.tagIDs.subtract(deletedTagIDs)

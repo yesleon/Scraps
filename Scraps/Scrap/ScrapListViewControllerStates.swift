@@ -38,7 +38,7 @@ private class SelectionState: GKState {
     
 }
 
-private class NotEditingState: SelectionState {
+private final class NotEditingState: SelectionState {
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
@@ -73,7 +73,6 @@ private class EditingState: SelectionState {
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
-        let vc = self.vc
         vc.navigationItem.rightBarButtonItems = [vc.tagsButton]
         vc.navigationItem.leftBarButtonItems = leftBarButtonItems
         vc.toolbarItems = [.flexibleSpace(), vc.deleteButton]
@@ -101,15 +100,15 @@ private class EditingState: SelectionState {
     
 }
 
-private class AllSelectedState: EditingState {
+private final class AllSelectedState: EditingState {
     
     override var leftBarButtonItems: [UIBarButtonItem] { [vc.editButtonItem, vc.selectNoneButton] }
     
 }
 
-private class SomeSelectedState: EditingState { }
+private final class SomeSelectedState: EditingState { }
 
-private class NoneSelectedState: EditingState {
+private final class NoneSelectedState: EditingState {
     
     override func setButtonAvailability() {
         vc.deleteButton.isEnabled = false

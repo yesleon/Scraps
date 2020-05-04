@@ -10,7 +10,7 @@ import Foundation
 
 
 
-struct Tag: Codable, Equatable, Identifiable, Hashable {
+struct Tag: Codable, Equatable, Identifiable {
     var id: UUID
     var title: String
 }
