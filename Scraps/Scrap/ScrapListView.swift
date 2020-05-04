@@ -32,17 +32,6 @@ class ScrapListView: UITableView, UITableViewDelegate {
         super.setEditing(editing, animated: animated)
         beginUpdates()
         endUpdates()
-        controller?.tableViewDidChangeSelection(self)
-    }
-    
-    override func selectRow(at indexPath: IndexPath?, animated: Bool, scrollPosition: UITableView.ScrollPosition) {
-        super.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
-        controller?.tableViewDidChangeSelection(self)
-    }
-    
-    override func deselectRow(at indexPath: IndexPath, animated: Bool) {
-        super.deselectRow(at: indexPath, animated: animated)
-        controller?.tableViewDidChangeSelection(self)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -92,14 +81,6 @@ class ScrapListView: UITableView, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         controller?.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        controller?.tableViewDidChangeSelection(self)
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        controller?.tableViewDidChangeSelection(self)
     }
     
 }

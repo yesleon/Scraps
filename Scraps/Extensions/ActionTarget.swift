@@ -89,3 +89,12 @@ extension ActionSending where Self: UIControl {
     }
     
 }
+
+extension ActionSending where Self: CADisplayLink {
+    
+    init(handler: @escaping (Self) -> Void) {
+        let target = ActionTarget(handler: handler)
+        self.init(target: target, selector: #selector(target.handleAction(sender:)))
+    }
+    
+}

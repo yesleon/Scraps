@@ -37,6 +37,8 @@
 		71B79193244442E30011BA94 /* ScrapFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B79192244442E30011BA94 /* ScrapFilter.swift */; };
 		71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC1243FA13600610A3B /* Combine+.swift */; };
 		71C2CAC4243FA81F00610A3B /* ScrapListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */; };
+		71CB1CD9246003CA0063C025 /* CADisplayLink+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB1CD8246003CA0063C025 /* CADisplayLink+.swift */; };
+		71CB1CDD24602B020063C025 /* ScrapListViewControllerStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB1CDC24602B020063C025 /* ScrapListViewControllerStates.swift */; };
 		71D186C7245DB449001590F8 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D186C6245DB449001590F8 /* UITableView+.swift */; };
 		71D186C9245DC0D2001590F8 /* Sequence+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D186C8245DC0D2001590F8 /* Sequence+.swift */; };
 		71D9D97024261FB60062505B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D9D96F24261FB60062505B /* AppDelegate.swift */; };
@@ -80,6 +82,8 @@
 		71B79192244442E30011BA94 /* ScrapFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilter.swift; sourceTree = "<group>"; };
 		71C2CAC1243FA13600610A3B /* Combine+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+.swift"; sourceTree = "<group>"; };
 		71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListHeaderView.swift; sourceTree = "<group>"; };
+		71CB1CD8246003CA0063C025 /* CADisplayLink+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CADisplayLink+.swift"; sourceTree = "<group>"; };
+		71CB1CDC24602B020063C025 /* ScrapListViewControllerStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListViewControllerStates.swift; sourceTree = "<group>"; };
 		71D186C6245DB449001590F8 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		71D186C8245DC0D2001590F8 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
 		71D9D96C24261FB60062505B /* Scraps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scraps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				713FAF37245709FA002B7A46 /* ActionTarget.swift */,
+				71CB1CD8246003CA0063C025 /* CADisplayLink+.swift */,
 				719E20B8245A003B003139A5 /* IdentifiableSet.swift */,
 				717BF8A0245C064700C48BA0 /* Cache.swift */,
 				71ED7831245E8F4300C97B54 /* Functions.swift */,
@@ -193,6 +198,7 @@
 				711DE1C3243C83540003A1C2 /* ScrapListViewCell.swift */,
 				71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */,
 				715F63BB2435B22000E12D26 /* ScrapListViewController.swift */,
+				71CB1CDC24602B020063C025 /* ScrapListViewControllerStates.swift */,
 			);
 			path = Scrap;
 			sourceTree = "<group>";
@@ -308,6 +314,7 @@
 				71ED7832245E8F4300C97B54 /* Functions.swift in Sources */,
 				713FAF38245709FA002B7A46 /* ActionTarget.swift in Sources */,
 				715F63BF2435B22100E12D26 /* ScrapListViewController.swift in Sources */,
+				71CB1CD9246003CA0063C025 /* CADisplayLink+.swift in Sources */,
 				719E20B9245A003B003139A5 /* IdentifiableSet.swift in Sources */,
 				715F63C12435B22100E12D26 /* DraftView.swift in Sources */,
 				711DE1C4243C83540003A1C2 /* ScrapListViewCell.swift in Sources */,
@@ -315,6 +322,7 @@
 				71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */,
 				717BF8A1245C064700C48BA0 /* Cache.swift in Sources */,
 				71D186C7245DB449001590F8 /* UITableView+.swift in Sources */,
+				71CB1CDD24602B020063C025 /* ScrapListViewControllerStates.swift in Sources */,
 				71C2CAC2243FA13600610A3B /* Combine+.swift in Sources */,
 				71D9D97024261FB60062505B /* AppDelegate.swift in Sources */,
 				715F63B42435B20F00E12D26 /* Document.swift in Sources */,

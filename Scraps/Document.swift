@@ -32,7 +32,8 @@ class Document: UIDocument {
         weak var undoManager = self.undoManager
         
         Model.shared.scrapsSubject
-            .previousResult(initialResult: [])
+            .withOldValue(initialValue: [])
+            .map(\.oldValue)
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: Model.shared.scrapsSubject) {
                     $0.value = oldValue
@@ -41,7 +42,8 @@ class Document: UIDocument {
             .store(in: &subscriptions)
         
         Model.shared.tagsSubject
-            .previousResult(initialResult: [])
+            .withOldValue(initialValue: [])
+            .map(\.oldValue)
             .sink(receiveValue: { oldValue in
                 undoManager?.registerUndo(withTarget: Model.shared.tagsSubject) {
                     $0.value = oldValue
