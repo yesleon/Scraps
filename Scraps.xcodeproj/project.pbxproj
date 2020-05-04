@@ -84,6 +84,7 @@
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
 		71B79192244442E30011BA94 /* ScrapFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapFilter.swift; sourceTree = "<group>"; };
+		71BB2B8C2460682300615D03 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71C2CAC1243FA13600610A3B /* Combine+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+.swift"; sourceTree = "<group>"; };
 		71C2CAC3243FA81F00610A3B /* ScrapListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListHeaderView.swift; sourceTree = "<group>"; };
 		71CB1CD8246003CA0063C025 /* CADisplayLink+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CADisplayLink+.swift"; sourceTree = "<group>"; };
@@ -154,6 +155,7 @@
 		71D9D96324261FB60062505B = {
 			isa = PBXGroup;
 			children = (
+				71BB2B8C2460682300615D03 /* README.md */,
 				71D9D96E24261FB60062505B /* Scraps */,
 				71D9D96D24261FB60062505B /* Products */,
 				71C30DC02429F0B400C9F12E /* Frameworks */,

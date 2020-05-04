@@ -78,11 +78,15 @@ class ScrapFilterListViewController: UITableViewController, UISearchBarDelegate 
             break
         case .kind(let kind):
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.KindFilter.self) {
-                $0 = $0 == nil ? .init(kind: kind) : nil
+                if let filter = $0, filter.kind == kind {
+                    $0 = nil
+                } else {
+                    $0 = .init(kind: kind)
+                }
             }
         case .todo(let todo):
             Model.shared.scrapFiltersSubject.value.modifyValue(ofType: ScrapFilters.TodoFilter.self) {
-                $0 = $0 == nil ? .init(todo: todo) : nil
+                $0 = $0?.todo == todo ? nil : .init(todo: todo)
             }
         }
         
