@@ -23,6 +23,7 @@
 		715F63C12435B22100E12D26 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63B52435B22000E12D26 /* DraftView.swift */; };
 		715F63C22435B22100E12D26 /* DraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63B92435B22000E12D26 /* DraftViewController.swift */; };
 		715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F63CB2435C61A00E12D26 /* ScrapListView.swift */; };
+		7167F3C8246054A500D01813 /* TagListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7167F3C7246054A500D01813 /* TagListViewCell.swift */; };
 		717B500A243A100A0080F263 /* NotificationCenter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B5009243A100A0080F263 /* NotificationCenter+.swift */; };
 		717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */; };
 		717BF8A1245C064700C48BA0 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BF8A0245C064700C48BA0 /* Cache.swift */; };
@@ -68,6 +69,7 @@
 		715F63B92435B22000E12D26 /* DraftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftViewController.swift; sourceTree = "<group>"; };
 		715F63BB2435B22000E12D26 /* ScrapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListViewController.swift; sourceTree = "<group>"; };
 		715F63CB2435C61A00E12D26 /* ScrapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapListView.swift; sourceTree = "<group>"; };
+		7167F3C7246054A500D01813 /* TagListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewCell.swift; sourceTree = "<group>"; };
 		717B5009243A100A0080F263 /* NotificationCenter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+.swift"; sourceTree = "<group>"; };
 		717BF89E245BF6EB00C48BA0 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		717BF8A0245C064700C48BA0 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			children = (
 				719579442439CCD3007DC6BA /* Tag.swift */,
 				7144AA46243658AE00B72934 /* TagListView.swift */,
+				7167F3C7246054A500D01813 /* TagListViewCell.swift */,
 				7144AA4824365B2F00B72934 /* TagListViewController.swift */,
 			);
 			path = Tag;
@@ -340,6 +343,7 @@
 				71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */,
 				715F63CC2435C61A00E12D26 /* ScrapListView.swift in Sources */,
 				71C2CAC4243FA81F00610A3B /* ScrapListHeaderView.swift in Sources */,
+				7167F3C8246054A500D01813 /* TagListViewCell.swift in Sources */,
 				715F63C02435B22100E12D26 /* ScrapFilterListViewController.swift in Sources */,
 				71ED7834245EADCF00C97B54 /* Todo.swift in Sources */,
 				717BF89F245BF6EB00C48BA0 /* AttachmentView.swift in Sources */,

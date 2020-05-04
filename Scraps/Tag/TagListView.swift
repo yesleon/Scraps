@@ -22,34 +22,22 @@ class TagListView: UITableView {
     }
 
     var subscriptions = Set<AnyCancellable>()
-    var cellSubscriptions = [UITableViewCell: AnyCancellable]()
     
     var scrapIDs = Set<Scrap.ID>()
     
-    lazy var diffableDataSource = DataSource(tableView: self) { tableView, indexPath, row in
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        self.cellSubscriptions[cell] = nil
+    lazy var diffableDataSource = DataSource(tableView: self) { [weak self] tableView, indexPath, row in
+        
+        guard let self = self else { return nil }
         switch row {
         case .tag(let tagID):
-            self.cellSubscriptions[cell] = Model.shared.tagsSubject.publisher(for: tagID)
-                .combineLatest(Model.shared.scrapsSubject)
-                .sink(receiveValue: { tag, scraps in
-                    cell.textLabel?.text = tag.title
-                    if self.scrapIDs.compactMap({ scraps[$0] })
-                        .allSatisfy({ $0.tagIDs.contains(tagID) }) {
-                        cell.imageView?.image = UIImage(systemName: "tag.fill")
-                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-                    } else {
-                        cell.imageView?.image = UIImage(systemName: "tag")
-                        tableView.deselectRow(at: indexPath, animated: false)
-                    }
-                })
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? TagListViewCell
+            cell?.subscribe(tagID: tagID, scrapIDs: self.scrapIDs)
+            return cell
         case .newTag:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewTagCell", for: indexPath)
             cell.textLabel?.text = NSLocalizedString("New Tag...", comment: "")
-            tableView.deselectRow(at: indexPath, animated: false)
+            return cell
         }
-        return cell
     }
     
     override func didMoveToSuperview() {
@@ -59,7 +47,8 @@ class TagListView: UITableView {
         self.alwaysBounceVertical = false
         self.separatorStyle = .none
         
-        register(UITableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
+        register(TagListViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
+        register(UITableViewCell.self, forCellReuseIdentifier: "NewTagCell")
         self.dataSource = diffableDataSource
         
         Model.shared.tagsSubject
@@ -81,7 +70,6 @@ class TagListView: UITableView {
         super.removeFromSuperview()
         
         subscriptions.removeAll()
-        cellSubscriptions.removeAll()
     }
 
 }

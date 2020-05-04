@@ -41,8 +41,8 @@ class TagListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let tableView = tableView as? TagListView else { return }
-        
         guard let row = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
+        tableView.deselectRow(at: indexPath, animated: true)
         
         switch row {
         case .newTag:
@@ -51,22 +51,23 @@ class TagListViewController: UITableViewController {
                     Model.shared.scrapsSubject.value[$0]?.tagIDs.insert(tagID)
                 }
                 }, animated: true)
-            tableView.deselectRow(at: indexPath, animated: true)
+            
             
         case .tag(let tagID):
-            tableView.scrapIDs.forEach {
-                Model.shared.scrapsSubject.value[$0]?.tagIDs.insert(tagID)
-            }
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let tableView = tableView as? TagListView else { return }
-        
-        guard case let .tag(tagID) = tableView.diffableDataSource.itemIdentifier(for: indexPath) else { return }
+            modify(&Model.shared.scrapsSubject.value) { scraps in
+                let immutableScraps = scraps
+                if tableView.scrapIDs.lazy.compactMap({ immutableScraps[$0] }).allSatisfy({ $0.tagIDs.contains(tagID) }) {
 
-        tableView.scrapIDs.forEach {
-            Model.shared.scrapsSubject.value[$0]?.tagIDs.remove(tagID)
+                    tableView.scrapIDs.forEach {
+                        scraps[$0]?.tagIDs.remove(tagID)
+                    }
+                } else {
+
+                    tableView.scrapIDs.forEach {
+                        scraps[$0]?.tagIDs.insert(tagID)
+                    }
+                }
+            }
         }
     }
 
