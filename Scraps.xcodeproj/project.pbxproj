@@ -33,6 +33,7 @@
 		719579452439CCD3007DC6BA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579442439CCD3007DC6BA /* Tag.swift */; };
 		719579472439CCE8007DC6BA /* Scrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719579462439CCE8007DC6BA /* Scrap.swift */; };
 		71981C972455422B004EC5B2 /* UIResponder+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71981C962455422B004EC5B2 /* UIResponder+.swift */; };
+		719B68E724614E8800C3BFBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 719B68E524614E8800C3BFBB /* InfoPlist.strings */; };
 		719E20B9245A003B003139A5 /* IdentifiableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719E20B8245A003B003139A5 /* IdentifiableSet.swift */; };
 		71AB912424322E9800EAE8B8 /* PresentTagListSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */; };
 		71AFE1B32443781700D0793B /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AFE1B22443781700D0793B /* CanvasViewController.swift */; };
@@ -80,6 +81,7 @@
 		719579442439CCD3007DC6BA /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		719579462439CCE8007DC6BA /* Scrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrap.swift; sourceTree = "<group>"; };
 		71981C962455422B004EC5B2 /* UIResponder+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+.swift"; sourceTree = "<group>"; };
+		719B68E624614E8800C3BFBB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		719E20B8245A003B003139A5 /* IdentifiableSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableSet.swift; sourceTree = "<group>"; };
 		71AB912324322E9800EAE8B8 /* PresentTagListSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTagListSegue.swift; sourceTree = "<group>"; };
 		71AFE1B22443781700D0793B /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				71D9D97824261FB90062505B /* Assets.xcassets */,
 				71D9D97A24261FB90062505B /* LaunchScreen.storyboard */,
 				71D9D97D24261FB90062505B /* Info.plist */,
+				719B68E524614E8800C3BFBB /* InfoPlist.strings */,
 				71F623B12428BCCE00A46048 /* Localizable.strings */,
 			);
 			path = Scraps;
@@ -306,6 +309,7 @@
 				71F623B32428BCCE00A46048 /* Localizable.strings in Resources */,
 				71D9D97924261FB90062505B /* Assets.xcassets in Resources */,
 				71D9D97724261FB60062505B /* Main.storyboard in Resources */,
+				719B68E724614E8800C3BFBB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +366,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		719B68E524614E8800C3BFBB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				719B68E624614E8800C3BFBB /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		71D9D97524261FB60062505B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

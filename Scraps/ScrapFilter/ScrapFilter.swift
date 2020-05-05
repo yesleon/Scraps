@@ -41,7 +41,7 @@ enum ScrapFilters {
         var icon: UIImage? {
             switch self {
             case .hasTags(_):
-                return UIImage(systemName: "tag")
+                return UIImage(systemName: "tag", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             case .noTags:
                 return nil
             }
@@ -89,7 +89,7 @@ enum ScrapFilters {
     struct TodayFilter: ScrapFilter {
         
         var icon: UIImage? {
-            UIImage(systemName: "star")
+            UIImage(systemName: "star", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
         }
         
         var title: String? {
@@ -130,13 +130,13 @@ enum ScrapFilters {
         var icon: UIImage? {
             switch kind {
             case .drawing:
-                return UIImage(systemName: "scribble")
+                return UIImage(systemName: "scribble", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             case .image:
-                return UIImage(systemName: "photo.on.rectangle")
+                return UIImage(systemName: "photo", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             case .linkMetadata:
-                return UIImage(systemName: "link")
+                return UIImage(systemName: "link", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             case nil:
-                return UIImage(systemName: "doc.text")
+                return UIImage(systemName: "doc.text", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             }
         }
         
@@ -147,9 +147,9 @@ enum ScrapFilters {
         var icon: UIImage? {
             switch todo {
             case .anytime:
-                return UIImage(systemName: "square")
+                return UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             case .done:
-                return UIImage(systemName: "checkmark.square")
+                return UIImage(systemName: "checkmark.square", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
             }
         }
         

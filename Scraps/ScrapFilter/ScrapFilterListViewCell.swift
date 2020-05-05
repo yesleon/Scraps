@@ -32,7 +32,7 @@ class ScrapFilterListViewCell: UITableViewCell {
                 case .tag(let tagID):
                     guard let tag = Model.shared.tagsSubject.value[tagID] else { break }
                     cell.textLabel?.text = tag.title
-                    cell.imageView?.image = UIImage(systemName: "tag")
+                    cell.imageView?.image = UIImage(systemName: "tag", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
                     
                     if case .hasTags(let tagIDs) = filters.first(ofType: ScrapFilters.TagFilter.self), tagIDs.contains(tagID) {
                         cell.accessoryType = .checkmark
@@ -42,7 +42,7 @@ class ScrapFilterListViewCell: UITableViewCell {
                     
                 case .today:
                     cell.textLabel?.text = NSLocalizedString("Today", comment: "")
-                    cell.imageView?.image = UIImage(systemName: "star")
+                    cell.imageView?.image = UIImage(systemName: "star", withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 14))
                     
                     
                     if filters.first(ofType: ScrapFilters.TodayFilter.self)?.isEnabled == true {
@@ -58,6 +58,7 @@ class ScrapFilterListViewCell: UITableViewCell {
                     } else {
                         searchBar = UISearchBar(frame: cell.bounds)
                         searchBar.searchBarStyle = .minimal
+                        searchBar.placeholder = NSLocalizedString("Search Content", comment: "")
                         searchBar.autoresizingMask = [.flexibleHeight, .flexibleWidth]
                         searchBar.delegate = searchBarDelegate()
                         cell.contentView.addSubview(searchBar)

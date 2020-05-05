@@ -11,7 +11,7 @@
         <!--Draft-->
         <scene sceneID="r19-rZ-MY4">
             <objects>
-                <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="8rr-SM-NiG" customClass="DraftViewController" customModule="Scraps" customModuleProvider="target" propertyAccessControl="all" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="1z5-Dg-7zY" customClass="DraftView" customModule="Scraps" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +93,7 @@
         <!--Scrap Filter List View Controller-->
         <scene sceneID="UwS-6h-Vt9">
             <objects>
-                <tableViewController storyboardIdentifier="TagsVC" id="kbz-Aa-WEk" customClass="ScrapFilterListViewController" customModule="TagList" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TagsVC" id="kbz-Aa-WEk" customClass="ScrapFilterListViewController" customModule="TagList" propertyAccessControl="all" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZEQ-cr-Mwp" customClass="ScrapFilterListView" customModule="TagList">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -126,7 +126,7 @@
         <!--All-->
         <scene sceneID="dLr-46-qTM">
             <objects>
-                <tableViewController id="1fT-Lp-UQ9" customClass="ScrapListViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="1fT-Lp-UQ9" customClass="ScrapListViewController" customModule="Scraps" customModuleProvider="target" propertyAccessControl="all" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Olw-UH-DAN" customClass="ScrapListView" customModule="Scraps" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -234,7 +234,7 @@
         <!--Scrap Filter List View Controller-->
         <scene sceneID="GQE-8V-7Be">
             <objects>
-                <tableViewController id="WOy-6y-hyc" customClass="ScrapFilterListViewController" customModule="Scraps" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="WOy-6y-hyc" customClass="ScrapFilterListViewController" customModule="Scraps" customModuleProvider="target" propertyAccessControl="all" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7QT-7Y-zlG" customClass="ScrapFilterListView" customModule="Scraps" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -276,7 +276,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Sqm-hE-i2c">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="qGw-6q-O58" propertyAccessControl="all" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a71-0c-VWk">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -298,7 +298,7 @@
         <!--Navigation Controller-->
         <scene sceneID="A25-CH-Dd1">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eje-5e-k4h" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eje-5e-k4h" propertyAccessControl="all" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mjI-nj-QgN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
