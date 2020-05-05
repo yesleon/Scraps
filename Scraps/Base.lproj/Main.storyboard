@@ -215,6 +215,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="composeButton" destination="3Pe-zY-JwH" id="vin-eY-DlZ"/>
+                        <outlet property="emptyView" destination="HV3-ei-P8G" id="Mb7-yQ-1aX"/>
                         <outlet property="filterButton" destination="pMY-ms-0KF" id="awV-4E-GfL"/>
                         <outlet property="tagsButton" destination="uMj-RT-mnN" id="t7q-Ag-URa"/>
                         <segue destination="kbz-Aa-WEk" kind="popoverPresentation" identifier="a" customClass="PresentTagListSegue" customModule="Scraps" customModuleProvider="target" popoverAnchorView="Olw-UH-DAN" id="PAq-2C-952">
@@ -223,6 +224,24 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAp-EM-xC9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="HV3-ei-P8G">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No scrap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbC-cP-VKT">
+                            <rect key="frame" x="66" y="47.5" width="108" height="33.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                            <color key="textColor" systemColor="placeholderTextColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="JbC-cP-VKT" firstAttribute="centerY" secondItem="HV3-ei-P8G" secondAttribute="centerY" id="QDX-Md-bSg"/>
+                        <constraint firstItem="JbC-cP-VKT" firstAttribute="centerX" secondItem="HV3-ei-P8G" secondAttribute="centerX" id="wR4-cL-BSZ"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="EA4-kD-AfH"/>
+                </view>
                 <barButtonItem title="Tags" id="uMj-RT-mnN">
                     <connections>
                         <action selector="showTagList:" destination="1fT-Lp-UQ9" id="aBG-0U-Ya4"/>

@@ -27,6 +27,9 @@ class AttachmentView: UIView {
     
     weak var controller: AttachmentViewController? {
         didSet {
+            if let controller = oldValue {
+                controller.view = nil
+            }
             if let controller = controller {
                 controller.view = self
                 addInteraction(UIContextMenuInteraction(delegate: controller))

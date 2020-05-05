@@ -13,18 +13,21 @@ extension GKStateMachine {
     
     static func forScrapListViewController(_ vc: ScrapListViewController) -> GKStateMachine {
         let stateMachine = GKStateMachine(states: [
-            NotEditingState(vc: vc),
+            SomeScrapsState(vc: vc),
+            NoScrapState(vc: vc),
             AllSelectedState(vc: vc),
             SomeSelectedState(vc: vc),
             NoneSelectedState(vc: vc),
         ])
-        stateMachine.enter(NotEditingState.self)
+        stateMachine.enter(SomeScrapsState.self)
+        
         return stateMachine
     }
     
 }
 
-private class SelectionState: GKState {
+
+class ScrapListViewControllerState: GKState {
     
     init(vc: ScrapListViewController) {
         self.vc = vc
@@ -32,13 +35,42 @@ private class SelectionState: GKState {
     
     unowned let vc: ScrapListViewController
     
+    var oldSelectedIndexPaths: [IndexPath]?
+    var oldIsEditing: Bool?
+    
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         type(of: self) != stateClass
     }
     
+    override func update(deltaTime seconds: TimeInterval) {
+        super.update(deltaTime: seconds)
+        
+        if vc.tableView.numberOfSections == 0 {
+            stateMachine?.enter(NoScrapState.self)
+            oldSelectedIndexPaths = nil
+        } else {
+            if !vc.isEditing {
+                stateMachine?.enter(SomeScrapsState.self)
+                oldSelectedIndexPaths = nil
+            } else {
+                let selectedIndexPaths = vc.tableView.indexPathsForSelectedRows ?? []
+                if selectedIndexPaths != oldSelectedIndexPaths {
+                    if selectedIndexPaths.isEmpty {
+                        stateMachine?.enter(NoneSelectedState.self)
+                    } else if selectedIndexPaths.count != Array(vc.tableView.indexPathsForAllRows).count {
+                        stateMachine?.enter(SomeSelectedState.self)
+                    } else {
+                        stateMachine?.enter(AllSelectedState.self)
+                    }
+                    oldSelectedIndexPaths = selectedIndexPaths
+                }
+            }
+        }
+    }
+    
 }
 
-private final class NotEditingState: SelectionState {
+class NotEditingState: ScrapListViewControllerState {
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
@@ -47,22 +79,34 @@ private final class NotEditingState: SelectionState {
         vc.toolbarItems = [.flexibleSpace(), vc.composeButton]
     }
     
-    override func update(deltaTime seconds: TimeInterval) {
-        super.update(deltaTime: seconds)
-        if vc.isEditing {
-            stateMachine?.enter(NoneSelectedState.self)
-        }
-    }
+}
+
+final class SomeScrapsState: NotEditingState {
     
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        stateClass == NoneSelectedState.self
+    override func didEnter(from previousState: GKState?) {
+        super.didEnter(from: previousState)
+        vc.editButtonItem.isEnabled = true
+        vc.tableView.backgroundView = nil
     }
     
 }
 
-private class EditingState: SelectionState {
+final class NoScrapState: NotEditingState {
     
-    var oldSelectedIndexPaths: [IndexPath]?
+    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+        stateClass == SomeScrapsState.self
+    }
+    
+    override func didEnter(from previousState: GKState?) {
+        super.didEnter(from: previousState)
+        vc.editButtonItem.isEnabled = false
+        vc.tableView.backgroundView = vc.emptyView
+        vc.setEditing(false, animated: true)
+    }
+    
+}
+
+class EditingState: ScrapListViewControllerState {
     
     var leftBarButtonItems: [UIBarButtonItem] { [vc.editButtonItem, vc.selectAllButton] }
     
@@ -79,36 +123,23 @@ private class EditingState: SelectionState {
         setButtonAvailability()
     }
     
-    override func update(deltaTime seconds: TimeInterval) {
-        super.update(deltaTime: seconds)
-        if !vc.isEditing {
-            stateMachine?.enter(NotEditingState.self)
-        } else {
-            let selectedIndexPaths = vc.tableView.indexPathsForSelectedRows ?? []
-            if selectedIndexPaths != oldSelectedIndexPaths {
-                if selectedIndexPaths.isEmpty {
-                    stateMachine?.enter(NoneSelectedState.self)
-                } else if selectedIndexPaths.count != Array(vc.tableView.indexPathsForAllRows).count {
-                    stateMachine?.enter(SomeSelectedState.self)
-                } else {
-                    stateMachine?.enter(AllSelectedState.self)
-                }
-                oldSelectedIndexPaths = selectedIndexPaths
-            }
-        }
-    }
-    
 }
 
-private final class AllSelectedState: EditingState {
+final class AllSelectedState: EditingState {
     
     override var leftBarButtonItems: [UIBarButtonItem] { [vc.editButtonItem, vc.selectNoneButton] }
     
 }
 
-private final class SomeSelectedState: EditingState { }
+final class SomeSelectedState: EditingState {
+    
+    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+        super.isValidNextState(stateClass) && stateClass != NoScrapState.self
+    }
+    
+}
 
-private final class NoneSelectedState: EditingState {
+final class NoneSelectedState: EditingState {
     
     override func setButtonAvailability() {
         vc.deleteButton.isEnabled = false

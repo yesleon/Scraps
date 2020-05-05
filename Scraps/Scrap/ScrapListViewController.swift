@@ -17,6 +17,7 @@ class ScrapListViewController: UITableViewController {
     @IBOutlet var composeButton: UIBarButtonItem!
     @IBOutlet var filterButton: UIBarButtonItem!
     @IBOutlet var tagsButton: UIBarButtonItem!
+    @IBOutlet var emptyView: UIView!
     
     
     lazy var selectNoneButton = UIBarButtonItem(title: NSLocalizedString("Select None", comment: ""), style: .plain) { [unowned vc = self] button in
