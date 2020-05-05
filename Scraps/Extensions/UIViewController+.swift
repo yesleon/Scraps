@@ -63,9 +63,9 @@ extension UIViewController {
     }
     
     static func saveURLAlert() -> UIViewController {
-        let alertController = UIAlertController(title: "Insert Link", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Insert Link", comment: ""), message: nil, preferredStyle: .alert)
         var linkURL: URL?
-        let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+        let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default) { _ in
             linkURL.map(Draft.shared.saveURL)
         }
         doneAction.isEnabled = false
@@ -83,7 +83,7 @@ extension UIViewController {
         }
         
         alertController.addAction(doneAction)
-        alertController.addAction(.init(title: "Cancel", style: .cancel))
+        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
         return alertController
     }
     

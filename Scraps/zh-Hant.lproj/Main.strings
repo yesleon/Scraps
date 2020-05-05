@@ -2,5 +2,8 @@
 "EFZ-Oz-kza.title" = "全部";
 
 /* Class = "UINavigationItem"; title = "Draft"; ObjectID = "ueq-sf-8FG"; */
-"ueq-sf-8FG.title" = "草稿";
+"ueq-sf-8FG.title" = "新紙片";
+
+/* Class = "UIBarButtonItem"; title = "Tags"; ObjectID = "uMj-RT-mnN"; */
+"uMj-RT-mnN.title" = "標籤";
 

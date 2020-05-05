@@ -1,4 +1,7 @@
 /* No comment provided by engineer. */
+"Add Todo" = "增加待辦事項";
+
+/* No comment provided by engineer. */
 "All" = "全部";
 
 /* No comment provided by engineer. */
@@ -20,6 +23,21 @@
 "Done" = "完成";
 
 /* No comment provided by engineer. */
+"Drawings" = "圖畫";
+
+/* No comment provided by engineer. */
+"Finished Todo" = "已完成的待辦事項";
+
+/* No comment provided by engineer. */
+"Images" = "圖片";
+
+/* No comment provided by engineer. */
+"Insert Link" = "插入連結";
+
+/* No comment provided by engineer. */
+"Links" = "連結";
+
+/* No comment provided by engineer. */
 "Name the Tag" = "為標籤命名";
 
 /* No comment provided by engineer. */
@@ -29,7 +47,16 @@
 "No Tags" = "沒有標籤";
 
 /* No comment provided by engineer. */
+"Remove Todo" = "移除待辦事項";
+
+/* No comment provided by engineer. */
 "Rename..." = "重新命名...";
+
+/* No comment provided by engineer. */
+"Select All" = "全選";
+
+/* No comment provided by engineer. */
+"Select None" = "取消全選";
 
 /* No comment provided by engineer. */
 "Share" = "共享";
@@ -38,8 +65,14 @@
 "Tags" = "標籤";
 
 /* No comment provided by engineer. */
+"Texts" = "文字";
+
+/* No comment provided by engineer. */
 "This will remove the tag from all scraps." = "這會將標籤從所有條目中刪除。";
 
 /* No comment provided by engineer. */
 "Today" = "今日";
+
+/* No comment provided by engineer. */
+"Todo" = "待辦事項";
 

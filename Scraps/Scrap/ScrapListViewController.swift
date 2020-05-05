@@ -19,11 +19,11 @@ class ScrapListViewController: UITableViewController {
     @IBOutlet var tagsButton: UIBarButtonItem!
     
     
-    lazy var selectNoneButton = UIBarButtonItem(title: "Select None", style: .plain) { [unowned vc = self] button in
+    lazy var selectNoneButton = UIBarButtonItem(title: NSLocalizedString("Select None", comment: ""), style: .plain) { [unowned vc = self] button in
         vc.tableView.indexPathsForAllRows.forEach { vc.tableView.deselectRow(at: $0, animated: false) }
     }
     
-    lazy var selectAllButton = UIBarButtonItem(title: "Select All", style: .plain) { [unowned vc = self] button in
+    lazy var selectAllButton = UIBarButtonItem(title: NSLocalizedString("Select All", comment: ""), style: .plain) { [unowned vc = self] button in
         vc.tableView.indexPathsForAllRows.forEach { vc.tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
     }
     
@@ -98,7 +98,7 @@ class ScrapListViewController: UITableViewController {
         guard let scrapID = diffableDataSource.itemIdentifier(for: indexPath) else { return nil }
         guard let scrap = Model.shared.scrapsSubject.value[scrapID] else { return nil }
         var actions = [UIAction]()
-        let todoAction = UIAction(title: scrap.todo == nil ? "Add Todo" : "Remove Todo") { _ in
+        let todoAction = UIAction(title: scrap.todo == nil ? NSLocalizedString("Add Todo", comment: "") : NSLocalizedString("Remove Todo", comment: "")) { _ in
             Model.shared.scrapsSubject.value[scrapID]?.todo = scrap.todo == nil ? .anytime : nil
         }
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: "")) { _ in

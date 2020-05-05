@@ -117,13 +117,13 @@ enum ScrapFilters {
         var title: String? {
             switch kind {
             case .drawing:
-                return "Drawings"
+                return NSLocalizedString("Drawings", comment: "")
             case .image:
-                return "Images"
+                return NSLocalizedString("Images", comment: "")
             case .linkMetadata:
-                return "Links"
+                return NSLocalizedString("Links", comment: "")
             case nil:
-                return "Texts"
+                return NSLocalizedString("Texts", comment: "")
             }
         }
         
@@ -164,9 +164,9 @@ enum ScrapFilters {
         var title: String? {
             switch todo {
             case .anytime:
-                return "Anytime"
+                return NSLocalizedString("Todo", comment: "")
             case .done:
-                return "Done"
+                return NSLocalizedString("Finished Todo", comment: "")
             }
         }
         
