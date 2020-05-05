@@ -1,3 +1,6 @@
+/* Bundle name */
+"CFBundleName" = "紙片";
+
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "需要您允許權限以拍照。";
 

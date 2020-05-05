@@ -1,5 +1,17 @@
+/* Class = "UILabel"; text = "Title"; ObjectID = "2D2-da-JwE"; */
+"2D2-da-JwE.text" = "標題";
+
 /* Class = "UINavigationItem"; title = "All"; ObjectID = "EFZ-Oz-kza"; */
 "EFZ-Oz-kza.title" = "全部";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "elm-m7-hgG"; */
+"elm-m7-hgG.text" = "標籤";
+
+/* Class = "UILabel"; text = "No scrap"; ObjectID = "JbC-cP-VKT"; */
+"JbC-cP-VKT.text" = "沒有紙片";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "pJb-rk-TYL"; */
+"pJb-rk-TYL.text" = "標籤";
 
 /* Class = "UINavigationItem"; title = "Draft"; ObjectID = "ueq-sf-8FG"; */
 "ueq-sf-8FG.title" = "新紙片";
